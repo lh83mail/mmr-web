@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
+import {MatSidenavModule, MatToolbarModule} from "@angular/material";
 
 @NgModule({
   declarations: [
@@ -14,7 +15,10 @@ import { AppComponent } from './app.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+
+    MatToolbarModule,
+    MatSidenavModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
