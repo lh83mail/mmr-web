@@ -1,19 +1,42 @@
-app-mmr {
-  position: absolute;
+$app-title-height: 55px;
 
-}
-
-$app-title-height: 64px;
-
+:host
+/deep/
 .mmr-app-bar {
   position: relative;
   z-index: 10;
   height: $app-title-height;
+  min-height: $app-title-height;
+
+  .mat-toolbar-row {
+    height: $app-title-height;
+  }
 }
 
 .mmr-app-sidebar {
   width: 200px;
   box-shadow: 3px 0 6px rgba(0,0,0,.24);
+}
+
+.mmr-content-container {
+  min-height: 100%;
+  height: 100%;
+
+  $content-header-height: 100px;
+  $content-footer-height: 50px;
+
+  .content-header {
+    height: $content-header-height;
+  }
+
+  .content-footer {
+    height: $content-footer-height;
+  }
+
+  .content-view {
+    min-height: calc(100% - 100px - 50px - 14px);  // 14px 是修正值
+  }
+
 }
 
 mat-sidenav-container {
