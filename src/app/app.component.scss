@@ -1,0 +1,27 @@
+app-mmr {
+  position: absolute;
+
+}
+
+$app-title-height: 64px;
+
+.mmr-app-bar {
+  position: relative;
+  z-index: 10;
+  height: $app-title-height;
+}
+
+.mmr-app-sidebar {
+  width: 200px;
+  box-shadow: 3px 0 6px rgba(0,0,0,.24);
+}
+
+mat-sidenav-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: $app-title-height;
+  bottom:0;
+}
+
+
