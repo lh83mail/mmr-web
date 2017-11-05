@@ -13,8 +13,8 @@ export class HomeComponent implements OnInit {
     children: [
       {
         type: 'card',
-        title: 'card-title',
-        subTitle: 'card-sub-title',
+        title: '这里是Card主标题',
+        subTitle: '这里是card的副标题',
         toolbars: [
           {
             position: 'bottom',
@@ -38,29 +38,6 @@ export class HomeComponent implements OnInit {
           {ref: '', value: 'Hello'},
           {ref: '', value: 'Hello'}
         ],
-        footer: {}
-      },
-      {
-        type: 'card',
-        title: 'card-title',
-        subTitle: 'card-sub-title',
-        toolbars: [
-          {
-            position: 'bottom',
-            children: [
-              { type: 'button', text: 'Like' },
-              { type: 'button', text: 'Share' },
-            ]
-          },
-          {
-            position: 'top',
-            children: [
-              { type: 'button', text: 'Like' },
-              { type: 'button', text: 'Share' },
-            ]
-          }
-        ],
-        children: [],
         footer: {}
       }
     ]

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit, ViewContainerRef} from '@angular/core';
 import {MMRViewComponent} from "../../mmr.service";
 
 @Component({
@@ -7,16 +7,22 @@ import {MMRViewComponent} from "../../mmr.service";
   styleUrls: ['./card.component.css']
 })
 export class CardComponent implements OnInit, MMRViewComponent {
-  content;
+  @Input() options;
 
-  constructor() { }
+  constructor(
+    private viewContainerRef: ViewContainerRef
+  ) { }
 
   ngOnInit() {
   }
 
 
   setData(data: any) {
-    console.log('>>>>' ,data)
-    this.content = data;
+    this.options = data;
+    this.loadComponent();
+  }
+
+  loadComponent() {
+
   }
 }

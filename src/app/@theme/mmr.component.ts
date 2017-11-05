@@ -23,15 +23,16 @@ export class MMRComponent implements OnInit {
   }
 
   loadComponent() {
-    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.mmrComponetRegisty.getComponetType("card"));
-
     let viewContainerRef = this.mmrRoot.viewContainerRef;
     viewContainerRef.clear();
+    if (this.options.children) {
+      this.options.children.forEach( c => {
+        let componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.mmrComponetRegisty.getComponetType(c.type));
+        let componentRef = viewContainerRef.createComponent(componentFactory);
+        (<MMRViewComponent>componentRef.instance).setData(c === null ? {} : c)
+      });
+    }
 
-    let componentRef = viewContainerRef.createComponent(componentFactory);
-    console.log(componentRef);
-    console.log("options", this.options);
-   (<MMRViewComponent>componentRef.instance).setData(this.options === null ? {} : this.options)
   }
 
 }

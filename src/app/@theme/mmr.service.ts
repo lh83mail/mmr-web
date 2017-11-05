@@ -8,7 +8,12 @@ export interface MMRViewComponent {
 export class MMRComponetRegisty {
 
   getComponetType(type: string): any  {
-     return CardComponent;
+     return views[type];
   }
 
+}
+
+
+const views = {
+  'card': CardComponent,
 }
