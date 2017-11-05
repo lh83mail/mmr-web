@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {DataObjectService} from "../../services/data-object.service";
 
 @Component({
   selector: 'app-home',
@@ -8,36 +9,42 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
 
   viewJson = {
-    title: 'A Worker Page',
+    title: 'A Worker Page 777',
     children: [
       {
         type: 'card',
         title: 'card-title',
         subTitle: 'card-sub-title',
-        actions: [
+        toolbars: [
           {
             position: 'bottom',
             children: [
-              { type: 'button', text: 'Like' },
-              { type: 'button', text: 'Share' },
+              { type: 'button', text: 'LIKE' },
+              { type: 'button', text: 'SHARE' },
             ]
           },
           {
             position: 'top',
             children: [
-              { type: 'button', text: 'Like' },
-              { type: 'button', text: 'Share' },
+              { type: 'button', text: 'LIKE' },
+              { type: 'button', text: 'SHARE' },
             ]
           }
         ],
-        children: [],
+        children: [
+          {ref: '', value: 'Hello'},
+          {ref: '', value: 'Hello'},
+          {ref: '', value: 'Hello'},
+          {ref: '', value: 'Hello'},
+          {ref: '', value: 'Hello'}
+        ],
         footer: {}
       },
       {
         type: 'card',
         title: 'card-title',
         subTitle: 'card-sub-title',
-        actions: [
+        toolbars: [
           {
             position: 'bottom',
             children: [
@@ -59,10 +66,16 @@ export class HomeComponent implements OnInit {
     ]
   };
 
-  constructor() { }
+  dataObject = {};
+
+  constructor() {
+
+
+  }
 
 
   ngOnInit() {
+    this.dataObject = new DataObjectService();
   }
 
 }
