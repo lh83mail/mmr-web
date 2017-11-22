@@ -28,7 +28,12 @@ export class MMRComponent implements OnInit {
     let viewType = this.mmrComponetRegisty.getComponetType(this.options.type);
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(viewType);
     let componentRef = viewContainerRef.createComponent(componentFactory);
-    (<MMRViewComponent>componentRef.instance).setOptions(this.options === null ? {} : this.options)
+    // (<MMRViewComponent>componentRef.instance).setOptions(this.options === null ? {} : this.options);
+    if (this.options) {
+      for (var p in this.options) {
+        componentRef.instance[p] = this.options[p];
+      }
+    }
   }
 
 }

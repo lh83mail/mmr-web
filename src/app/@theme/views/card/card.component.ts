@@ -8,6 +8,9 @@ import {MMRViewComponent} from "../../mmr.service";
 })
 export class CardComponent implements OnInit, MMRViewComponent {
   @Input() options;
+  @Input() title;
+  @Input() subTitle;
+  @Input() children;
 
   constructor(
     private viewContainerRef: ViewContainerRef
