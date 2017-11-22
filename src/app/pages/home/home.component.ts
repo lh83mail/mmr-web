@@ -32,11 +32,23 @@ export class HomeComponent implements OnInit {
           }
         ],
         children: [
-          {ref: '', value: 'Hello'},
-          {ref: '', value: 'Hello'},
-          {ref: '', value: 'Hello'},
-          {ref: '', value: 'Hello'},
-          {ref: '', value: 'Hello'}
+          {
+            type: 'card',
+            title: '这里是Card主标题',
+            subTitle: '这里是card的副标题'
+          },
+          {
+            type: 'card',
+            title: '这里是Carxdxxx主标题xx',
+            subTitle: '这里是xcard的副标题xx'
+          }
+
+
+          // {ref: '', value: 'Hello'},
+          // {ref: '', value: 'Hello'},
+          // {ref: '', value: 'Hello'},
+          // {ref: '', value: 'Hello'},
+          // {ref: '', value: 'Hello'}
         ],
         footer: {}
       }

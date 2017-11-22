@@ -17,12 +17,7 @@ export class CardComponent implements OnInit, MMRViewComponent {
   }
 
 
-  setData(data: any) {
-    this.options = data;
-    this.loadComponent();
-  }
-
-  loadComponent() {
-
+  setOptions(options: any) {
+    this.options = options;
   }
 }

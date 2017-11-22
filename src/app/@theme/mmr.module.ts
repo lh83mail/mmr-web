@@ -7,6 +7,8 @@ import {CardComponent} from "app/@theme/views/card/card.component";
 import {MMRDirective} from "./mmr.directive";
 import {MMRComponent} from "app/@theme/mmr.component";
 import {MMRComponetRegisty} from "app/@theme/mmr.service";
+import {BrowserModule} from "@angular/platform-browser";
+import {FormsModule} from "@angular/forms";
 
 
 const components = [
@@ -25,6 +27,9 @@ const directives = [
     ...directives
   ],
   imports: [
+    BrowserModule,
+    FormsModule,
+
     MatToolbarModule,
     MatSidenavModule,
     MatCardModule,

@@ -25,14 +25,10 @@ export class MMRComponent implements OnInit {
   loadComponent() {
     let viewContainerRef = this.mmrRoot.viewContainerRef;
     viewContainerRef.clear();
-    if (this.options.children) {
-      this.options.children.forEach( c => {
-        let componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.mmrComponetRegisty.getComponetType(c.type));
-        let componentRef = viewContainerRef.createComponent(componentFactory);
-        (<MMRViewComponent>componentRef.instance).setData(c === null ? {} : c)
-      });
-    }
-
+    let viewType = this.mmrComponetRegisty.getComponetType(this.options.type);
+    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(viewType);
+    let componentRef = viewContainerRef.createComponent(componentFactory);
+    (<MMRViewComponent>componentRef.instance).setOptions(this.options === null ? {} : this.options)
   }
 
 }
