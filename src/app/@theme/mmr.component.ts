@@ -15,25 +15,28 @@ export class MMRComponent implements OnInit {
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
     private mmrComponetRegisty: MMRComponetRegisty,
-  ) { }
+  ) {
+  }
 
-
+  componentRef;
   ngOnInit() {
     this.loadComponent();
   }
 
   loadComponent() {
-    let viewContainerRef = this.mmrRoot.viewContainerRef;
-    viewContainerRef.clear();
+
     let viewType = this.mmrComponetRegisty.getComponetType(this.options.type);
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(viewType);
-    let componentRef = viewContainerRef.createComponent(componentFactory);
-    // (<MMRViewComponent>componentRef.instance).setOptions(this.options === null ? {} : this.options);
-    if (this.options) {
-      for (var p in this.options) {
-        componentRef.instance[p] = this.options[p];
+
+    let viewContainerRef = this.mmrRoot.viewContainerRef;
+    viewContainerRef.clear();
+      this.componentRef = viewContainerRef.createComponent(componentFactory);
+      // (<MMRViewComponent>componentRef.instance).setOptions(this.options === null ? {} : this.options);
+      if (this.options) {
+        for (var p in this.options) {
+          this.componentRef.instance[p] = this.options[p];
+        }
       }
-    }
   }
 
 }

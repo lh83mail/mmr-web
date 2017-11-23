@@ -1,6 +1,9 @@
 <mat-toolbar class="content-header" color="primary" >{{viewJson?.title}}</mat-toolbar>
 <div class="content-view">
+  <button (click)="changePage()">Clicxk</button>
+
   <mmr-view *ngFor="let option of viewJson.children" [options]="option"></mmr-view>
+  <!--<ng-template  *ngFor="let option of viewJson.children"> hello </ng-template>-->
 </div>
 <mat-toolbar class="content-footer" color="primary">
   <a href="https://material.angular.io" target="_blank">meterial2</a>

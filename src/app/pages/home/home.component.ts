@@ -13,8 +13,8 @@ export class HomeComponent implements OnInit {
     children: [
       {
         type: 'card',
-        title: '这里是Card主标题',
-        subTitle: '这里是card的副标题',
+        title: '这里是Card主标题f',
+        subTitle: '这里是card的副标题f',
         toolbars: [
           {
             position: 'bottom',
@@ -31,25 +31,7 @@ export class HomeComponent implements OnInit {
             ]
           }
         ],
-        children: [
-          {
-            type: 'card',
-            title: '这里是Card主标题',
-            subTitle: '这里是card的副标题'
-          },
-          {
-            type: 'card',
-            title: '这里是Carxdxxx主标题xx',
-            subTitle: '这里是xcard的副标题xx'
-          }
-
-
-          // {ref: '', value: 'Hello'},
-          // {ref: '', value: 'Hello'},
-          // {ref: '', value: 'Hello'},
-          // {ref: '', value: 'Hello'},
-          // {ref: '', value: 'Hello'}
-        ],
+        children: [],
         footer: {}
       }
     ]
@@ -57,14 +39,67 @@ export class HomeComponent implements OnInit {
 
   dataObject = {};
 
-  constructor() {
-
-
-  }
+  constructor() {}
 
 
   ngOnInit() {
     this.dataObject = new DataObjectService();
   }
 
+  changePage() {
+    this.viewJson =
+      {
+        title: 'A Worker Page 777g',
+        children: [
+          {
+            type: 'card',
+            title: '这里是Card主标题',
+            subTitle: '这里是card的副标题',
+            toolbars: [
+              {
+                position: 'bottom',
+                children: [
+                  {type: 'button', text: 'LIKE'},
+                  {type: 'button', text: 'SHARE'},
+                ]
+              },
+              {
+                position: 'top',
+                children: [
+                  {type: 'button', text: 'LIKE'},
+                  {type: 'button', text: 'SHARE'},
+                ]
+              }
+            ],
+            children: [],
+            footer: {}
+          },
+          {
+            type: 'card',
+            title: '这里是Card主标题',
+            subTitle: '这里是card的副标题',
+            toolbars: [
+              {
+                position: 'bottom',
+                children: [
+                  {type: 'button', text: 'LIKE'},
+                  {type: 'button', text: 'SHARE'},
+                ]
+              },
+              {
+                position: 'top',
+                children: [
+                  {type: 'button', text: 'LIKE'},
+                  {type: 'button', text: 'SHARE'},
+                ]
+              }
+            ],
+            children: [
+              {type: 'card', title: '这里是Card主标题',},
+            ],
+            footer: {}
+          },
+        ]
+      };
+  }
 }
