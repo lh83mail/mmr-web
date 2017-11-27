@@ -1,4 +1,4 @@
-import {Component, ComponentFactoryResolver, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ComponentFactoryResolver, Input, OnInit, ViewChild} from '@angular/core';
 import {MMRDirective} from "./mmr.directive";
 import {MMRComponetRegisty, MMRViewComponent} from "./mmr.service";
 
@@ -6,7 +6,7 @@ import {MMRComponetRegisty, MMRViewComponent} from "./mmr.service";
   selector: 'mmr-view',
   template: `<ng-template mmr-root></ng-template>`
 })
-export class MMRComponent implements OnInit {
+export class MMRComponent implements OnInit, AfterViewInit {
 
   @Input() options;
 
@@ -21,6 +21,11 @@ export class MMRComponent implements OnInit {
   componentRef;
   ngOnInit() {
     this.loadComponent();
+  }
+
+
+  ngAfterViewInit(): void {
+    console.log("ngAfterViewInit>>>>>", this.options)
   }
 
   loadComponent() {
@@ -40,6 +45,7 @@ export class MMRComponent implements OnInit {
           this.componentRef.instance[p] = this.options[p];
         }
       }
+
   }
 
 }

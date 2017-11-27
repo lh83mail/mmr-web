@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {DataSource} from "@angular/cdk/collections";
 import "rxjs/add/observable/of"
+import {CommandService} from "../../services/CommandService";
 
 @Component({
   selector: 'app-table',
@@ -9,22 +10,19 @@ import "rxjs/add/observable/of"
   styleUrls: ['./table.component.css']
 })
 export class TableComponent implements OnInit {
-  dataSource: ExampleDataSource | null;
+  dataSource: DataSource<any> | null;
   displayedColumns;
   columns:Array<any>;
 
-  constructor() {
-    console.log('-----::::', this.columns)
-  }
+  constructor(
+    private commandService: CommandService
+  ) {}
 
   ngOnInit() {
-    console.log('--xxxx---::::', this.columns)
     this.displayedColumns = this.columns.map(c => c.name);
-    this.dataSource = new ExampleDataSource();
   }
 
 }
-
 
 export interface Element {
   name: string;

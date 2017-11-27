@@ -10,6 +10,7 @@ import {RouterModule} from '@angular/router';
 import {MMR_ROOT_ROUTE} from './app.route';
 import {HomeComponent} from './pages/home/home.component';
 import {MMRModule} from "./@theme/mmr.module";
+import {DataObjectService} from "./services/data-object.service";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,9 @@ import {MMRModule} from "./@theme/mmr.module";
 
     HttpModule,
   ],
-  providers: [],
+  providers: [
+    DataObjectService,
+  ],
   bootstrap: [
     AppComponent
   ]

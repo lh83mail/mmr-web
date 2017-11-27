@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {DataObjectService} from "../../services/data-object.service";
+import {MMRComponent} from "../../@theme/mmr.component";
 
 @Component({
   selector: 'app-home',
@@ -8,108 +9,62 @@ import {DataObjectService} from "../../services/data-object.service";
 })
 export class HomeComponent implements OnInit {
 
-  viewJson:any = {
-    title: 'A Worker Page 777',
-    children: [
-      {
-        type: 'card',
-        title: '这里是Card主标题f',
-        subTitle: '这里是card的副标题f',
-        toolbars: [
-          {
-            position: 'bottom',
-            children: [
-              { type: 'button', text: 'LIKE' },
-              { type: 'button', text: 'SHARE' },
-            ]
-          },
-          {
-            position: 'top',
-            children: [
-              { type: 'button', text: 'LIKE' },
-              { type: 'button', text: 'SHARE' },
-            ]
-          }
-        ],
-        children: [
-          {
-            type: 'table',
-            columns: [
-              {name:"position", text: "序号"},
-              {name:"name", text: "Name"},
-              {name:"weight", text: "Weight"},
-              {name:"symbol", text: "Symbol"},
-            ]
-          }
-        ],
-        footer: {}
-      }
-    ]
-  };
+  viewJson:any;
 
-  dataObject = {};
+  @ViewChildren("viewRoot") viewRoot: QueryList<MMRComponent>;
 
-  constructor() {}
+  constructor(
+    private dataObjectService : DataObjectService
+  ) {}
 
 
   ngOnInit() {
-    this.dataObject = new DataObjectService();
+    this.dataObjectService.execute(
+      { viewId: 'table-view', command: 'load-view-config'}
+    )
+      .then( d => this.viewJson = d );
+      // .then( () => this.initViewData())  // 执行数据初始化
   }
 
-  changePage() {
-    this.viewJson =
-      {
-        title: 'A Worker Page 777g',
-        children: [
-          {
-            type: 'card',
-            title: '这里是Card主标题',
-            subTitle: '这里是card的副标题',
-            toolbars: [
-              {
-                position: 'bottom',
-                children: [
-                  {type: 'button', text: 'LIKE'},
-                  {type: 'button', text: 'SHARE'},
-                ]
-              },
-              {
-                position: 'top',
-                children: [
-                  {type: 'button', text: 'LIKE'},
-                  {type: 'button', text: 'SHARE'},
-                ]
-              }
-            ],
-            children: [],
-            footer: {}
-          },
-          {
-            type: 'card',
-            title: '这里是Card主标题',
-            subTitle: '这里是card的副标题',
-            toolbars: [
-              {
-                position: 'bottom',
-                children: [
-                  {type: 'button', text: 'LIKE'},
-                  {type: 'button', text: 'SHARE'},
-                ]
-              },
-              {
-                position: 'top',
-                children: [
-                  {type: 'button', text: 'LIKE'},
-                  {type: 'button', text: 'SHARE'},
-                ]
-              }
-            ],
-            children: [
-              {type: 'card', title: '这里是Card主标题',},
-            ],
-            footer: {}
-          },
-        ]
-      };
+  /**
+   * 初始化数据
+   */
+  initViewData() {
+
+    this.dataObjectService.execute({
+      command: 'init-data',
+      viewId: 'table-view'
+    })
+      .then(d => {
+         // todo 初始化主题数据
+         //  DataStore, 视图子组件监听DataStore相应事件，取出关心的数据更新自己
+
+        const data: any[] = [
+          {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
+          {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
+          {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
+          {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
+          {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
+          {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
+          {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
+          {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
+          {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
+          {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
+          {position: 11, name: 'Sodium', weight: 22.9897, symbol: 'Na'},
+          {position: 12, name: 'Magnesium', weight: 24.305, symbol: 'Mg'},
+          {position: 13, name: 'Aluminum', weight: 26.9815, symbol: 'Al'},
+          {position: 14, name: 'Silicon', weight: 28.0855, symbol: 'Si'},
+          {position: 15, name: 'Phosphorus', weight: 30.9738, symbol: 'P'},
+          {position: 16, name: 'Sulfur', weight: 32.065, symbol: 'S'},
+          {position: 17, name: 'Chlorine', weight: 35.453, symbol: 'Cl'},
+          {position: 18, name: 'Argon', weight: 39.948, symbol: 'Ar'},
+          {position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K'},
+          {position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca'},
+        ];
+      })
+    this.viewRoot.forEach(m => {
+
+    });
   }
+
 }
