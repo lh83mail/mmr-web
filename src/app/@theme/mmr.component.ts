@@ -26,6 +26,9 @@ export class MMRComponent implements OnInit {
   loadComponent() {
 
     let viewType = this.mmrComponetRegisty.getComponetType(this.options.type);
+    if (viewType == null) {
+      throw new Error("Undefined ViewType:" + this.options.type)
+    }
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(viewType);
 
     let viewContainerRef = this.mmrRoot.viewContainerRef;

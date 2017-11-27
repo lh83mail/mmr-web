@@ -8,7 +8,7 @@ import {DataObjectService} from "../../services/data-object.service";
 })
 export class HomeComponent implements OnInit {
 
-  viewJson = {
+  viewJson:any = {
     title: 'A Worker Page 777',
     children: [
       {
@@ -31,7 +31,17 @@ export class HomeComponent implements OnInit {
             ]
           }
         ],
-        children: [],
+        children: [
+          {
+            type: 'table',
+            columns: [
+              {name:"position", text: "序号"},
+              {name:"name", text: "Name"},
+              {name:"weight", text: "Weight"},
+              {name:"symbol", text: "Symbol"},
+            ]
+          }
+        ],
         footer: {}
       }
     ]

@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {
   MatSelectModule, MatToolbarModule, MatSidenavModule, MatGridListModule, MatCardModule,
-  MatButtonModule, MatInputModule, MatIconModule, MatFormFieldModule
+  MatButtonModule, MatInputModule, MatIconModule, MatFormFieldModule, MatTableModule
 } from "@angular/material";
 import {CardComponent} from "app/@theme/views/card/card.component";
 import {MMRDirective} from "./mmr.directive";
@@ -9,12 +9,13 @@ import {MMRComponent} from "app/@theme/mmr.component";
 import {MMRComponetRegisty} from "app/@theme/mmr.service";
 import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
+import { TableComponent } from './views/table/table.component';
 
 
 const components = [
   MMRComponent,
   CardComponent,
-
+  TableComponent,
 ];
 
 const directives = [
@@ -24,7 +25,7 @@ const directives = [
 @NgModule({
   declarations: [
     ...components,
-    ...directives
+    ...directives,
   ],
   imports: [
     BrowserModule,
@@ -41,6 +42,9 @@ const directives = [
     MatInputModule,
     MatIconModule,
     MatSelectModule,
+
+    MatTableModule,
+
   ],
   exports: [
     ...components,
