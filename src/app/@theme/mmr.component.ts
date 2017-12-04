@@ -9,6 +9,7 @@ import {MMRComponetRegisty, MMRViewComponent} from "./mmr.service";
 export class MMRComponent implements OnInit, AfterViewInit {
 
   @Input() options;
+  @Input() dataStoreService;
 
   @ViewChild(MMRDirective) mmrRoot: MMRDirective;
 
@@ -20,6 +21,9 @@ export class MMRComponent implements OnInit, AfterViewInit {
 
   componentRef;
   ngOnInit() {
+    this.dataStoreService.onDataInit.subscribe(data => {
+      console.log(">>>>KKK>>>>", data);
+    });
     this.loadComponent();
   }
 
@@ -43,6 +47,7 @@ export class MMRComponent implements OnInit, AfterViewInit {
       if (this.options) {
         for (var p in this.options) {
           this.componentRef.instance[p] = this.options[p];
+          this.componentRef.instance.dataStoreService = this.dataStoreService;
         }
       }
 

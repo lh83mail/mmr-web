@@ -4,6 +4,7 @@
     #viewRoot
     *ngFor="let option of viewJson?.children"
     [options]="option"
+    [dataStoreService]="dataStoreService"
   ></mmr-view>
   <!--<ng-template  *ngFor="let option of viewJson.children"> hello </ng-template>-->
 </div>

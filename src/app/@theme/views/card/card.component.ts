@@ -6,8 +6,7 @@ import {MMRViewComponent} from "../../mmr.service";
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css']
 })
-export class CardComponent implements OnInit, MMRViewComponent {
-  @Input() options;
+export class CardComponent implements OnInit {
   @Input() title;
   @Input() subTitle;
   @Input() children;
@@ -17,10 +16,5 @@ export class CardComponent implements OnInit, MMRViewComponent {
   ) { }
 
   ngOnInit() {
-  }
-
-
-  setOptions(options: any) {
-    this.options = options;
   }
 }
