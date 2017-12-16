@@ -27,7 +27,7 @@ import {DataStoreService} from "./@theme/services/data-store.service";
     MatToolbarModule,
     MatSidenavModule,
 
-    RouterModule.forRoot(MMR_ROOT_ROUTE),
+    RouterModule.forRoot(MMR_ROOT_ROUTE, {useHash:false}),
 
     HttpModule,
   ],

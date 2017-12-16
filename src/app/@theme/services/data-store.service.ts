@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
+import {TABLE_VIEW} from "../../services/data";
 
 @Injectable()
 export class DataStoreService {
@@ -35,4 +36,14 @@ export class DataStoreService {
     this._onDataInit.next(data);
     return Promise.resolve(true);
   }
+
+  /**
+   * 加载初始视图
+   * @param {string} viewId
+   */
+  loadView(viewId: string) :Promise<any> {
+    return Promise.resolve(viewId == 'table-view' ? TABLE_VIEW: {});
+  }
+
+
 }

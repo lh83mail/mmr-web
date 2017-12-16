@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ComponentFactoryResolver, Input, OnInit, ViewChild} from '@angular/core';
 import {MMRDirective} from "./mmr.directive";
 import {MMRComponetRegisty, MMRViewComponent} from "./mmr.service";
+import {DataStoreService} from "app/@theme/services/data-store.service";
 
 @Component({
   selector: 'mmr-view',
@@ -9,13 +10,13 @@ import {MMRComponetRegisty, MMRViewComponent} from "./mmr.service";
 export class MMRComponent implements OnInit, AfterViewInit {
 
   @Input() options;
-  @Input() dataStoreService;
 
   @ViewChild(MMRDirective) mmrRoot: MMRDirective;
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
     private mmrComponetRegisty: MMRComponetRegisty,
+    private dataStoreService: DataStoreService,
   ) {
   }
 
@@ -47,7 +48,6 @@ export class MMRComponent implements OnInit, AfterViewInit {
       if (this.options) {
         for (var p in this.options) {
           this.componentRef.instance[p] = this.options[p];
-          this.componentRef.instance.dataStoreService = this.dataStoreService;
         }
       }
 
