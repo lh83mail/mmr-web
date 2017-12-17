@@ -1,6 +1,5 @@
 <mat-toolbar class="content-header" color="primary" >{{viewJson?.title}}</mat-toolbar>
 <div class="content-view">
-  <button (click)="this.dataStoreService.initData('table-view')"></button>
   <mmr-view
     #viewRoot
     *ngFor="let option of viewJson?.children"

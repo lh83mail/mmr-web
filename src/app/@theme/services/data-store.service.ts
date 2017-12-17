@@ -46,4 +46,7 @@ export class DataStoreService {
   }
 
 
+  subcribe(cc: string, onCommandExecute: Function) {
+
+  }
 }

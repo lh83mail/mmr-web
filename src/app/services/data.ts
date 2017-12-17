@@ -1,10 +1,12 @@
 export const TABLE_VIEW = {
-  title: 'A Worker Page 777',
+  id: 'table-view',
+  title: '用户列表',
   children: [
   {
+    id:'card1',
     type: 'card',
-    title: '这里是Card主标题f',
-    subTitle: '这里是card的副标题f',
+    title: '所有用户',
+    subTitle: '维护系统所有用户信息',
     toolbars: [
       {
         position: 'bottom',
@@ -16,22 +18,35 @@ export const TABLE_VIEW = {
       {
         position: 'top',
         children: [
-          { type: 'button', text: 'LIKE' },
-          { type: 'button', text: 'SHARE' },
+          { id:'table-view-button-query-users', type: 'button', text: '查询数据', command: 'user-grid.load' },
+          { id:'table-view-button-add-user', type: 'button', text: '添加用户', command: 'add-user' },
         ]
       }
     ],
     children: [
       {
+        id:'user-grid',
         type: 'table',
         columns: [
           {name:"position", text: "序号"},
-          {name:"name", text: "Name"},
-          {name:"weight", text: "Weight"},
-          {name:"symbol", text: "Symbol"},
-        ]
+          {name:"name", text: "姓名"},
+          {name:"weight", text: "体重"},
+          {name:"symbol", text: "标识"},
+        ],
+
+        commands: {
+          'load'  : {},
+          'sort'  : {},
+          'goto'  : {},
+          'filter': {}
+        }
+
       }
     ],
     footer: {}
   }
 ]};
+
+
+
+

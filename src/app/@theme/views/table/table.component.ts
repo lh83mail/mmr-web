@@ -24,12 +24,18 @@ export class TableComponent implements OnInit {
       console.log(">>>>InTable>>>>", data);
       this.dataSource = new ExampleDataSource(data);
     });
+
+    this.dataStoreService.subcribe('command-name', this.onCommandExecute);
   }
 
   ngOnInit() {
     this.displayedColumns = this.columns.map(c => c.name);
   }
 
+
+  onCommandExecute(command, data) {
+
+  }
 }
 
 export class ExampleDataSource extends DataSource<any> {
@@ -45,3 +51,4 @@ export class ExampleDataSource extends DataSource<any> {
 
   disconnect() {}
 }
+``
