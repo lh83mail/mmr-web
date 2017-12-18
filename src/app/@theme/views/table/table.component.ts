@@ -24,8 +24,6 @@ export class TableComponent implements OnInit {
       console.log(">>>>InTable>>>>", data);
       this.dataSource = new ExampleDataSource(data);
     });
-
-    this.dataStoreService.subcribe('command-name', this.onCommandExecute);
   }
 
   ngOnInit() {

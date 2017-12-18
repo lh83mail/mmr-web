@@ -49,4 +49,24 @@ export class DataStoreService {
   subcribe(cc: string, onCommandExecute: Function) {
 
   }
+
+
+  execute(command:Command): Promise<CommandResponse> {
+    return Promise.resolve(null);
+  }
+
 }
+
+export interface Command {
+  command: string,
+  args?: {
+    [name:string] : any
+  }
+}
+
+export interface CommandResponse {
+  status: string,
+  command: string,
+  data?: any
+}
+
