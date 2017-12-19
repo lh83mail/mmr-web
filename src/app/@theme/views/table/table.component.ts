@@ -19,7 +19,7 @@ export class TableComponent implements OnInit {
     private dataStoreService: DataStoreService,
     private commandService: CommandService
   ) {
-
+    console.log('here 6')
     this.dataStoreService.onDataInit.subscribe(data => {
       console.log(">>>>InTable>>>>", data);
       this.dataSource = new ExampleDataSource(data);
@@ -27,6 +27,7 @@ export class TableComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('here 7')
     this.displayedColumns = this.columns.map(c => c.name);
   }
 
