@@ -39,18 +39,23 @@ export class MMRComponent implements OnInit, AfterViewInit {
     if (viewType == null) {
       throw new Error("Undefined ViewType:" + this.options.type)
     }
+    console.log('here 1')
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(viewType);
-
+    console.log('here 2')
     let viewContainerRef = this.mmrRoot.viewContainerRef;
     viewContainerRef.clear();
-      this.componentRef = viewContainerRef.createComponent(componentFactory);
-      // (<MMRViewComponent>componentRef.instance).setOptions(this.options === null ? {} : this.options);
+    console.log('here 3')
+    this.componentRef = viewContainerRef.createComponent(componentFactory);
+    console.log('here 4')
+
+
+    // (<MMRViewComponent>componentRef.instance).setOptions(this.options === null ? {} : this.options);
       if (this.options) {
         for (var p in this.options) {
           this.componentRef.instance[p] = this.options[p];
         }
       }
-
+    console.log('here 5')
   }
 
 }

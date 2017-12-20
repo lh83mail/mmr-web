@@ -9,8 +9,8 @@ export class DataStoreService {
 
   onDataInit: Observable<any> = this._onDataInit.asObservable();
 
-  initData(viewId:string): Promise<any> {
 
+  initPage(viewId:string): Promise<any> {
     const data: any[] = [
       {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
       {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},

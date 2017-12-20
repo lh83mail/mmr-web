@@ -1,4 +1,4 @@
-import {Component, OnInit, QueryList,  ViewChildren} from '@angular/core';
+import {AfterContentInit, AfterViewInit, Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {DataObjectService} from "../../services/data-object.service";
 import {MMRComponent} from "../../@theme/mmr.component";
 import {DataStoreService} from "../../@theme/services/data-store.service";
@@ -13,7 +13,7 @@ import {PageStateService} from "../../@theme/services/page-state.service";
     PageStateService
   ]
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit {
 
   viewJson:any;
 
@@ -32,13 +32,22 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit() {
-
+    console.log('here 8')
     this.dataStoreService.loadView(this.viewId)
       .then( d => {
         this.viewJson = d
-      });
+      })
+
+  }
+
+  ngAfterViewInit(): void {
+    console.log('here 9')
   }
 
 
+  ngAfterContentInit(): void {
+    console.log('here 10')
+    this.dataStoreService.initPage(this.viewId);
 
+  }
 }
