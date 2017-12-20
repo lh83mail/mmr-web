@@ -30,6 +30,13 @@ export class TableComponent implements OnInit {
     this.displayedColumns = this.columns.map(c => c.name);
   }
 
+  /**
+   * 加载数据
+   */
+  loadData() {
+    this.dataStoreService.execute({command: 'load-data'})
+      .then(res => this.dataSource = new ExampleDataSource(res.data));
+  }
 
   onCommandExecute(command, data) {
 

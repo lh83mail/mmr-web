@@ -21,7 +21,7 @@ export class CardComponent implements OnInit {
   ngOnInit() {
   }
 
-  execute(command:string) {
+  execute(command: string) {
     // here execute your command
     this.pageState.execute(this, command);
   }
