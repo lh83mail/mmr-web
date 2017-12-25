@@ -47,6 +47,10 @@ export const TABLE_VIEW = {
   }
 ]};
 
+export const USERS_LIST = {
+  id: 'users-list',
+  title: '用户列表',
+  children: [
 
-
-
+  ]
+}

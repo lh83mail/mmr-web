@@ -19,12 +19,16 @@ import {MMRModule} from "./@theme/mmr.module";
 import {DataObjectService} from "./services/data-object.service";
 import {DataStoreService} from "./@theme/services/data-store.service";
 import { ModulesComponent } from './pages/system/modules/modules.component';
+import { EnumsMgrComponent } from './pages/system/enums-mgr/enums-mgr.component';
+import { UsersMgrComponent } from './pages/system/users-mgr/users-mgr.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    ModulesComponent
+    ModulesComponent,
+    EnumsMgrComponent,
+    UsersMgrComponent
   ],
   imports: [
     BrowserModule,

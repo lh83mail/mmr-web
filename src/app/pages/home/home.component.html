@@ -6,6 +6,7 @@
     #viewRoot
     *ngFor="let option of viewJson?.children"
     [options]="option"
+    (afterViewInit)="onAfterViewInit($event)"
   ></mmr-view>
   <!--<ng-template  *ngFor="let option of viewJson.children"> hello </ng-template>-->
 </div>

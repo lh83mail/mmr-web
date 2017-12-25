@@ -1,7 +1,6 @@
  <div>
     <mat-toolbar class="mmr-app-bar mat-elevation-z6" color="primary">
-      <button mat-button>首页</button>
-      <button mat-button>系统设置</button>
+      <a mat-button *ngFor="let m of menus" [routerLink]="m.link">{{m.text}}</a>
     </mat-toolbar>
 
     <mat-sidenav-container>

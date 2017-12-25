@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Ok, app works!';
+
+  menus = [
+    {text:'首页', link:'/views/table-view'},
+    {text:'设置', link:'/modules'},
+    {text:'枚举维护', link:'/enums-mgr'},
+    {text:'用户管理', link:'/users-mgr'},
+  ];
+
+
 }

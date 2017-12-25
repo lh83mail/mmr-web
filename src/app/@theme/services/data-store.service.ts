@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
-import {TABLE_VIEW} from "../../services/data";
+import * as VIEWS from "../../services/data";
 
 @Injectable()
 export class DataStoreService {
@@ -39,10 +39,15 @@ export class DataStoreService {
 
   /**
    * 加载初始视图
-   * @param {string} viewId
+   * @param {string} viewIdxs
    */
   loadView(viewId: string) :Promise<any> {
-    return Promise.resolve(viewId == 'table-view' ? TABLE_VIEW: {});
+    console.log('info', VIEWS)
+    let v = {};
+    for (var o in VIEWS) {
+      if (VIEWS[o].id == viewId) v = VIEWS[o];
+    }
+    return Promise.resolve(v);
   }
 
 
