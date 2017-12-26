@@ -1,16 +1,89 @@
 <mat-toolbar class="content-header" color="primary" >模块维护</mat-toolbar>
 <div class="content-view">
-  <mat-list>
-    <h3 mat-subheader>用户管理</h3>
-    <mat-list-item>
-      <button mat-icon-button="plus">+</button>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    <h3 mat-subheader>流程管理</h3>
-    <mat-list-item>
-      <button mat-button>用户列表</button> <button mat-icon-button="plus">+</button>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    <h3 mat-subheader><button mat-button style="width: 100%;">新建分类</button></h3>
-  </mat-list>
+<mat-card>
+  <form class="example-container">
+
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Company (disabled)" disabled value="Google">
+    </mat-form-field>
+
+    <table class="example-full-width" cellspacing="0"><tr>
+      <td><mat-form-field class="example-full-width">
+        <input matInput placeholder="First name">
+      </mat-form-field></td>
+      <td><mat-form-field class="example-full-width">
+        <input matInput placeholder="Long Last Name That Will Be Truncated">
+      </mat-form-field></td>
+    </tr></table>
+
+    <mat-form-field>
+      <input matInput placeholder="姓名"  required>
+      <mat-error>错误提示信息</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea matInput placeholder="个人简介"></textarea>
+      <mat-hint align="end">这里可以显示尾注</mat-hint>
+      <mat-hint align="start"><strong>Don't disclose personal info</strong> </mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select required>
+        <mat-option value="option">本科</mat-option>
+        <mat-option value="option">硕士</mat-option>
+      </mat-select>
+      <mat-placeholder><mat-icon>favorite</mat-icon> <b> Fancy</b> 学历</mat-placeholder>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="交付金额" type="number" class="example-right-align">
+      <span matPrefix>$&nbsp;</span>
+      <span matSuffix>.00</span>
+    </mat-form-field>
+
+
+  </form>
+</mat-card>
+
+<mat-card>
+  <mat-slide-toggle>
+    Slide me!
+  </mat-slide-toggle>
+</mat-card>
+
+<mat-card>
+  <mat-grid-list cols="2" rowHeight="66px">
+    <mat-grid-tile>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="姓名"  required>
+        <mat-error>错误提示信息</mat-error>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="姓名"  required>
+        <mat-error>错误提示信息</mat-error>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="姓名"  required>
+        <mat-error>错误提示信息</mat-error>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="姓名"  required>
+        <mat-error>错误提示信息</mat-error>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="姓名"  required>
+        <mat-error>错误提示信息</mat-error>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</mat-card>
 </div>

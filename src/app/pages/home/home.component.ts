@@ -1,4 +1,4 @@
-import {AfterContentInit, AfterViewInit, Component, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {AfterContentInit, AfterViewInit, Component, NgZone, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {DataObjectService} from "../../services/data-object.service";
 import {MMRComponent} from "../../@theme/mmr.component";
 import {DataStoreService} from "../../@theme/services/data-store.service";
@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit {
   viewId:string;
 
   constructor(
+    private _ngZone: NgZone,
     private route: ActivatedRoute,
     private dataStoreService: DataStoreService,
     private pageState: PageStateService,
@@ -40,6 +41,10 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit {
 
   }
 
+  onAfterViewInit() {
+ this._ngZone.run(() => this.dataStoreService.initPage(this.viewId));
+  }
+
   ngAfterViewInit(): void {
     console.log('here 9')
   }
@@ -47,7 +52,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit {
 
   ngAfterContentInit(): void {
     console.log('here 10')
-    this.dataStoreService.initPage(this.viewId);
+  //  this.dataStoreService.initPage(this.viewId);
 
   }
 }
