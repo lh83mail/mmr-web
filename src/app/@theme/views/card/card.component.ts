@@ -1,6 +1,7 @@
 import {Component, Input, OnInit, ViewContainerRef} from '@angular/core';
 import {MMRViewComponent} from "../../mmr.service";
 import {PageStateService} from "../../services/page-state.service";
+import {Command, MmrDataStoreService} from "../../services/interfaces";
 
 @Component({
   selector: 'mmr-card',
@@ -15,15 +16,17 @@ export class CardComponent implements OnInit {
 
   constructor(
     private pageState: PageStateService,
-    private viewContainerRef: ViewContainerRef
+    private viewContainerRef: ViewContainerRef,
+    private dataStoreService: MmrDataStoreService,
   ) { }
 
   ngOnInit() {
   }
 
-  execute(command: string) {
+  execute(command: Command) {
     // here execute your command
-    this.pageState.execute(this, command);
+    // this.pageState.execute(this, command);
+    this.dataStoreService.execute(command);
   }
 
 

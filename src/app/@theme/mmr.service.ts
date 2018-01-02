@@ -19,3 +19,5 @@ const views = {
   'card': CardComponent,
   'table': TableComponent,
 }
+
+

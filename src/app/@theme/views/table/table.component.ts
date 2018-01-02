@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {DataSource} from "@angular/cdk/collections";
 import "rxjs/add/observable/of"
-import {CommandService} from "../../services/CommandService";
-import {DataStoreService} from "../../services/data-store.service";
+import {MmrDataStoreService} from "../../services/interfaces";
 
 @Component({
   selector: 'app-table',
@@ -15,20 +14,24 @@ export class TableComponent implements OnInit {
   displayedColumns;
   columns:Array<any>;
 
+  runtime: any;
+
   constructor(
-    private dataStoreService: DataStoreService,
-    private commandService: CommandService
+    private dataStoreService: MmrDataStoreService,
   ) {
-    console.log('here 6')
-    this.dataStoreService.onDataInit.subscribe(data => {
-      console.log(">>>>InTable>>>>", data);
-      this.dataSource = new ExampleDataSource(data);
-    });
   }
 
   ngOnInit() {
     console.log('here 7')
     this.displayedColumns = this.columns.map(c => c.name);
+
+    if (this.runtime && this.runtime.init) {
+      this.dataStoreService.execute(this.runtime.init)
+        .then(response => {
+          this.dataSource = new ExampleDataSource(response.data.data)
+        })
+      ;
+    }
   }
 
   /**
@@ -39,9 +42,6 @@ export class TableComponent implements OnInit {
       .then(res => this.dataSource = new ExampleDataSource(res.data));
   }
 
-  onCommandExecute(command, data) {
-
-  }
 }
 
 export class ExampleDataSource extends DataSource<any> {
@@ -57,4 +57,4 @@ export class ExampleDataSource extends DataSource<any> {
 
   disconnect() {}
 }
-``
+

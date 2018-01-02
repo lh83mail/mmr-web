@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {DataStoreService} from "./data-store.service";
+import {MmrDataStoreService} from "./interfaces";
 
 @Injectable()
 export class PageStateService {
@@ -7,7 +7,7 @@ export class PageStateService {
   rootView: any;
 
   constructor(
-    private dataStoreService: DataStoreService
+    private dataStoreService: MmrDataStoreService
   ) {
   }
 

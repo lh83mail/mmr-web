@@ -16,8 +16,6 @@ import {RouterModule} from '@angular/router';
 import {MMR_ROOT_ROUTE} from './app.route';
 import {HomeComponent} from './pages/home/home.component';
 import {MMRModule} from "./@theme/mmr.module";
-import {DataObjectService} from "./services/data-object.service";
-import {DataStoreService} from "./@theme/services/data-store.service";
 import { ModulesComponent } from './pages/system/modules/modules.component';
 import { EnumsMgrComponent } from './pages/system/enums-mgr/enums-mgr.component';
 import { UsersMgrComponent } from './pages/system/users-mgr/users-mgr.component';
@@ -58,8 +56,6 @@ import { UsersMgrComponent } from './pages/system/users-mgr/users-mgr.component'
     HttpModule,
   ],
   providers: [
-    DataObjectService,
-    DataStoreService,
   ],
   bootstrap: [
     AppComponent
