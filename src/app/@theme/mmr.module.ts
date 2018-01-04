@@ -10,12 +10,16 @@ import {MMRComponetRegisty} from "app/@theme/mmr.service";
 import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
 import { TableComponent } from './views/table/table.component';
+import { InputComponent } from './views/form/fields/input/input.component';
+import {FormComponent} from "./views/form/form.component";
 
 
 const components = [
   MMRComponent,
   CardComponent,
   TableComponent,
+  FormComponent,
+  InputComponent,
 ];
 
 const directives = [

@@ -91,7 +91,41 @@ export const ADD_USER_VIEW = {
       id: 'card1',
       type: 'card',
       title: '用户表单',
-      subTitle: '用来编辑用户信息的表单'
+      subTitle: '用来编辑用户信息的表单',
+      children: [
+        {
+          id: 'form1',
+          type: 'form',
+          children: [
+            {
+              id: 'position',
+              type: 'input',
+              label: '序号',
+            },
+            {
+              id: 'name',
+              type: 'input',
+              label: '姓名',
+            },
+            {
+              id: 'weight',
+              type: 'input',
+              label: '体重',
+            },
+            {
+              id: 'symbol',
+              type: 'input',
+              label: '标识',
+            }
+          ],
+
+          runtime: {
+            'submit':{},
+            'load': {}
+          }
+        }
+
+      ]
     }
   ]
 };
