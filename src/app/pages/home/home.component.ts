@@ -16,7 +16,7 @@ import {MmrDataStoreService, RootView} from "../../@theme/services/interfaces";
     }
   ]
 })
-export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit {
+export class HomeComponent implements OnInit {
 
   viewJson:any;
 
@@ -32,16 +32,14 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit {
     private pageState: PageStateService,
   ) {
     const viewId = this.route.snapshot.paramMap.get('id');
-    this.loadView(viewId);
+    this.loadComponents(viewId);
   }
 
 
   ngOnInit() {
-   //todo 实现导航命令,实现页面动态切换
-   // this.router.navigate()
   }
 
-  loadView(viewId:string) {
+  loadComponents(viewId:string) {
     this.viewId = viewId;
     this.pageState.setViewId(this.viewId, this);
     this.dataStoreService.setupViewId(this.viewId, new HomeRootView(
@@ -51,29 +49,22 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentInit {
       .then(d => this.viewJson = d);
   }
 
+  navigateView(viewId: string) {
+    const command = ['views'];
+    if (this.route.snapshot.data.next != '') {
+      command.push(this.route.snapshot.data.next);
+    }
+    command.push(viewId);
 
-
-  onAfterViewInit() {
-
+    this.router.navigate(command)
   }
 
-  ngAfterViewInit(): void {
-    console.log('here 9')
-  }
-
-
-  ngAfterContentInit(): void {
-    console.log('here 10')
-  //  this.dataStoreService.initPage(this.viewId);
-
-  }
 }
-
 
 class HomeRootView implements RootView {
   constructor(private dataStoreService: MmrDataStoreService, private view: HomeComponent) {}
   loadView(viewId: string) {
-    this.view.loadView(viewId);
+    this.view.navigateView(viewId);
   }
 
 }
