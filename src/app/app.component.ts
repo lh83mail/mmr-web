@@ -13,6 +13,7 @@ export class AppComponent {
     {text:'设置', link:'/modules'},
     {text:'枚举维护', link:'/enums-mgr'},
     {text:'用户管理', link:'/users-mgr'},
+    {text:'对象', link:'/objects'},
   ];
 
 
