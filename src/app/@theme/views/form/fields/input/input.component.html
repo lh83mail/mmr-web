@@ -1,3 +1,4 @@
 <mat-form-field class="example-full-width">
-  <input matInput placeholder="{{label}}" value="">
+  <input matInput name="{{name}}" placeholder="{{label}}" [(ngModel)]="value">
+  <span>{{value}}</span>
 </mat-form-field>
