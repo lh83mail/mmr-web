@@ -1,3 +1,5 @@
+// attribute :owner key, value, desc, valueType=[string, object, array, enum], isRequire
+// object id , attriutes, desc
 export const TABLE_VIEW = {
   id: 'table-view',
   title: '用户列表',
