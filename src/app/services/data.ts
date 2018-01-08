@@ -101,6 +101,7 @@ export const ADD_USER_VIEW = {
               id: 'position',
               type: 'input',
               label: '序号',
+              value: 0,
             },
             {
               id: 'name',
