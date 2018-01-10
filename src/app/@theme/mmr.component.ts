@@ -63,8 +63,7 @@ export class MMRComponent implements OnInit, AfterViewInit, AfterContentInit {
         this.componentRef.instance[p] = this.options[p];
       }
     }
-
-   this._hostDomElement.nativeElement.appendChild((this.componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement);
+  // this._hostDomElement.nativeElement.appendChild((this.componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement);
   }
 
 }

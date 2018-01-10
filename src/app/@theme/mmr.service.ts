@@ -11,17 +11,18 @@ export interface MMRViewComponent {
 export class MMRComponetRegisty {
 
   getComponetType(type: string): any  {
+    const views = {
+      'card': CardComponent,
+      'table': TableComponent,
+      'form': FormComponent,
+      'input': InputComponent,
+    }
      return views[type];
   }
 
 }
 
 
-const views = {
-  'card': CardComponent,
-  'table': TableComponent,
-  'form': FormComponent,
-  'input': InputComponent,
-}
+
 
 
