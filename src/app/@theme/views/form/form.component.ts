@@ -1,4 +1,6 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { FormGroup } from '@angular/forms/src/model';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-form',
@@ -6,17 +8,26 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
-  @Input() children;
-  @ViewChild("heroForm") theForm;
+  @Input() children:Array<any>;
+  formGroup: FormGroup;
 
-  constructor() { }
+  constructor(private fb: FormBuilder) { 
+    console.log('ffff', this.children)
+  }
 
   ngOnInit() {
+    this.formGroup = this.fb.group({}) 
+    this.children.forEach(e => {
+      e.formGroup = this.formGroup
+    })
+  }
+
+  toFormGroup() {
+
   }
 
   submit() {
-    console.log('form-vlaues', this.children)
-    console.log("form", this.theForm)
+    console.log('form-vlaues', this.formGroup.value)
   }
 
   load() {}
