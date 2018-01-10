@@ -12,6 +12,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { TableComponent } from './views/table/table.component';
 import { FormComponent } from 'app/@theme/views/form/form.component';
 import { InputComponent } from 'app/@theme/views/form/fields/input/input.component';
+import { CommonModule } from '@angular/common';
 
 const components = [
   MMRComponent,
@@ -32,7 +33,7 @@ const directives = [
     ...directives,
   ],
   imports: [
-    BrowserModule,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
 
