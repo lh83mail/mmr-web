@@ -94,6 +94,24 @@ export const ADD_USER_VIEW = {
       type: 'card',
       title: '用户表单',
       subTitle: '用来编辑用户信息的表单',
+
+      toolbars: [
+        {
+          position: 'bottom',
+          children: [
+            { type: 'button', text: '提交表单', 
+              command: {
+                command: 'ViewAction',
+                args: {
+                  action: 'form1.submit'
+                }
+              }
+            },
+            { type: 'button', text: '返回' },
+          ]
+        },
+      ],
+
       children: [
         {
           id: 'form1',

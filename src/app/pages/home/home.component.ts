@@ -37,6 +37,7 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit() {
+    
   }
 
   loadComponents(viewId:string) {
@@ -50,13 +51,17 @@ export class HomeComponent implements OnInit {
   }
 
   navigateView(viewId: string) {
-    const command = ['views'];
+    const command = ['views']
     if (this.route.snapshot.data.next != '') {
       command.push(this.route.snapshot.data.next);
     }
     command.push(viewId);
 
     this.router.navigate(command)
+  }
+
+  donave() {
+    console.log('xxx', this.viewRoot)
   }
 
 }

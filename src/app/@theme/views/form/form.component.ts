@@ -12,7 +12,6 @@ export class FormComponent implements OnInit {
   formGroup: FormGroup;
 
   constructor(private fb: FormBuilder) { 
-    console.log('ffff', this.children)
   }
 
   ngOnInit() {

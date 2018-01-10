@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewContainerRef} from '@angular/core';
+import {Component, Input, OnInit, ViewContainerRef, ComponentRef} from '@angular/core';
 import {MMRViewComponent} from "../../mmr.service";
 import {PageStateService} from "../../services/page-state.service";
 import {Command, MmrDataStoreService} from "../../services/interfaces";
@@ -21,6 +21,7 @@ export class CardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    
   }
 
   execute(command: Command) {
