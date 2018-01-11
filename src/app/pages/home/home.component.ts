@@ -1,11 +1,9 @@
-import {AfterContentInit, AfterViewInit, Component, NgZone, OnInit, QueryList, ViewChildren, ComponentRef, Injectable} from '@angular/core';
-import {MMRComponent} from '../../@theme/mmr.component';
-import {DataStoreService} from '../../@theme/services/data-store.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {MmrDataStoreService, RootView} from '../../@theme/services/interfaces';
+import { AfterContentInit, AfterViewInit, Component, NgZone, OnInit, QueryList, ViewChildren, ComponentRef, Injectable } from '@angular/core';
+import { MMRComponent } from '../../@theme/mmr.component';
+import { DataStoreService } from '../../@theme/services/data-store.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MmrDataStoreService, RootView } from '../../@theme/services/interfaces';
 import { MMRLoadViewDirective } from 'app/@theme/mmr.directive';
-
-
 
 @Component({
   selector: 'app-home',
@@ -19,12 +17,12 @@ import { MMRLoadViewDirective } from 'app/@theme/mmr.directive';
 })
 export class HomeComponent implements OnInit {
 
-  viewJson:any;
+  viewJson: any;
 
   @ViewChildren('viewRoot') viewRoot: QueryList<MMRComponent>;
   @ViewChildren(MMRLoadViewDirective) __mmcl;
 
-  viewId:string;
+  viewId: string;
 
   constructor(
     private _ngZone: NgZone,
@@ -41,7 +39,7 @@ export class HomeComponent implements OnInit {
 
   }
 
-  loadComponents(viewId:string) {
+  loadComponents(viewId: string) {
     this.viewId = viewId;
     this.dataStoreService.setupViewId(this.viewId, new HomeRootView(
       this.dataStoreService, this
@@ -67,7 +65,7 @@ export class HomeComponent implements OnInit {
 }
 
 class HomeRootView implements RootView {
-  constructor(private dataStoreService: MmrDataStoreService, private view: HomeComponent) {}
+  constructor(private dataStoreService: MmrDataStoreService, private view: HomeComponent) { }
   loadView(viewId: string) {
     this.view.navigateView(viewId);
   }
