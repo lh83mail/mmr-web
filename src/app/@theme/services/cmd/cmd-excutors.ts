@@ -1,10 +1,10 @@
 
 
 import {CommandExecutor, CommandResponse} from "../interfaces";
+import { ComponentRef } from "@angular/core/src/linker/component_factory";
 
 export class LoadViewExecutor extends  CommandExecutor {
   execute(): Promise<CommandResponse> {
-    console.log('execute load view')
     this.dataStoreService.getRootView().loadView(this.cmd.args['viewId']);
     return Promise.resolve({status:'200', command: LoadViewExecutor.name});
   }
@@ -17,6 +17,7 @@ export class NavigateViewExecutor extends CommandExecutor {
 
     return Promise.resolve({status:'200', command: NavigateViewExecutor.name});
   }
+
 }
 
 export class RemoteExecutor extends CommandExecutor {
@@ -33,11 +34,35 @@ export class ViewAction extends CommandExecutor {
 
   execute(): Promise<CommandResponse> {
     const cmd = this.cmd.args['action'];
-    
-    return Promise.resolve({status: '200', command: this.cmd.command,});
+    const action = MMR_COMPONENT_FINDER.findComponetInstance(cmd);
+    if (action == null) {
+      throw new Error("找不到指定的命令");
+    }
+    return Promise.resolve({status: '200', command: this.cmd.command, data: action.execute()});
   }
 
 }
+
+export class Action {
+  ref:Function;
+  target: any;
+
+  execute(...args): any {
+    return this.ref.apply(this.target, args);
+  }
+}
+
+
+export class CommponetFinder {
+
+  findComponetInstance(cmd: string): Action {
+    return null;
+  }
+
+}
+
+export const MMR_COMPONENT_FINDER = new CommponetFinder();
+
 
 
 const SERVICE_DATA_MOCK = {
@@ -65,4 +90,4 @@ const SERVICE_DATA_MOCK = {
       {position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca'},
     ]
   }
-}
+};

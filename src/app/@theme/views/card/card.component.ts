@@ -1,6 +1,5 @@
 import {Component, Input, OnInit, ViewContainerRef, ComponentRef, ViewChild, ViewChildren, ContentChildren} from '@angular/core';
 import {MMRViewComponent} from '../../mmr.service';
-import {PageStateService} from '../../services/page-state.service';
 import {Command, MmrDataStoreService} from '../../services/interfaces';
 import { Query } from '@angular/core/src/metadata/di';
 import { MMRComponent } from 'app/@theme/mmr.component';
@@ -20,7 +19,6 @@ export class CardComponent extends MMRViewComponents implements OnInit {
   @Input() toolbars;
 
   constructor(
-    private pageState: PageStateService,
     private viewContainerRef: ViewContainerRef,
     private dataStoreService: MmrDataStoreService,
   ) {

@@ -2,7 +2,6 @@ import {AfterContentInit, AfterViewInit, Component, NgZone, OnInit, QueryList, V
 import {MMRComponent} from '../../@theme/mmr.component';
 import {DataStoreService} from '../../@theme/services/data-store.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {PageStateService} from '../../@theme/services/page-state.service';
 import {MmrDataStoreService, RootView} from '../../@theme/services/interfaces';
 import { MMRLoadViewDirective } from 'app/@theme/mmr.directive';
 
@@ -13,7 +12,6 @@ import { MMRLoadViewDirective } from 'app/@theme/mmr.directive';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   providers: [
-    PageStateService,
     {
       provide: MmrDataStoreService, useClass: DataStoreService
     }
@@ -33,7 +31,6 @@ export class HomeComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dataStoreService: MmrDataStoreService,
-    private pageState: PageStateService,
   ) {
     const viewId = this.route.snapshot.paramMap.get('id');
     this.loadComponents(viewId);
@@ -46,7 +43,6 @@ export class HomeComponent implements OnInit {
 
   loadComponents(viewId:string) {
     this.viewId = viewId;
-    this.pageState.setViewId(this.viewId, this);
     this.dataStoreService.setupViewId(this.viewId, new HomeRootView(
       this.dataStoreService, this
     ));
