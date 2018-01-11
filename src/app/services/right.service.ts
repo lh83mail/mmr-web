@@ -1,4 +1,4 @@
-import {AfterContentInit, AfterViewInit, Component, NgZone, OnInit, QueryList, ViewChildren, ComponentRef, Injectable} from '@angular/core';
+import { ComponentRef } from '@angular/core';
 
 export class MmrComponentRef {
   parentMMrComponentRef: MmrComponentRef;
@@ -14,5 +14,9 @@ export class MmrComponentRef {
 
   addChild(mmrComponentRef: MmrComponentRef) {
     this.children.push(mmrComponentRef);
+  }
+
+  destory() {
+    this.componentRef.destroy();
   }
 }

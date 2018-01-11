@@ -34,7 +34,6 @@ export class ViewAction extends CommandExecutor {
   execute(): Promise<CommandResponse> {
     const cmd = this.cmd.args['action'];
     
-
     return Promise.resolve({status: '200', command: this.cmd.command,});
   }
 

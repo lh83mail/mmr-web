@@ -5,6 +5,7 @@ import { MmrDataStoreService } from "app/@theme/services/interfaces";
 import { createInjector } from "@angular/core/src/view/refs";
 import { Provider } from "@angular/core/src/di/provider";
 import { MmrComponentRef } from "app/services/right.service";
+import { OnDestroy } from "@angular/core/src/metadata/lifecycle_hooks";
 
 @Directive({
   selector: '[mmr-root]',
@@ -14,20 +15,13 @@ export class MMRDirective {
     public viewContainerRef: ViewContainerRef) { }
 }
 
-class Square {
-  name = 'square';
-}
-
 @Directive({
   selector: '[mmrLoadView]'
 })
-export class MMRLoadViewDirective {
+export class MMRLoadViewDirective implements OnDestroy {
 
-  componentRef;
   __options;
   mmrComponentRef: MmrComponentRef;
-
-  @Output() theEvent = new EventEmitter<any>();
 
   constructor(
     private viewContainerRef: ViewContainerRef,
@@ -43,17 +37,8 @@ export class MMRLoadViewDirective {
   @Input() set options(arg: any) {
     this.__options = arg;
     this.loadComponent();
-
-    // if (!condition && !this.hasView) {
-    //   this.viewContainer.createEmbeddedView(this.templateRef);
-    //   this.hasView = true;
-    // } else if (condition && this.hasView) {
-    //   this.viewContainer.clear();
-    //   this.hasView = false;
-    // }
   }
 
-  
 
   loadComponent() {
     const viewType = this.mmrComponetRegisty.getComponetType(this.__options.type);
@@ -63,7 +48,6 @@ export class MMRLoadViewDirective {
 
     this.mmrComponentRef = new MmrComponentRef(this.parentMmrComponetRef);
 
-    
     const injector = ReflectiveInjector.resolveAndCreate(<Provider[]>[
       {
         provide: MmrComponentRef,
@@ -71,15 +55,20 @@ export class MMRLoadViewDirective {
       }
     ], this.__defaultInjector);
 
-
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(viewType);
     this.viewContainerRef.clear();
-    this.componentRef = this.viewContainerRef.createComponent(componentFactory, this.viewContainerRef.length, injector);
+
+    const componentRef = this.viewContainerRef.createComponent(componentFactory, this.viewContainerRef.length, injector);
     if (this.__options) {
       for (const p in this.__options) {
-        this.componentRef.instance[p] = this.__options[p];
+        componentRef.instance[p] = this.__options[p];
       }
     }
-    this.mmrComponentRef.componentRef = this.componentRef;
+
+    this.mmrComponentRef.componentRef = componentRef;
+  }
+
+  ngOnDestroy(): void {
+    this.mmrComponentRef.destory();
   }
 }
