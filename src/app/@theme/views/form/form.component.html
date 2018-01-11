@@ -1,5 +1,10 @@
 <form [formGroup]="formGroup" (ngSubmit)="submit()">
-  <mmr-view *ngFor="let option of children" [options]="option"></mmr-view>
+  <!-- <mmr-view mmr-root *ngFor="let option of children" [options]="option"></mmr-view> -->
+  <!-- <ng-container *ngFor="let option of children"> -->
+  <ng-container *ngFor="let option of children">
+      <div  mmrLoadView [options]="option"> </div>
+  </ng-container>
+<!-- </ng-container> -->
 </form>
 <button (click)="submit()">提交</button>
 <p>Form value: {{ formGroup.value | json }}</p>

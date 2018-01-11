@@ -6,9 +6,9 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import {MMRDirective} from "./mmr.directive";
-import {MMRComponetRegisty, MMRViewComponent} from "./mmr.service";
-import {MmrDataStoreService} from "./services/interfaces";
+import {MMRDirective} from './mmr.directive';
+import {MMRComponetRegisty, MMRViewComponent} from './mmr.service';
+import {MmrDataStoreService} from './services/interfaces';
 
 @Component({
   selector: 'mmr-view',
@@ -38,8 +38,8 @@ export class MMRComponent implements OnInit, AfterViewInit, AfterContentInit {
 
   ngAfterViewInit(): void {
 
-    console.log("ngAfterViewInit>>>>>", this.options)
-    this.afterViewInit.emit(this)
+    console.log('ngAfterViewInit>>>>>', this.options);
+    this.afterViewInit.emit(this);
 
 
   }
@@ -49,17 +49,17 @@ export class MMRComponent implements OnInit, AfterViewInit, AfterContentInit {
   }
 
   loadComponent() {
-    let viewType = this.mmrComponetRegisty.getComponetType(this.options.type);
+    const viewType = this.mmrComponetRegisty.getComponetType(this.options.type);
     if (viewType == null) {
-      throw new Error("Undefined ViewType:" + this.options.type)
+      throw new Error('Undefined ViewType:' + this.options.type);
     }
 
-    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(viewType);
-    let viewContainerRef = this.mmrRoot.viewContainerRef;
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(viewType);
+    const viewContainerRef = this.mmrRoot.viewContainerRef;
     viewContainerRef.clear();
     this.componentRef = viewContainerRef.createComponent(componentFactory);
     if (this.options) {
-      for (var p in this.options) {
+      for (const p in this.options) {
         this.componentRef.instance[p] = this.options[p];
       }
     }

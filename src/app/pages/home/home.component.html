@@ -3,11 +3,15 @@
   <button (click)="donave()">donav</button>
   <button (click)="donave2()">donav2</button>
 
-  <mmr-view
+  <!-- <mmr-view
     #viewRoot
     *ngFor="let option of viewJson?.children"
     [options]="option"
-  ></mmr-view>
+  ></mmr-view> -->
+  <!-- <ng-template  *ngFor="let option of children" mmrLoadView [options]="option"> </ng-template> -->
+  <ng-container *ngFor="let option of viewJson?.children">
+      <div  mmrLoadView [options]="option"> </div>
+  </ng-container>
   <!--<ng-template  *ngFor="let option of viewJson.children"> hello </ng-template>-->
 </div>
 

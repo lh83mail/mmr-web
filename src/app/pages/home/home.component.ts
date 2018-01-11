@@ -1,9 +1,12 @@
-import {AfterContentInit, AfterViewInit, Component, NgZone, OnInit, QueryList, ViewChildren} from '@angular/core';
-import {MMRComponent} from "../../@theme/mmr.component";
-import {DataStoreService} from "../../@theme/services/data-store.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {PageStateService} from "../../@theme/services/page-state.service";
-import {MmrDataStoreService, RootView} from "../../@theme/services/interfaces";
+import {AfterContentInit, AfterViewInit, Component, NgZone, OnInit, QueryList, ViewChildren, ComponentRef, Injectable} from '@angular/core';
+import {MMRComponent} from '../../@theme/mmr.component';
+import {DataStoreService} from '../../@theme/services/data-store.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {PageStateService} from '../../@theme/services/page-state.service';
+import {MmrDataStoreService, RootView} from '../../@theme/services/interfaces';
+import { MMRLoadViewDirective } from 'app/@theme/mmr.directive';
+
+
 
 @Component({
   selector: 'app-home',
@@ -20,7 +23,8 @@ export class HomeComponent implements OnInit {
 
   viewJson:any;
 
-  @ViewChildren("viewRoot") viewRoot: QueryList<MMRComponent>;
+  @ViewChildren('viewRoot') viewRoot: QueryList<MMRComponent>;
+  @ViewChildren(MMRLoadViewDirective) __mmcl;
 
   viewId:string;
 
@@ -37,7 +41,7 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit() {
-    
+
   }
 
   loadComponents(viewId:string) {
@@ -51,17 +55,17 @@ export class HomeComponent implements OnInit {
   }
 
   navigateView(viewId: string) {
-    const command = ['views']
-    if (this.route.snapshot.data.next != '') {
+    const command = ['views'];
+    if (this.route.snapshot.data.next !== '') {
       command.push(this.route.snapshot.data.next);
     }
     command.push(viewId);
 
-    this.router.navigate(command)
+    this.router.navigate(command);
   }
 
   donave() {
-    console.log('xxx', this.viewRoot)
+    console.log('xxx', this.viewRoot);
   }
 
 }
@@ -73,3 +77,4 @@ class HomeRootView implements RootView {
   }
 
 }
+

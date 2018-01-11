@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component} from '@angular/core';
 
 export abstract class MmrDataStoreService {
 
@@ -12,7 +12,7 @@ export abstract class MmrDataStoreService {
 }
 
 export interface RootView {
-  loadView(viewId:string);
+  loadView(viewId: string);
 }
 
 

@@ -13,7 +13,11 @@
   </mat-card-actions>
 
   <mat-card-content>
-    <mmr-view *ngFor="let option of children" [options]="option"></mmr-view>
+    <!-- <mmr-view *ngFor="let option of children" [options]="option"></mmr-view> -->
+  
+    <ng-template *ngFor="let option of children" mmrLoadView [options]="option" (theEvent)="hello($event)">
+        <!-- <div #dii mmrLoadView [options]="option" (theEvent)="hello($event)"></div>  -->
+    </ng-template>
   </mat-card-content>
 
   <mat-card-actions *ngFor="let tbar of toolbars">
