@@ -30,8 +30,10 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private dataStoreService: MmrDataStoreService,
   ) {
-    const viewId = this.route.snapshot.paramMap.get('id');
-    this.loadComponents(viewId);
+    this.route.paramMap.subscribe(paramMap => {
+      const viewId = paramMap.get('id');
+      this.initView(viewId);
+    })
   }
 
 
@@ -39,7 +41,7 @@ export class HomeComponent implements OnInit {
 
   }
 
-  loadComponents(viewId: string) {
+  initView(viewId: string) {
     this.viewId = viewId;
     this.dataStoreService.setupViewId(this.viewId, new HomeRootView(
       this.dataStoreService, this
@@ -50,9 +52,9 @@ export class HomeComponent implements OnInit {
 
   navigateView(viewId: string) {
     const command = ['views'];
-    if (this.route.snapshot.data.next !== '') {
-      command.push(this.route.snapshot.data.next);
-    }
+    // if (this.route.snapshot.data.next !== '') {
+    //   command.push(this.route.snapshot.data.next);
+    // }
     command.push(viewId);
 
     this.router.navigate(command);

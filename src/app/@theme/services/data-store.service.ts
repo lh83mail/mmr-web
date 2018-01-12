@@ -1,10 +1,10 @@
-import {Component, Injectable} from "@angular/core";
-import {Subject} from "rxjs/Subject";
-import {Observable} from "rxjs/Observable";
-import * as VIEWS from "../../services/data";
-import {RemoteExecutor} from "./cmd/cmd-excutors";
-import {Command, CommandResponse, MmrDataSource, MmrDataStoreService, NULL_SOURCE, RootView} from "./interfaces";
-import * as executors from "./cmd/cmd-excutors";
+import {Component, Injectable} from '@angular/core';
+import {Subject} from 'rxjs/Subject';
+import {Observable} from 'rxjs/Observable';
+import * as VIEWS from '../../services/data';
+import {RemoteExecutor} from './cmd/cmd-excutors';
+import {Command, CommandResponse, MmrDataSource, MmrDataStoreService, NULL_SOURCE, RootView} from './interfaces';
+import * as executors from './cmd/cmd-excutors';
 
 @Injectable()
 export class DataStoreService extends MmrDataStoreService {
@@ -26,7 +26,7 @@ export class DataStoreService extends MmrDataStoreService {
    * @param {String} dsName
    * @returns {Promise<MmrDataSource>}
    */
-  lookupDataSource(dsName:String) : Promise<MmrDataSource> {
+  lookupDataSource(dsName: String): Promise<MmrDataSource> {
     return Promise.resolve(null);
   }
 
@@ -50,7 +50,7 @@ export class DataStoreService extends MmrDataStoreService {
     // 1. 选择本地命令
     // 2. 选择远程命令
     let executor = null;
-    for (var e in executors) {
+    for (const e in executors) {
       if (executors[e].name == command.command) {
         executor = new executors[e](command, this);
       }
@@ -70,8 +70,8 @@ export class DataStoreService extends MmrDataStoreService {
   loadView(viewId: string) :Promise<any> {
     console.log('info', VIEWS)
     let v = {};
-    for (var o in VIEWS) {
-      if (VIEWS[o].id == viewId) v = VIEWS[o];
+    for (const o in VIEWS) {
+      if (VIEWS[o].id === viewId) v = VIEWS[o];
     }
 
     //
@@ -132,4 +132,4 @@ const SERVICE_DATA_MOCK = {
       {position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca'},
     ]
   }
-}
+};

@@ -4,6 +4,7 @@ import { FormBuilder } from '@angular/forms';
 import { MMRViewComponents } from '../mmr-view.component';
 import { MMRComponent } from 'app/@theme/mmr.component';
 import { MMRDirective, MMRLoadViewDirective } from 'app/@theme/mmr.directive';
+import { MmrDataStoreService } from 'app/@theme/services/interfaces';
 
 @Component({
   selector: 'app-form',
@@ -14,7 +15,10 @@ export class FormComponent implements OnInit {
   @Input() children: Array<any>;
   formGroup: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private dataStoreService: MmrDataStoreService
+  ) {
     // super()
   }
 
@@ -31,6 +35,17 @@ export class FormComponent implements OnInit {
 
   submit() {
     console.log('form-vlaues', this.formGroup.value);
+    this.formGroup.setValue({"position": "3333", "name": "eee", "weight": "eeee", "symbol": "eeee" });
+    if(1==1)return;
+    this.dataStoreService.execute({
+      command: 'submit-form',
+      args: {
+        data: this.formGroup.value
+      }
+    })
+    .then(response => {
+      console.log('submited', response);
+    });
   }
 
   load() {}

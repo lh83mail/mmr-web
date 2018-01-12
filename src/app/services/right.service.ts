@@ -2,8 +2,14 @@ import { ComponentRef } from '@angular/core';
 
 export class MmrComponentRef {
   parentMMrComponentRef: MmrComponentRef;
-  componentRef: ComponentRef<any>;
+  private _componentRef: ComponentRef<any>;
   children: Array<MmrComponentRef> = new Array<MmrComponentRef>();
+
+
+  set componentRef(componentRef: ComponentRef<any>) {
+    this._componentRef = componentRef;
+    componentRef.instance.__mmrComponentRef = this;
+  }
 
   constructor(parent?: MmrComponentRef) {
     this.parentMMrComponentRef = parent;
@@ -17,6 +23,7 @@ export class MmrComponentRef {
   }
 
   destory() {
-    this.componentRef.destroy();
+    this._componentRef.instance.__mmrComponentRef = null;
+    this._componentRef.destroy();
   }
 }

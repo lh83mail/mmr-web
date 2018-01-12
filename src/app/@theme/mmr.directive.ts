@@ -66,6 +66,7 @@ export class MMRLoadViewDirective implements OnDestroy {
     }
 
     this.mmrComponentRef.componentRef = componentRef;
+  
   }
 
   ngOnDestroy(): void {
