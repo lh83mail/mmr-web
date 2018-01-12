@@ -1,5 +1,5 @@
 
-import {CommandExecutor, CommandResponse} from "../interfaces";
+import {CommandExecutor, CommandResponse, Command, MmrDataStoreService} from "../interfaces";
 import { ComponentRef } from "@angular/core";
 import { HttpClient } from "@angular/common/http/src/client";
 import { MmrConfiguration } from "app/@theme/services";
@@ -10,7 +10,7 @@ import { HttpEvent, HttpResponse } from "@angular/common/http";
 export class LoadViewExecutor extends  CommandExecutor {
   execute(): Promise<CommandResponse> {
     this.dataStoreService.getRootView().loadView(this.cmd.args['viewId']);
-    return Promise.resolve({status:'200', command: LoadViewExecutor.name});
+    return Promise.resolve({status:'200', command: this.cmd});
   }
 }
 
@@ -19,48 +19,66 @@ export class NavigateViewExecutor extends CommandExecutor {
   execute(): Promise<CommandResponse> {
     const viewId = this.cmd.args['viewId'];
 
-    return Promise.resolve({status:'200', command: NavigateViewExecutor.name});
+    return Promise.resolve({status:'200', command: this.cmd});
   }
 
 }
 
 export class RemoteExecutor extends CommandExecutor {
-  private httpClient: HttpClient;
-  mmrConfigruation: MmrConfiguration;
+  constructor(cmd: Command,
+    dataStoreService: MmrDataStoreService,
+    private httpClient: HttpClient,
+    private mmrConfiguration: MmrConfiguration
+  ) {
+    super(cmd, dataStoreService);
+  }
 
   execute(): Promise<CommandResponse> {
 
-    return Promise.resolve({
-      status: '200',
-      command: this.cmd.command,
-      data: SERVICE_DATA_MOCK[this.cmd.command]
-    });
+    // return Promise.resolve({
+    //   status: '200',
+    //   command: this.cmd.command,
+    //   data: SERVICE_DATA_MOCK[this.cmd.command]
+    // });
 
-    // const method = this.cmd.args.method || 'GET';
-    // const options:any = {
-    //   params: this.cmd.args.params
-    // };
+    const method = this.cmd.args.method || 'GET';
+    const options:any = {
+      params: this.cmd.args.params
+    };
 
-    // if ((method == 'POST' || method == 'PUT') && this.cmd.args.body) {
-    //   options.body = this.cmd.args.body;
-    // }
+    if ((method == 'POST' || method == 'PUT') && this.cmd.args.body) {
+      options.body = this.cmd.args.body;
+    }
 
+  //   request(method: string, url: string, options: {
+  //     body?: any;
+  //     headers?: HttpHeaders | {
+  //         [header: string]: string | string[];
+  //     };
+  //     reportProgress?: boolean;
+  //     observe: 'events';
+  //     params?: HttpParams | {
+  //         [param: string]: string | string[];
+  //     };
+  //     responseType?: 'json';
+  //     withCredentials?: boolean;
+  // }): Observable<HttpEvent<any>>;
 
-    // return this.httpClient.request(
-    //     method,
-    //     this.mmrConfigruation.getRemoteCommandUrl(this.cmd.command),
-    //     options
-    // )
-    // .map((event: HttpEvent<any>) => {
-    //   if (event instanceof HttpResponse) {
-    //     return {
-    //       status: event.status,
-    //       command: this.cmd,
-    //       data: event.body
-    //     }
-    //   }
-    // })
-    // .toPromise();
+    return this.httpClient.request(
+        method,
+        this.mmrConfiguration.getRemoteCommandUrl(this.cmd.command),
+        options
+    )
+    .map(event => {
+      if (event instanceof HttpResponse) {
+        return {
+          status: '' + event.status,
+          command: this.cmd,
+          data: event.body
+        }
+      }
+    })
+    .toPromise();
   }
 }
 
@@ -72,7 +90,7 @@ export class ViewAction extends CommandExecutor {
     if (action == null) {
       throw new Error('找不到指定的命令');
     }
-    return Promise.resolve({status: '200', command: this.cmd.command, data: action.execute()});
+    return Promise.resolve({status: '200', command: this.cmd, data: action.execute()});
   }
 
 }

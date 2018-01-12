@@ -21,7 +21,7 @@ import { UsersMgrComponent } from './pages/system/users-mgr/users-mgr.component'
 import { HttpClientModule } from '@angular/common/http';
 import { EventsBus, Application, AppState } from './@core';
 import { MmrHttpModule } from 'app/@core/http';
-import {MMR_CONFIGRATION_TOKEN} from './@theme';
+import { MmrConfiguration} from './@theme';
 
 //---- for develop mock -- //
 import {MmrConfigurationMock} from './mock'
@@ -65,7 +65,7 @@ import {MmrConfigurationMock} from './mock'
     AppState,
     Application,
     EventsBus,
-    {provide: MMR_CONFIGRATION_TOKEN, useClass: MmrConfigurationMock }
+    {provide: MmrConfiguration, useClass: MmrConfigurationMock}
   ],
   bootstrap: [
     AppComponent

@@ -2,6 +2,7 @@ import { NgModule, NgZone, ViewChildren, Component } from '@angular/core';
 import { MmrDataStoreService, DataStoreService, RootView } from 'app/@theme/services';
 import { MMRLoadViewDirective } from 'app/@theme/mmr.directive';
 import { ActivatedRoute, Router } from '@angular/router'
+import { MmrConfiguration } from 'app/@theme';
 
 @Component({
   selector: 'mmr-view',
@@ -25,6 +26,7 @@ export class MmrViewComponent {
     private route: ActivatedRoute,
     private router: Router,
     private dataStoreService: MmrDataStoreService,
+    private mmrConfiguration: MmrConfiguration,
   ) {
     this.route.paramMap.subscribe(paramMap => {
       const viewId = paramMap.get('id');

@@ -1,6 +1,11 @@
 import {Component} from '@angular/core';
+import { MmrConfiguration } from 'app/@theme';
+import { HttpClient } from '@angular/common/http';
 
 export abstract class MmrDataStoreService {
+  constructor(
+    mmrConfiguration: MmrConfiguration,
+    httpClient: HttpClient){}
 
   abstract execute(cmd: Command): Promise<CommandResponse>;
 
@@ -25,7 +30,7 @@ export interface Command {
 
 export interface CommandResponse {
   status: string;
-  command: string;
+  command: Command;
   data?: any;
 }
 

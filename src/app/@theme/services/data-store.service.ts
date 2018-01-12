@@ -1,4 +1,4 @@
-import {Component, Injectable} from '@angular/core';
+import {Component, Injectable, InjectionToken} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
 import * as VIEWS from './mock/data';
@@ -6,15 +6,19 @@ import {RemoteExecutor} from './cmd/cmd-excutors';
 import {Command, CommandResponse,  MmrDataStoreService, RootView} from './interfaces';
 import * as executors from './cmd/cmd-excutors';
 import { HttpClient } from '@angular/common/http';
+import { MmrConfiguration } from './config-interface';
+
 
 @Injectable()
 export class DataStoreService extends MmrDataStoreService {
   viewId: string;
   rootView: RootView;
   dsInstance = {};
-
-  constructor(httpClient: HttpClient) {
-    super();
+  
+  constructor(
+    private mmrConfiguration: MmrConfiguration,
+    private httpClient: HttpClient) {
+    super(mmrConfiguration, httpClient);
   }
 
   setupViewId(viewId: string, view: RootView) {
@@ -44,7 +48,7 @@ export class DataStoreService extends MmrDataStoreService {
     }
 
     if (executor == null) {
-      executor = new RemoteExecutor(command, this);
+      executor = new RemoteExecutor(command, this, this.httpClient, this.mmrConfiguration);
     }
 
     return executor.execute();
