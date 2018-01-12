@@ -2,7 +2,6 @@ import {Component, Input, OnInit, ViewChild, ViewChildren} from '@angular/core';
 import { FormGroup } from '@angular/forms/src/model';
 import { FormBuilder } from '@angular/forms';
 import { MMRViewComponents } from '../mmr-view.component';
-import { MMRComponent } from 'app/@theme/mmr.component';
 import { MMRDirective, MMRLoadViewDirective } from 'app/@theme/mmr.directive';
 import { MmrDataStoreService } from 'app/@theme/services';
 
@@ -40,7 +39,7 @@ export class FormComponent implements OnInit {
       args: {
         data: this.formGroup.value
       }
-    }, this)
+    })
     .then(response => {
       console.log('submited', response);
     });

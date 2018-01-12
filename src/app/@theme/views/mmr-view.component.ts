@@ -1,4 +1,3 @@
-import { MMRComponent } from 'app/@theme/mmr.component';
 import { ViewChildren, Component } from '@angular/core';
 import { NgModule } from '@angular/core/src/metadata/ng_module';
 

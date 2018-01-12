@@ -38,9 +38,3 @@ export abstract class CommandExecutor {
   }
   abstract execute(): Promise<CommandResponse>;
 }
-
-export interface MmrDataSource {
-}
-
-export const NULL_SOURCE = <MmrDataSource>{
-};

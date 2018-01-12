@@ -1,5 +1,4 @@
 import { AfterContentInit, AfterViewInit, Component, NgZone, OnInit, QueryList, ViewChildren, ComponentRef, Injectable } from '@angular/core';
-import { MMRComponent } from '../../@theme/mmr.component';
 import { DataStoreService } from '../../@theme/services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MmrDataStoreService, RootView } from '../../@theme/services/interfaces';
@@ -19,7 +18,6 @@ export class HomeComponent implements OnInit {
 
   viewJson: any;
 
-  @ViewChildren('viewRoot') viewRoot: QueryList<MMRComponent>;
   @ViewChildren(MMRLoadViewDirective) __mmcl;
 
   viewId: string;
@@ -61,7 +59,7 @@ export class HomeComponent implements OnInit {
   }
 
   donave() {
-    console.log('xxx', this.viewRoot);
+    console.log('xxx');
   }
 
 }
