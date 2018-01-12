@@ -1,7 +1,7 @@
 import {Directive, ElementRef, EmbeddedViewRef, ViewContainerRef, Input, Output, ComponentFactoryResolver, TemplateRef, EventEmitter, Injector, ComponentRef, ReflectiveInjector, Optional} from "@angular/core";
 import { Direct } from "protractor/built/driverProviders";
 import { MMRComponetRegisty } from "app/@theme/mmr.service";
-import { MmrDataStoreService } from "app/@theme/services/interfaces";
+import { MmrDataStoreService } from "app/@theme/services";
 import { createInjector } from "@angular/core/src/view/refs";
 import { Provider } from "@angular/core/src/di/provider";
 import { MmrComponentRef } from "app/services/right.service";

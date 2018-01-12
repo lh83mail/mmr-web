@@ -99,11 +99,11 @@ export const ADD_USER_VIEW = {
         {
           position: 'bottom',
           children: [
-            { type: 'button', text: '提交表单', 
+            { type: 'button', text: '提交表单',
               command: {
                 command: 'ViewAction',
                 args: {
-                  action: 'form1.submit'
+                  action: 'form1.submit'  // /add-user/card1/form1/submit($id)
                 }
               }
             },
@@ -163,3 +163,23 @@ export const USERS_LIST = {
     }
   ]
 }
+
+/**
+ * 配置:
+ *   特性选择,修改
+ * 
+ * 数据:
+ *   定义: 模型 (meta)
+ *   类型: 单个对象, 集合
+ * 
+ * UI:
+ *   定义: 模型(meta)
+ *   类型: 组合(容器), 单独
+ * 
+ * 关系: 
+ *   数据 <- binding/translate -> UI
+ *   
+ * 操作:
+ *    命令
+ * 
+ */

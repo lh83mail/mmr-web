@@ -1,9 +1,7 @@
 <form [formGroup]="formGroup" (ngSubmit)="submit()">
   <!-- <mmr-view mmr-root *ngFor="let option of children" [options]="option"></mmr-view> -->
   <!-- <ng-container *ngFor="let option of children"> -->
-  <ng-container *ngFor="let option of children">
-      <div  mmrLoadView [options]="option"> </div>
-  </ng-container>
+  <ng-template *ngFor="let option of children" mmrLoadView [options]="option"></ng-template>
 <!-- </ng-container> -->
 </form>
 <button (click)="submit()">提交</button>

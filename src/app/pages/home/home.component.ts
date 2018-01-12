@@ -1,6 +1,6 @@
 import { AfterContentInit, AfterViewInit, Component, NgZone, OnInit, QueryList, ViewChildren, ComponentRef, Injectable } from '@angular/core';
 import { MMRComponent } from '../../@theme/mmr.component';
-import { DataStoreService } from '../../@theme/services/data-store.service';
+import { DataStoreService } from '../../@theme/services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MmrDataStoreService, RootView } from '../../@theme/services/interfaces';
 import { MMRLoadViewDirective } from 'app/@theme/mmr.directive';
