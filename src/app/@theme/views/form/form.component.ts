@@ -1,7 +1,6 @@
 import {Component, Input, OnInit, ViewChild, ViewChildren} from '@angular/core';
 import { FormGroup } from '@angular/forms/src/model';
 import { FormBuilder } from '@angular/forms';
-import { MMRViewComponents } from '../mmr-view.component';
 import { MMRDirective, MMRLoadViewDirective } from 'app/@theme/mmr.directive';
 import { MmrDataStoreService } from 'app/@theme/services';
 

@@ -1,7 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {AppComponent} from './app.component';
@@ -19,6 +18,7 @@ import {MMRModule} from "./@theme/mmr.module";
 import { ModulesComponent } from './pages/system/modules/modules.component';
 import { EnumsMgrComponent } from './pages/system/enums-mgr/enums-mgr.component';
 import { UsersMgrComponent } from './pages/system/users-mgr/users-mgr.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -31,6 +31,7 @@ import { UsersMgrComponent } from './pages/system/users-mgr/users-mgr.component'
   imports: [
     BrowserModule,
     FormsModule,
+    
     BrowserAnimationsModule,
     MMRModule,
 
@@ -53,7 +54,7 @@ import { UsersMgrComponent } from './pages/system/users-mgr/users-mgr.component'
 
     RouterModule.forRoot(MMR_ROOT_ROUTE, {useHash:false}),
 
-    HttpModule,
+    HttpClientModule,
   ],
   providers: [
   ],

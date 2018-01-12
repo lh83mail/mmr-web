@@ -1,17 +1,15 @@
 import {Component, Input, OnInit, ViewContainerRef, ComponentRef, ViewChild, ViewChildren, ContentChildren} from '@angular/core';
 import {MMRViewComponent} from '../../mmr.service';
 import {Command, MmrDataStoreService} from '../../services/interfaces';
-import { Query } from '@angular/core/src/metadata/di';
 import { MMRDirective, MMRLoadViewDirective } from 'app/@theme/mmr.directive';
 import { MatCardContent, MatCardActions } from '@angular/material';
-import { MMRViewComponents } from 'app/@theme/views/mmr-view.component';
 
 @Component({
   selector: 'mmr-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css']
 })
-export class CardComponent extends MMRViewComponents implements OnInit {
+export class CardComponent implements OnInit {
   @Input() title;
   @Input() subTitle;
   @Input() children;
@@ -21,7 +19,7 @@ export class CardComponent extends MMRViewComponents implements OnInit {
     private viewContainerRef: ViewContainerRef,
     private dataStoreService: MmrDataStoreService,
   ) {
-    super();
+
    }
 
   ngOnInit() {

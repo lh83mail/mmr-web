@@ -12,8 +12,11 @@ import { TableComponent } from './views/table/table.component';
 import { FormComponent } from 'app/@theme/views/form/form.component';
 import { InputComponent } from 'app/@theme/views/form/fields/input/input.component';
 import { CommonModule } from '@angular/common';
+import { MmrViewComponent } from 'app/@theme/views/mmr-view.component';
 
 const components = [
+  MmrViewComponent,
+  
   CardComponent,
   TableComponent,
 

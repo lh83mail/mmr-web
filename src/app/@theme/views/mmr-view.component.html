@@ -1,0 +1,12 @@
+<mat-toolbar class="content-header" color="primary" >{{viewJson?.title}}</mat-toolbar>
+
+<div class="content-view">
+  <button (click)="donave()">donav</button>
+  <button (click)="donave2()">donav2</button>
+  <ng-template *ngFor="let option of viewJson?.children"  mmrLoadView [options]="option"></ng-template>
+</div>
+
+<mat-toolbar class="content-footer" color="primary">
+  <a href="https://material.angular.io" target="_blank">meterial2</a>
+  <a href="https://angular.cn/docs" target="_blank">angular docs</a>
+</mat-toolbar>

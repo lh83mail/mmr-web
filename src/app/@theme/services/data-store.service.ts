@@ -5,7 +5,7 @@ import * as VIEWS from './mock/data';
 import {RemoteExecutor} from './cmd/cmd-excutors';
 import {Command, CommandResponse,  MmrDataStoreService, RootView} from './interfaces';
 import * as executors from './cmd/cmd-excutors';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class DataStoreService extends MmrDataStoreService {
@@ -13,8 +13,8 @@ export class DataStoreService extends MmrDataStoreService {
   rootView: RootView;
   dsInstance = {};
 
-  constructor(httpClient: Http){
-    super()
+  constructor(httpClient: HttpClient) {
+    super();
   }
 
   setupViewId(viewId: string, view: RootView) {
