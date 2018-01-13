@@ -8,6 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "使用Chrome调试",
+            "port": 9222,
             "url": "http://localhost:4200",
             "webRoot": "${workspaceFolder}"
         }

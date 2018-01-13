@@ -3,7 +3,7 @@ import {CommandExecutor, CommandResponse, Command, MmrDataStoreService} from "..
 import { ComponentRef } from "@angular/core";
 import { HttpClient } from "@angular/common/http/src/client";
 import { MmrConfiguration } from "app/@theme/services";
-import 'rxjs/operator/map'
+import 'rxjs/add/operator/map'
 import 'rxjs/operator/toPromise'
 import { HttpEvent, HttpResponse } from "@angular/common/http";
 
@@ -43,7 +43,8 @@ export class RemoteExecutor extends CommandExecutor {
 
     const method = this.cmd.args.method || 'GET';
     const options:any = {
-      params: this.cmd.args.params
+      params: this.cmd.args.params,
+      observe: 'response',
     };
 
     if ((method == 'POST' || method == 'PUT') && this.cmd.args.body) {
@@ -64,21 +65,28 @@ export class RemoteExecutor extends CommandExecutor {
   //     withCredentials?: boolean;
   // }): Observable<HttpEvent<any>>;
 
-    return this.httpClient.request(
+    return this.httpClient.request<HttpResponse<any>>(
         method,
         this.mmrConfiguration.getRemoteCommandUrl(this.cmd.command),
         options
-    )
-    .map(event => {
-      if (event instanceof HttpResponse) {
+    ).map(response => {
+      if (response instanceof HttpResponse) {
         return {
-          status: '' + event.status,
+          status: '' + response.status,
           command: this.cmd,
-          data: event.body
+          data: response.body
         }
       }
     })
-    .toPromise();
+    .toPromise()
+    .catch(response => {
+      if (response instanceof HttpResponse) {
+        return {
+          status: '' + 500,
+          command: this.cmd
+        }
+     }
+    });
   }
 }
 

@@ -18,19 +18,14 @@ export class TableComponent implements OnInit {
 
   constructor(
     private dataStoreService: MmrDataStoreService,
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    console.log('here 7');
     this.displayedColumns = this.columns.map(c => c.name);
-
     if (this.runtime && this.runtime.init) {
-      this.dataStoreService.execute(this.runtime.init)
-        .then(response => {
-          this.dataSource = new ExampleDataSource(response.data.data);
+       this.dataStoreService.execute(this.runtime.init).then(response => {
+          this.dataSource = new ExampleDataSource(response.data.data || []);
         })
-      ;
     }
   }
 
