@@ -35,7 +35,7 @@ export class DataStoreService extends MmrDataStoreService {
    * @param {Command} command
    * @returns {Promise<CommandResponse>}
    */
-  execute(command: Command): Promise<CommandResponse> {
+  execute(command: Command, component: any): Promise<CommandResponse> {
 
     // 解析一个命令执行器, 选择顺序:
     // 1. 选择本地命令
@@ -43,12 +43,12 @@ export class DataStoreService extends MmrDataStoreService {
     let executor = null;
     for (const e in executors) {
       if (executors[e].name == command.command) {
-        executor = new executors[e](command, this);
+        executor = new executors[e](command, this, component);
       }
     }
 
     if (executor == null) {
-      executor = new RemoteExecutor(command, this, this.httpClient, this.mmrConfiguration);
+      executor = new RemoteExecutor(command, this, component, this.httpClient, this.mmrConfiguration);
     }
 
     return executor.execute();

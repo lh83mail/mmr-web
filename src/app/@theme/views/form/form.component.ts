@@ -32,17 +32,20 @@ export class FormComponent implements OnInit {
   }
 
   submit() {
-    console.log('form-vlaues', this.formGroup.value);
     this.dataStoreService.execute({
       command: 'submit-form',
       args: {
-        data: this.formGroup.value
+        body: this.formGroup.value
       }
-    })
+    }, this)
     .then(response => {
       console.log('submited', response);
+      if (response.status == '200') {
+        this.formGroup.setValue(response.data);
+      }
     });
   }
+
 
   load() {}
 }

@@ -7,7 +7,7 @@ export abstract class MmrDataStoreService {
     mmrConfiguration: MmrConfiguration,
     httpClient: HttpClient){}
 
-  abstract execute(cmd: Command): Promise<CommandResponse>;
+  abstract execute(cmd: Command, component: any): Promise<CommandResponse>;
 
   abstract setupViewId(viewId: string, rootView: RootView): void;
 
@@ -37,9 +37,12 @@ export interface CommandResponse {
 export abstract class CommandExecutor {
   cmd: Command;
   dataStoreService: MmrDataStoreService;
-  constructor(cmd: Command, dataStoreService: MmrDataStoreService) {
+  component: Component;
+
+  constructor(cmd: Command, dataStoreService: MmrDataStoreService, component:Component) {
     this.cmd = cmd;
     this.dataStoreService = dataStoreService;
+    this.component = component;
   }
   abstract execute(): Promise<CommandResponse>;
 }

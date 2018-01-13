@@ -1,6 +1,6 @@
 
 import {CommandExecutor, CommandResponse, Command, MmrDataStoreService} from "../interfaces";
-import { ComponentRef } from "@angular/core";
+import { ComponentRef, Component } from "@angular/core";
 import { HttpClient } from "@angular/common/http/src/client";
 import { MmrConfiguration } from "app/@theme/services";
 import 'rxjs/add/operator/map'
@@ -27,10 +27,11 @@ export class NavigateViewExecutor extends CommandExecutor {
 export class RemoteExecutor extends CommandExecutor {
   constructor(cmd: Command,
     dataStoreService: MmrDataStoreService,
+    component: Component,
     private httpClient: HttpClient,
     private mmrConfiguration: MmrConfiguration
   ) {
-    super(cmd, dataStoreService);
+    super(cmd, dataStoreService, component);
   }
 
   execute(): Promise<CommandResponse> {
@@ -94,7 +95,7 @@ export class ViewAction extends CommandExecutor {
 
   execute(): Promise<CommandResponse> {
     const cmd = this.cmd.args['action'];
-    const action = MMR_COMPONENT_FINDER.findComponetInstance(cmd);
+    const action = MMR_COMPONENT_FINDER.findComponetInstance(cmd, this.component);
     if (action == null) {
       throw new Error('找不到指定的命令');
     }
@@ -115,8 +116,48 @@ export class Action {
 
 export class CommponetFinder {
 
-  findComponetInstance(cmd: string): Action {
-    return null;
+  findComponetInstance(cmd: string, commponent: any): Action {
+    const cmds = cmd.split(".");
+    let next = commponent.__mmrComponentRef;
+    let i = 0;
+    let inst = null;
+
+    function find(id, mmrComponentRef) {
+      if (mmrComponentRef == null) {
+        return null;
+      }
+
+      if (mmrComponentRef._componentRef.instance.id == id) {
+        return mmrComponentRef;
+      }
+
+      const children = mmrComponentRef.children;
+      if (children == null || children.length == 0) {
+        return null;
+      }
+
+      for (const e of children) {
+        mmrComponentRef = find(id, e);
+        if (mmrComponentRef != null) {
+          return mmrComponentRef;
+        }
+      }
+
+      return null;
+    }
+
+    next = find(cmds[0], commponent.__mmrComponentRef);
+    for (let i = 1; i < cmds.length - 1 && next != null; i++) {
+      next = find(cmds[i], next);
+    }
+
+    if (next == null) {
+      // not found
+    }
+    const act = new Action();
+    act.ref  =  next._componentRef.instance[cmds[cmds.length - 1]];
+    act.target = next._componentRef.instance;
+    return act;
   }
 
 }
