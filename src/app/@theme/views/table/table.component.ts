@@ -20,10 +20,18 @@ export class TableComponent implements OnInit {
     private dataStoreService: MmrDataStoreService,
   ) {}
 
+  /**
+   * 初始化UI
+   */
+  initView() {
+
+  }
+
   ngOnInit() {
+    this.initView();
     this.displayedColumns = this.columns.map(c => c.name);
     if (this.runtime && this.runtime.init) {
-       this.dataStoreService.execute(this.runtime.init).then(response => {
+       this.dataStoreService.execute(this.runtime.init, this).then(response => {
           this.dataSource = new ExampleDataSource(response.data.data || []);
         })
     }
@@ -33,7 +41,7 @@ export class TableComponent implements OnInit {
    * 加载数据
    */
   loadData() {
-    this.dataStoreService.execute({command: 'load-data'})
+    this.dataStoreService.execute({command: 'load-data'}, this)
       .then(res => this.dataSource = new ExampleDataSource(res.data));
   }
 

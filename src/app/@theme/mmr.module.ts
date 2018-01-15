@@ -17,7 +17,7 @@ import { MmrConfiguration } from 'app/@theme';
 
 const components = [
   MmrViewComponent,
-  
+
   CardComponent,
   TableComponent,
 

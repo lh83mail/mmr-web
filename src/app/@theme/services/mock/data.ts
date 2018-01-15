@@ -35,12 +35,11 @@ export const TABLE_VIEW = {
         id:'user-grid',
         type: 'table',
         columns: [
-          {name:"position", text: "序号"},
-          {name:"name", text: "姓名"},
-          {name:"weight", text: "体重"},
-          {name:"symbol", text: "标识"},
+          {name:"position", text: "序号", filterable: true, quickFilter: true},
+          {name:"name",     text: "姓名", filterable: true, sortable: true},
+          {name:"weight",   text: "体重", filterable: true },
+          {name:"symbol",   text: "标识" },
         ],
-
         runtime: {
           'init': {
             command: 'list-data',
@@ -54,9 +53,8 @@ export const TABLE_VIEW = {
     footer: {}
   }
 ],
-dataStore: {
-    "ds1" : {
-      description: "用户数据",
+dataStores: {
+    'ds1' : {
       dsType : 'local',
       dataType: 'set',
       data:  [

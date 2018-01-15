@@ -7,18 +7,28 @@ import {Command, CommandResponse,  MmrDataStoreService, RootView} from './interf
 import * as executors from './cmd/cmd-excutors';
 import { HttpClient } from '@angular/common/http';
 import { MmrConfiguration } from './config-interface';
+import { DataStoreManager } from './data-model';
 
 
 @Injectable()
 export class DataStoreService extends MmrDataStoreService {
+
   viewId: string;
   rootView: RootView;
-  dsInstance = {};
-  
+  __dataStoreManager__: DataStoreManager;
+
   constructor(
     private mmrConfiguration: MmrConfiguration,
     private httpClient: HttpClient) {
     super(mmrConfiguration, httpClient);
+  }
+
+  setDataStoreManager(dataStoreManager: DataStoreManager): void {
+    this.__dataStoreManager__ = dataStoreManager;
+  }
+
+  getDataStoreManager(): DataStoreManager {
+    return this.__dataStoreManager__;
   }
 
   setupViewId(viewId: string, view: RootView) {
@@ -42,7 +52,7 @@ export class DataStoreService extends MmrDataStoreService {
     // 2. 选择远程命令
     let executor = null;
     for (const e in executors) {
-      if (executors[e].name == command.command) {
+      if (executors[e].name === command.command) {
         executor = new executors[e](command, this, component);
       }
     }
@@ -58,13 +68,13 @@ export class DataStoreService extends MmrDataStoreService {
    * 加载初始视图
    * @param {string} viewIdxs
    */
-  loadView(viewId: string) :Promise<any> {
+  loadView(viewId: string): Promise<any> {
     console.log('info', VIEWS)
     let v = {};
     for (const o in VIEWS) {
       if (VIEWS[o].id === viewId) v = VIEWS[o];
     }
-    
+
     return Promise.resolve(v);
   }
 

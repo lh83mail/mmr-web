@@ -2,7 +2,7 @@ import { NgModule, NgZone, ViewChildren, Component } from '@angular/core';
 import { MmrDataStoreService, DataStoreService, RootView } from 'app/@theme/services';
 import { MMRLoadViewDirective } from 'app/@theme/mmr.directive';
 import { ActivatedRoute, Router } from '@angular/router'
-import { MmrConfiguration } from 'app/@theme';
+import { MmrConfiguration, DataStoreManager } from 'app/@theme';
 
 @Component({
   selector: 'mmr-view',
@@ -20,6 +20,7 @@ export class MmrViewComponent {
   @ViewChildren(MMRLoadViewDirective) __mmcl;
 
   viewId: string;
+  dataSotreManager: DataStoreManager;
 
   constructor(
     private _ngZone: NgZone,
@@ -34,18 +35,18 @@ export class MmrViewComponent {
     })
   }
 
-
-  ngOnInit() {
-
-  }
-
   initView(viewId: string) {
     this.viewId = viewId;
+
     this.dataStoreService.setupViewId(this.viewId, new MmrRootView(
       this.dataStoreService, this
     ));
     this.dataStoreService.loadView(viewId)
       .then(d => this.viewJson = d);
+
+    this.dataSotreManager = DataStoreManager.createManager(this.viewJson.dataStores)
+
+    this.dataStoreService.setDataStoreManager(this.dataSotreManager);
   }
 
   navigateView(viewId: string) {

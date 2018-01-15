@@ -40,7 +40,7 @@ export class FormComponent implements OnInit {
     }, this)
     .then(response => {
       console.log('submited', response);
-      if (response.status == '200') {
+      if (response.status === 200) {
         this.formGroup.setValue(response.data);
       }
     });

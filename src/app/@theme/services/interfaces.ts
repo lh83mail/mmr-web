@@ -1,11 +1,14 @@
 import {Component} from '@angular/core';
-import { MmrConfiguration } from 'app/@theme';
+import { MmrConfiguration, DataStoreManager } from 'app/@theme';
 import { HttpClient } from '@angular/common/http';
 
 export abstract class MmrDataStoreService {
   constructor(
     mmrConfiguration: MmrConfiguration,
-    httpClient: HttpClient){}
+    httpClient: HttpClient) {}
+
+  abstract setDataStoreManager(dataStoreManager: DataStoreManager): void;
+  abstract getDataStoreManager(): DataStoreManager;
 
   abstract execute(cmd: Command, component: any): Promise<CommandResponse>;
 
@@ -29,9 +32,22 @@ export interface Command {
 }
 
 export interface CommandResponse {
-  status: string;
+  /**
+   * 命令运行结果代码
+   */
+  status: number;
+  /**
+   * 关联的命令
+   */
   command: Command;
+  /**
+   * 实际数据
+   */
   data?: any;
+  /**
+   * 运行结果可读消息
+   */
+  message?: string;
 }
 
 export abstract class CommandExecutor {
@@ -39,7 +55,7 @@ export abstract class CommandExecutor {
   dataStoreService: MmrDataStoreService;
   component: Component;
 
-  constructor(cmd: Command, dataStoreService: MmrDataStoreService, component:Component) {
+  constructor(cmd: Command, dataStoreService: MmrDataStoreService, component: Component) {
     this.cmd = cmd;
     this.dataStoreService = dataStoreService;
     this.component = component;
