@@ -42,14 +42,14 @@
 </div>
 
 
-<mat-table #table [dataSource]="dataSource">
+<mat-table #table [dataSource]="__dataSource__" matSort>
 
   <ng-container *ngFor="let c of columns" [matColumnDef]="c.name">
-    <mat-header-cell *matHeaderCellDef> {{c.text}} </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header > {{c.text}} </mat-header-cell>
     <mat-cell *matCellDef="let element" > {{element[c.name]}} </mat-cell>
   </ng-container>
 
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  <mat-header-row *matHeaderRowDef="__displayedColumns__"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: __displayedColumns__;"></mat-row>
 
 </mat-table>

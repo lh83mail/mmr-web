@@ -42,11 +42,11 @@ export class MmrViewComponent {
       this.dataStoreService, this
     ));
     this.dataStoreService.loadView(viewId)
-      .then(d => this.viewJson = d);
-
-    this.dataSotreManager = DataStoreManager.createManager(this.viewJson.dataStores)
-
-    this.dataStoreService.setDataStoreManager(this.dataSotreManager);
+      .then(d => {
+        this.viewJson = d
+        this.dataSotreManager = DataStoreManager.createManager(this.viewJson.dataStores)
+        this.dataStoreService.setDataStoreManager(this.dataSotreManager);
+      });
   }
 
   navigateView(viewId: string) {

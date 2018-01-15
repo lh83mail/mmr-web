@@ -28,6 +28,7 @@ export enum ValueType {
     DATE,
 }
 
+
 export enum DataStoeType {
     LOCAL,
     REMOTE,
@@ -43,10 +44,10 @@ export interface DataStore {
 
 /**
  * 数据仓库管理器
- *  
+ *
  */
 export class DataStoreManager {
-    stores: any;
+    private stores:  {[key: string]: DataStore};
     /**
      * 根据配置创建数据仓库管理器实例
      *    配置格式： { [key:string]: DataStore }
@@ -55,7 +56,7 @@ export class DataStoreManager {
      *      value： DataStore配置
      * @param options
      */
-    static createManager(options: object): DataStoreManager {
+    static createManager(options: {[key: string]: DataStore}): DataStoreManager {
         if (options == null) {
             return null;
         }
@@ -63,5 +64,9 @@ export class DataStoreManager {
         const manager = new DataStoreManager();
         manager.stores = options;
         return manager;
+    }
+
+    lookupDataStore(dsName: any): DataStore {
+        return this.stores[dsName];
     }
 }

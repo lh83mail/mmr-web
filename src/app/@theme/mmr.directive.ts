@@ -1,4 +1,4 @@
-import {Directive, ElementRef, EmbeddedViewRef, ViewContainerRef, Input, Output, ComponentFactoryResolver, TemplateRef, EventEmitter, Injector, ComponentRef, ReflectiveInjector, Optional} from '@angular/core';
+import {Directive, ElementRef, EmbeddedViewRef, ViewContainerRef, Input, Output, ComponentFactoryResolver, TemplateRef, EventEmitter, Injector, ComponentRef, ReflectiveInjector, Optional, ApplicationRef} from '@angular/core';
 import { Direct } from 'protractor/built/driverProviders';
 import { MMRComponetRegisty } from 'app/@theme/mmr.service';
 import { MmrDataStoreService } from 'app/@theme/services';
@@ -30,6 +30,7 @@ export class MMRLoadViewDirective implements OnDestroy {
     private _hostDomElement: ElementRef,
     private componentFactoryResolver: ComponentFactoryResolver,
     @Optional() private parentMmrComponetRef: MmrComponentRef,
+    private _appRef: ApplicationRef,
     private __defaultInjector: Injector
   ) {
   }
@@ -66,7 +67,6 @@ export class MMRLoadViewDirective implements OnDestroy {
     }
 
     this.mmrComponentRef.componentRef = componentRef;
-  
   }
 
   ngOnDestroy(): void {

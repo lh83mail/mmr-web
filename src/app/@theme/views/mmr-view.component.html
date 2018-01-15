@@ -3,7 +3,7 @@
 <div class="content-view">
   <button (click)="donave()">donav</button>
   <button (click)="donave2()">donav2</button>
-  <ng-template *ngFor="let option of viewJson?.children"  mmrLoadView [options]="option"></ng-template>
+  <ng-container *ngFor="let option of viewJson?.children"  mmrLoadView [options]="option"></ng-container>
 </div>
 
 <mat-toolbar class="content-footer" color="primary">

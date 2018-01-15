@@ -1,5 +1,5 @@
-// attribute :owner key, value, desc, valueType=[string, object, array, enum], isRequire
-// object id , attriutes, desc
+import { ValueType, DataStoeType } from "app/@theme";
+
 export const TABLE_VIEW = {
   id: 'table-view',
   title: '用户列表',
@@ -34,11 +34,12 @@ export const TABLE_VIEW = {
       {
         id:'user-grid',
         type: 'table',
+        dsName: 'ds0',
         columns: [
-          {name:"position", text: "序号", filterable: true, quickFilter: true},
-          {name:"name",     text: "姓名", filterable: true, sortable: true},
-          {name:"weight",   text: "体重", filterable: true },
-          {name:"symbol",   text: "标识" },
+          {name:"position",  filterable: true, quickFilter: true},
+          {name:"name",     filterable: true, sortable: true},
+          {name:"weight",   text: "体重c", filterable: true },
+          {name:"symbol",  },
         ],
         runtime: {
           'init': {
@@ -54,9 +55,35 @@ export const TABLE_VIEW = {
   }
 ],
 dataStores: {
-    'ds1' : {
-      dsType : 'local',
-      dataType: 'set',
+    'ds0' : {
+      id: 'ds0',
+      dsType: 0,
+      model: {
+        id: 'model1',
+        attributes: {
+          position: {
+            id: 'position',
+            valueType: 0,
+            desc: '序号'
+          },
+          name: {
+            id: 'name',
+            valueType: 0,
+            desc: '姓名'
+          },
+          weight: {
+            id: 'weight',
+            valueType: 0,
+            desc: '体重'
+          },
+          symbol: {
+            id: 'symbol',
+            valueType: 0,
+            desc: '代号'
+          }
+        }
+      },
+      isSet: true,
       data:  [
         {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
         {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
