@@ -4,22 +4,25 @@ import { ComponentRef, Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http/src/client';
 import { MmrConfiguration } from 'app/@theme/services';
 import 'rxjs/add/operator/map'
-import 'rxjs/operator/toPromise'
+import 'rxjs/add/operator/catch'
+import {catchError} from 'rxjs/operators/catchError';
+import {of as observableOf} from 'rxjs/observable/of'
 import { HttpEvent, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 
 export class LoadViewExecutor extends  CommandExecutor {
-  execute(): Promise<CommandResponse> {
+  execute(): Observable<CommandResponse> {
     this.dataStoreService.getRootView().loadView(this.cmd.args['viewId']);
-    return Promise.resolve({status: 200, command: this.cmd});
+    return observableOf({status: 200, command: this.cmd});
   }
 }
 
 export class NavigateViewExecutor extends CommandExecutor {
 
-  execute(): Promise<CommandResponse> {
+  execute(): Observable<CommandResponse> {
     const viewId = this.cmd.args['viewId'];
 
-    return Promise.resolve({status: 200, command: this.cmd});
+    return observableOf({status: 200, command: this.cmd});
   }
 
 }
@@ -34,7 +37,7 @@ export class RemoteExecutor extends CommandExecutor {
     super(cmd, dataStoreService, component);
   }
 
-  execute(): Promise<CommandResponse> {
+  execute(): Observable<CommandResponse> {
     const method = this.cmd.args.method || 'GET';
     const options: any = {
       params: this.cmd.args.params,
@@ -49,7 +52,8 @@ export class RemoteExecutor extends CommandExecutor {
         method,
         this.mmrConfiguration.getRemoteCommandUrl(this.cmd.command),
         options
-    ).map(response => {
+    )
+    .map(response => {
       if (response instanceof HttpResponse) {
         return {
           status: response.status,
@@ -57,29 +61,28 @@ export class RemoteExecutor extends CommandExecutor {
           data: response.body
         }
       }
-    })
-    .toPromise()
-    .catch(response => {
-      if (response instanceof HttpErrorResponse) {
-        return {
-          status: response.status,
-          command: this.cmd,
-          message: response.message
-        }
-     }
     });
+    // .catchError(response => {
+    //   if (response instanceof HttpErrorResponse) {
+    //     return {
+    //       status: response.status,
+    //       command: this.cmd,
+    //       message: response.message
+    //     }
+    //  }
+    // });
   }
 }
 
 export class ViewAction extends CommandExecutor {
 
-  execute(): Promise<CommandResponse> {
+  execute(): Observable<CommandResponse> {
     const cmd = this.cmd.args['action'];
     const action = MMR_COMPONENT_FINDER.findComponetInstance(cmd, this.component);
     if (action == null) {
       throw new Error('找不到指定的命令');
     }
-    return Promise.resolve({status: 200, command: this.cmd, data: action.execute()});
+    return observableOf({status: 200, command: this.cmd, data: action.execute()});
   }
 
 }

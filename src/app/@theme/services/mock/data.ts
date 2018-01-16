@@ -48,6 +48,10 @@ export const TABLE_VIEW = {
               viewId: 'table-view',
             }
           }
+        },
+        pageable: {
+          pageSize: 20,
+          pageSizeOptions: [5, 10, 25, 300]
         }
       }
     ],

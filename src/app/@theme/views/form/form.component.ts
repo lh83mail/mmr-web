@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms/src/model';
 import { FormBuilder } from '@angular/forms';
 import { MMRDirective, MMRLoadViewDirective } from 'app/@theme/mmr.directive';
 import { MmrDataStoreService } from 'app/@theme/services';
+import 'rxjs/add/operator/toPromise';
 
 @Component({
   selector: 'app-form',
@@ -38,6 +39,7 @@ export class FormComponent implements OnInit {
         body: this.formGroup.value
       }
     }, this)
+    .toPromise()
     .then(response => {
       console.log('submited', response);
       if (response.status === 200) {

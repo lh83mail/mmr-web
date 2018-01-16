@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import { MmrConfiguration, DataStoreManager } from 'app/@theme';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 
 export abstract class MmrDataStoreService {
   constructor(
@@ -10,11 +11,11 @@ export abstract class MmrDataStoreService {
   abstract setDataStoreManager(dataStoreManager: DataStoreManager): void;
   abstract getDataStoreManager(): DataStoreManager;
 
-  abstract execute(cmd: Command, component: any): Promise<CommandResponse>;
+  abstract execute(cmd: Command, component: any): Observable<CommandResponse>;
 
   abstract setupViewId(viewId: string, rootView: RootView): void;
 
-  abstract loadView(viewId: string): Promise<any>;
+  abstract loadView(viewId: string): Observable<any>;
 
   abstract getRootView(): RootView;
 }
@@ -60,5 +61,5 @@ export abstract class CommandExecutor {
     this.dataStoreService = dataStoreService;
     this.component = component;
   }
-  abstract execute(): Promise<CommandResponse>;
+  abstract execute(): Observable<CommandResponse>;
 }

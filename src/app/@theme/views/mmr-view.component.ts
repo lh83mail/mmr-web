@@ -3,6 +3,8 @@ import { MmrDataStoreService, DataStoreService, RootView } from 'app/@theme/serv
 import { MMRLoadViewDirective } from 'app/@theme/mmr.directive';
 import { ActivatedRoute, Router } from '@angular/router'
 import { MmrConfiguration, DataStoreManager } from 'app/@theme';
+import 'rxjs/add/operator/toPromise';
+
 
 @Component({
   selector: 'mmr-view',
@@ -42,6 +44,7 @@ export class MmrViewComponent {
       this.dataStoreService, this
     ));
     this.dataStoreService.loadView(viewId)
+      .toPromise()
       .then(d => {
         this.viewJson = d
         this.dataSotreManager = DataStoreManager.createManager(this.viewJson.dataStores)

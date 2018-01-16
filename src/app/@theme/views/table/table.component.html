@@ -45,7 +45,7 @@
 <mat-table #table [dataSource]="__dataSource__" matSort>
 
   <ng-container *ngFor="let c of columns" [matColumnDef]="c.name">
-    <mat-header-cell *matHeaderCellDef mat-sort-header > {{c.text}} </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!c.sortable"> {{c.text}} </mat-header-cell>
     <mat-cell *matCellDef="let element" > {{element[c.name]}} </mat-cell>
   </ng-container>
 
@@ -53,3 +53,8 @@
   <mat-row *matRowDef="let row; columns: __displayedColumns__;"></mat-row>
 
 </mat-table>
+<mat-paginator *ngIf="__enable_pagtion__" [length]="__total__"
+              [pageSize]="__pageOptions__.pageSize"
+              [pageSizeOptions]="__pageOptions__.pageSizeOptions"
+              (page)="__pageEvent__ = $event"> 
+</mat-paginator>

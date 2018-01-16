@@ -1,6 +1,7 @@
 import {Component, Injectable, InjectionToken} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
+import {of as observableOf} from 'rxjs/observable/of'
 import * as VIEWS from './mock/data';
 import {RemoteExecutor} from './cmd/cmd-excutors';
 import {Command, CommandResponse,  MmrDataStoreService, RootView} from './interfaces';
@@ -43,9 +44,9 @@ export class DataStoreService extends MmrDataStoreService {
   /**
    * 执行命令
    * @param {Command} command
-   * @returns {Promise<CommandResponse>}
+   * @returns {Observable<CommandResponse>}
    */
-  execute(command: Command, component: any): Promise<CommandResponse> {
+  execute(command: Command, component: any): Observable<CommandResponse> {
 
     // 解析一个命令执行器, 选择顺序:
     // 1. 选择本地命令
@@ -68,14 +69,14 @@ export class DataStoreService extends MmrDataStoreService {
    * 加载初始视图
    * @param {string} viewIdxs
    */
-  loadView(viewId: string): Promise<any> {
+  loadView(viewId: string): Observable<any> {
     console.log('info', VIEWS)
     let v = {};
     for (const o in VIEWS) {
       if (VIEWS[o].id === viewId) v = VIEWS[o];
     }
 
-    return Promise.resolve(v);
+    return observableOf(v);
   }
 
 }
