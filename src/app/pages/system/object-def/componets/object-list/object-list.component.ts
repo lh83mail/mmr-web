@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {DataSource} from '@angular/cdk/collections';
 import {Observable} from 'rxjs/Observable';
-import 'rxjs/observable/of'
+import 'rxjs/add/observable/of'
 
 @Component({
   selector: 'app-object-list',

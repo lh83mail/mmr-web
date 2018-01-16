@@ -7,18 +7,41 @@ import {catchError} from 'rxjs/operators/catchError';
 import {map} from 'rxjs/operators/map';
 import {startWith} from 'rxjs/operators/startWith';
 import {switchMap} from 'rxjs/operators/switchMap';
-import {MmrDataStoreService} from '../../services/interfaces';
+import {MmrDataStoreService, ValueType} from '../../services';
+import {MmrAttribute, DataStore } from '../../services';
 import { viewClassName } from '@angular/compiler';
-import { DataStore } from 'app/@theme';
 import {MatSort, MatButton, PageEvent, MatPaginator} from '@angular/material';
 import { MatTableDataSource } from './table-data-source';
 import { AfterContentInit, AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import { MmrFilterField } from '../../mmr-view.model'
+import { MMRComponetRegisty } from '../../mmr.service';
+import { getEditor } from '../utils';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition
+} from '@angular/animations';
 
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.css']
+  styleUrls: ['./table.component.scss'],
+  animations: [
+    trigger('shrinkOut', [
+      state('in', style({height: '*'})),
+      transition('void => *', [
+        style({height: 0}),
+        animate(250)
+      ]),
+      transition('* => void', [
+        style({height: '*'}),
+        animate(250, style({height: 0}))
+      ])
+    ])
+  ]
 })
 export class TableComponent implements OnInit, AfterViewInit {
   dsName: string;
@@ -32,16 +55,26 @@ export class TableComponent implements OnInit, AfterViewInit {
   __pageEvent__: PageEvent;
   __pageOptions__: any;
 
-  __dataSource__: MatTableDataSource<any>;
+  __dataSource__: MatTableDataSource<any[]> = new MatTableDataSource();
   __displayedColumns__;
 
+  // 视图状态
   __isLoading__: boolean;
+  __enableQuickFilterBar__: boolean;
+  __moreFilterExpanded__: boolean;
+
+  // 过滤条件
+  private quickerFilterFields: Array<MmrFilterField>;
+  private filterFields: Array<MmrFilterField>;
 
   @ViewChild(MatSort) __sort__: MatSort;
   @ViewChild(MatPaginator) paginator;
 
+
+  private ds: DataStore;
+
   constructor(
-    private dataStoreService: MmrDataStoreService,
+    private dataStoreService: MmrDataStoreService
   ) {}
 
   /**
@@ -49,38 +82,26 @@ export class TableComponent implements OnInit, AfterViewInit {
    */
   initView() {
     this.__displayedColumns__ = this.columns.map(c => c.name);
-    const ds: DataStore = this.dataStoreService.getDataStoreManager().lookupDataStore(this.dsName);
+
+    this.ds = this.dataStoreService.getDataStoreManager().lookupDataStore(this.dsName);
 
     this.columns.forEach(c => {
-      const attr = ds.model.attributes[c.name];
-      c.text = c.text || attr.desc || c.name;
+      c.text = c.text || this.getAttribute(c.name)!.desc || c.name;
     });
 
     //
-    this.__setupPageable();
+    this.setupPageable();
+    this.setupFilterView();
+  }
+
+  private getAttribute(name: string): MmrAttribute {
+    const attr = this.ds.model.attributes[name];
+    return attr;
   }
 
 
   ngOnInit() {
     this.initView();
-
-    if (this.runtime && this.runtime.init) {
-       this.dataStoreService.execute(this.runtime.init, this)
-       .toPromise()
-       .then(response => {
-          this.__dataSource__ = new MatTableDataSource(response.data.data || []);
-          this.__dataSource__.sort = this.__sort__;
-        })
-    }
-  }
-
-  /**
-   * 加载数据
-   */
-  loadData() {
-    this.dataStoreService.execute({command: 'load-data'}, this)
-    .toPromise()
-      .then(res => this.__dataSource__ = new MatTableDataSource(res.data));
   }
 
   ngAfterViewInit() {
@@ -97,19 +118,41 @@ export class TableComponent implements OnInit, AfterViewInit {
         startWith({}),
         switchMap(() => {
           this.__isLoading__ = true;
+
+          const args = Object.assign(this.runtime.init.args || {}, {
+            'sort': this.__sort__.active,
+            'direction': this.__sort__.direction,
+            'pageIndex': this.paginator == null ? 0 : this.paginator.pageIndex
+          });
+          this.runtime.init.args = args;
+
           return this.dataStoreService.execute(this.runtime.init, this);
+        }),
+        map(cmdResponse => {
+          this.__isLoading__ = false;
+          if (this.paginator) {
+            this.paginator.length = cmdResponse.data.total || 0;
+          }
+          return cmdResponse.data.data;
         })
       )
-      .map(cmdResponse => {
-
-      });
+      .subscribe(data => {
+        this.__dataSource__.data = data;
+      })
   }
 
+ 
+  /**
+   * 展开／关闭高级过滤
+   */
+  toggleAdvanceFilter() {
+    this.__moreFilterExpanded__ = !this.__moreFilterExpanded__;
+  }
 
   /**
    * 配置分页
    */
-  __setupPageable() {
+  private setupPageable() {
     if (this.pageable) {
       this.__enable_pagtion__ =  true;
       const tmp = {
@@ -133,6 +176,45 @@ export class TableComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * 设置过滤条件界面
+   */
+  private setupFilterView() {
+
+    this.quickerFilterFields = new Array<MmrFilterField>();
+
+    this.filterFields = this.columns
+    .filter(c => (c.quickFilter === true || c.filterable === true))
+    .map(c => {
+      const attr = this.getAttribute(c.name);
+      if (attr == null) {
+        return null;
+      }
+
+      const field =  this.resloveEditor(attr);
+      field.desc = c.text || field.desc;
+
+      if (c.quickFilter) {
+        this.quickerFilterFields.push(field);
+      }
+
+      return field;
+    });
+
+    this.__enableQuickFilterBar__ = this.quickerFilterFields.length > 0;
+
+  }
+
+  private resloveEditor(attr: MmrAttribute): MmrFilterField {
+   return  {
+      id: attr.id,
+      type: getEditor(attr.valueType),
+      valueType:  attr.valueType,
+      desc: attr.desc,
+      value: attr.value,
+    };
+  }
+
 }
 
 export class ExampleDataSource extends DataSource<any> {
@@ -154,3 +236,11 @@ export interface PageOption {
   pageSize?: number;
   pageSizeOptions?: string | Array<number>;
 }
+
+
+// interface FilterView {
+//   name: string;
+//   valueType: ValueType;
+//   value: any;
+// }
+

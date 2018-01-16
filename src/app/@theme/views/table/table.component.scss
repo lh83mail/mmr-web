@@ -1,0 +1,19 @@
+.mmr-filter-form  {
+    overflow: hidden;
+    /deep/ .mat-grid-tile .mat-figure > * {
+        width: 100%;
+    }
+}
+
+.mmr-quickfilter-form {
+    overflow: hidden;
+    display: flex;
+    flex-grow: 1;
+    /deep/ & > * {
+        width: 100%;
+    }
+
+    button {
+        width: auto;
+    }
+}

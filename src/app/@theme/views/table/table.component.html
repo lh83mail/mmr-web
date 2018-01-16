@@ -1,47 +1,29 @@
-<div class="example-header">
-  <mat-form-field>
-    <input matInput placeholder="Filter">
-  </mat-form-field> 
-  <mat-form-field>
-    <input matInput placeholder="Filter">
-  </mat-form-field> 
-  <mat-form-field>
-    <input matInput placeholder="Filter">
-  </mat-form-field> 
-  <mat-form-field>
-    <input matInput placeholder="Filter">
-  </mat-form-field> 
-  <button mat-icon-button>
+<div  [@shrinkOut] class="mmr-quickfilter-form" *ngIf="__enableQuickFilterBar__ && __moreFilterExpanded__ !== true" >
+  <ng-container class="mmr-full-width" *ngFor="let field of quickerFilterFields" mmrLoadView [options]="field"></ng-container>
+  <button mat-icon-button matTooltip="高级查询" (click)="toggleAdvanceFilter()">
     <mat-icon aria-label="Example icon-button with a heart icon">more_horiz</mat-icon>
   </button>      
 </div>
 
-<div class="example-header">
-    <mat-form-field>
-        <input matInput placeholder="Filter">
-    </mat-form-field> 
-    <mat-form-field>
-      <input matInput placeholder="Filter">
-    </mat-form-field> 
-    <mat-form-field>
-      <input matInput placeholder="Filter">
-    </mat-form-field> 
-    <mat-form-field>
-      <input matInput placeholder="Filter">
-    </mat-form-field> 
-</div>
-<div>
-    <button mat-button>
-        <mat-icon aria-label="Example icon-button with a heart icon">more_horiz</mat-icon>
-          确定
+<div *ngIf="__moreFilterExpanded__" class="mmr-filter-form" [@shrinkOut]>
+    <mat-grid-list cols="2" rowHeight="66px">
+        <mat-grid-tile *ngFor="let f of filterFields">
+            <ng-container mmrLoadView [options]="f" class="mmr-full-width"></ng-container>
+        </mat-grid-tile>                      
+    </mat-grid-list>
+    <div>
+        <button mat-button color="Primary">
+            <mat-icon aria-label="Example icon-button with a heart icon">search</mat-icon>
+              确定
         </button>  
-        <button mat-button>
-            <mat-icon aria-label="Example icon-button with a heart icon">more_horiz</mat-icon>
+        <button mat-button (click)="toggleAdvanceFilter()">
+            <mat-icon aria-label="Example icon-button with a heart icon">cancel</mat-icon>
             取消
         </button>  
+    </div>    
 </div>
 
-
+<!-- 数据表 -->
 <mat-table #table [dataSource]="__dataSource__" matSort>
 
   <ng-container *ngFor="let c of columns" [matColumnDef]="c.name">
@@ -55,6 +37,5 @@
 </mat-table>
 <mat-paginator *ngIf="__enable_pagtion__" [length]="__total__"
               [pageSize]="__pageOptions__.pageSize"
-              [pageSizeOptions]="__pageOptions__.pageSizeOptions"
-              (page)="__pageEvent__ = $event"> 
+              [pageSizeOptions]="__pageOptions__.pageSizeOptions"> 
 </mat-paginator>

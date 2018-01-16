@@ -6,6 +6,8 @@ import { createInjector } from '@angular/core/src/view/refs';
 import { Provider } from '@angular/core/src/di/provider';
 import { MmrComponentRef } from './services';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
+import { MmrViewOption } from './mmr-view.model';
+
 
 @Directive({
   selector: '[mmr-root]',
@@ -20,7 +22,7 @@ export class MMRDirective {
 })
 export class MMRLoadViewDirective implements OnDestroy {
 
-  __options;
+  __options: MmrViewOption;
   mmrComponentRef: MmrComponentRef;
 
   constructor(
@@ -35,7 +37,7 @@ export class MMRLoadViewDirective implements OnDestroy {
   ) {
   }
 
-  @Input() set options(arg: any) {
+  @Input() set options(arg: MmrViewOption) {
     this.__options = arg;
     this.loadComponent();
   }

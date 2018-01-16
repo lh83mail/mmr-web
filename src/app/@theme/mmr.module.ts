@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {
   MatSelectModule, MatToolbarModule, MatSidenavModule, MatGridListModule, MatCardModule,
-  MatButtonModule, MatInputModule, MatIconModule, MatFormFieldModule, MatTableModule, MatSortModule, MatPaginatorModule
+  MatButtonModule, MatInputModule, MatIconModule, MatFormFieldModule, MatTableModule, MatSortModule, MatPaginatorModule, MatTooltipModule
 } from '@angular/material';
 import {CardComponent} from 'app/@theme/views/card/card.component';
 import {MMRDirective, MMRLoadViewDirective} from './mmr.directive';
@@ -39,6 +39,8 @@ const directives = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+ 
+    MatTooltipModule,
 
     MatToolbarModule,
     MatSidenavModule,

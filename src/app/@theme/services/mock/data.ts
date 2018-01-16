@@ -1,5 +1,3 @@
-import { ValueType, DataStoeType } from "app/@theme";
-
 export const TABLE_VIEW = {
   id: 'table-view',
   title: '用户列表',
@@ -36,10 +34,11 @@ export const TABLE_VIEW = {
         type: 'table',
         dsName: 'ds0',
         columns: [
-          {name:"position",  filterable: true, quickFilter: true},
-          {name:"name",     filterable: true, sortable: true},
-          {name:"weight",   text: "体重c", filterable: true },
+          {name:"position", filterable: true, quickFilter: true},
+          {name:"name", filterable: true, sortable: true},
+          {name:"weight",  text: "体重c", filterable: true },
           {name:"symbol",  },
+          {name:"symbol_", text: '操作'},
         ],
         runtime: {
           'init': {
@@ -149,23 +148,23 @@ export const ADD_USER_VIEW = {
             {
               id: 'position',
               type: 'input',
-              label: '序号',
+              desc: '序号',
               value: 0,
             },
             {
               id: 'name',
               type: 'input',
-              label: '姓名',
+              desc: '姓名',
             },
             {
               id: 'weight',
               type: 'input',
-              label: '体重',
+              desc: '体重',
             },
             {
               id: 'symbol',
               type: 'input',
-              label: '标识',
+              desc: '标识',
             }
           ],
 

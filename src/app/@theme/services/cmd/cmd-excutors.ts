@@ -61,7 +61,7 @@ export class RemoteExecutor extends CommandExecutor {
           data: response.body
         }
       }
-    });
+    })
     // .catchError(response => {
     //   if (response instanceof HttpErrorResponse) {
     //     return {
