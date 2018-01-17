@@ -1,11 +1,14 @@
 <div  [@shrinkOut] class="mmr-quickfilter-form" *ngIf="__enableQuickFilterBar__ && __moreFilterExpanded__ !== true" >
+    
   <ng-container class="mmr-full-width" *ngFor="let field of quickerFilterFields" mmrLoadView [options]="field"></ng-container>
   <button mat-icon-button matTooltip="高级查询" (click)="toggleAdvanceFilter()">
     <mat-icon aria-label="Example icon-button with a heart icon">more_horiz</mat-icon>
   </button>      
+
 </div>
 
 <div *ngIf="__moreFilterExpanded__" class="mmr-filter-form" [@shrinkOut]>
+
     <mat-grid-list cols="2" rowHeight="66px">
         <mat-grid-tile *ngFor="let f of filterFields">
             <ng-container mmrLoadView [options]="f" class="mmr-full-width"></ng-container>
@@ -20,7 +23,8 @@
             <mat-icon aria-label="Example icon-button with a heart icon">cancel</mat-icon>
             取消
         </button>  
-    </div>    
+    </div>   
+
 </div>
 
 <!-- 数据表 -->

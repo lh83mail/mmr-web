@@ -23,6 +23,8 @@ import {
   animate,
   transition
 } from '@angular/animations';
+import { FormBuilder } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -74,6 +76,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   private ds: DataStore;
 
   constructor(
+    private formBuilder: FormBuilder,
     private dataStoreService: MmrDataStoreService
   ) {}
 
@@ -176,12 +179,16 @@ export class TableComponent implements OnInit, AfterViewInit {
     }
   }
 
+  quickerFilterForm: FormGroup;
+  filterForm: FormGroup;
   /**
    * 设置过滤条件界面
    */
   private setupFilterView() {
 
-    this.quickerFilterFields = new Array<MmrFilterField>();
+    this.quickerFilterFields   = new Array<MmrFilterField>();
+    this.quickerFilterForm = this.formBuilder.group({});
+    this.filterForm = this.formBuilder.group({});
 
     this.filterFields = this.columns
     .filter(c => (c.quickFilter === true || c.filterable === true))
@@ -193,6 +200,7 @@ export class TableComponent implements OnInit, AfterViewInit {
 
       const field =  this.resloveEditor(attr);
       field.desc = c.text || field.desc;
+      field.formGroup = this.filterForm;
 
       if (c.quickFilter) {
         this.quickerFilterFields.push(field);
@@ -201,6 +209,10 @@ export class TableComponent implements OnInit, AfterViewInit {
       return field;
     });
 
+    this.filterForm.valueChanges.subscribe(xx => {
+      console.log('xxx', xx)
+    })
+ 
     this.__enableQuickFilterBar__ = this.quickerFilterFields.length > 0;
 
   }

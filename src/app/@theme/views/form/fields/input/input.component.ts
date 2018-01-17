@@ -26,9 +26,9 @@ export class InputComponent implements OnInit, MmrAttribute, MmrViewOption {
 
   ngOnInit() {
     this.control = new FormControl(this.value)
-    if (this.formGroup == null) {
-      this.formGroup = new FormGroup({});
-    }
+    // if (this.formGroup == null) {
+    //   this.formGroup = new FormGroup({});
+    // }
     this.formGroup.setControl(this.id, this.control);
   }
 
