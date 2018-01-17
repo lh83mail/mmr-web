@@ -18,7 +18,6 @@ export const TABLE_VIEW = {
       {
         position: 'top',
         children: [
-          { id:'table-view-button-query-users', type: 'button', text: '查询数据', command: 'user-grid.load' },
           { id:'table-view-button-add-user', type: 'button', text: '添加用户', command: {
             command: 'LoadViewExecutor',
             args: {
@@ -112,7 +111,12 @@ export const ADD_USER_VIEW = {
                 }
               }
             },
-            { type: 'button', text: '返回' },
+            { type: 'button', text: '返回' , command: {
+              command: 'LoadViewExecutor',
+              args: {
+               viewId: 'table-view'
+              }
+            }},
           ]
         },
       ],
@@ -156,17 +160,140 @@ export const ADD_USER_VIEW = {
   ]
 };
 
-export const USERS_LIST = {
-  id: 'users-list',
-  title: '用户列表',
+/**
+ * 模型定义页面
+ */
+export const MODEL_EDITOR = {
+  id: 'model-editor',
+  desc: '数据模型定义表单，用来定义对象模型',
+  title: '数据模型定义',
+
   children: [
     {
-      id: 'card1',
+      id: 'main-card',
       type: 'card',
-      title: '所有用户',
-      subTitle: '维护系统所有用户信息'
+      title: '模型信息',
+
+      toolbars: [
+        {
+          position: 'bottom',
+          children: [
+            { type: 'button', text: '保存',
+              command: {
+                command: 'ViewAction',
+                args: {
+                  action: 'form1.submit' 
+                }
+              }
+            },
+            { type: 'button', text: '返回' , command: {
+                command: 'LoadViewExecutor',
+                args: {
+                viewId: 'table-view'
+                }
+              }
+            },
+          ]
+        },
+      ],
+
+      children: [
+        {
+          id: 'form1',
+          type: 'form',
+          children: [
+            {
+              id: 'name',
+              type: 'input',
+              desc: '模型名称'
+            },
+            {
+              id: 'desc',
+              type: 'input',
+              desc: '模型简述'
+            }
+          ]
+        },
+        {
+          id: 'attributes-detail',
+          title: '属性列表',
+          type: 'table',
+          dsName: 'ds1',
+          columns: [
+            {name:"desc" },
+            {name:"type", },
+            {name:"owner", },
+          ],
+          runtime: {
+            'init': {
+              command: 'xlist-data',
+              args: {
+                viewId: 'model-editor',
+              }
+            }
+          },
+        }
+      ],
     }
-  ]
+
+  ],
+
+  dataStores: {
+    'ds0' : {
+      id: 'ds0',
+      dsType: 0,
+      model: {
+        id: 'model-basic',
+        attributes: {
+          id: {
+            id: 'id',
+            valueType: 0,
+            desc: '模型ID'
+          },
+          name: {
+            id: 'name',
+            valueType: 0,
+            desc: '模型名称'
+          },
+
+          desc: {
+            id: 'desc',
+            valueType: 0,
+            desc: '模型简述'
+          }
+        }
+      }
+    },
+
+    'ds1': {
+      id: 'ds1',
+      model: {
+        id: 'model-detail',
+        attributes: {
+          id: {
+            id: 'id',
+            valueType: 0,
+            desc: '属性ID'
+          },
+          owner: {
+            id: 'owner',
+            valueType: 0,
+            desc: '所有者'
+          },
+          type: {
+            id: 'type',
+            valueType: 0,
+            desc: '数据类型'
+          },
+          desc: {
+            id: 'desc',
+            valueType: 0,
+            desc: '属性说明'
+          }
+        }
+      }
+    }
+  }
 }
 
 /**

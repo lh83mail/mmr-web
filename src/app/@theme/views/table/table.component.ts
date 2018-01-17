@@ -123,11 +123,20 @@ export class TableComponent implements OnInit, AfterViewInit {
       }
     });
 
-    merge(this.__sort__.sortChange,
-      this.paginator.page,
-      this.filterChanges
-    )
-      .pipe(
+    let obs = null;
+    if (this.pageable) {
+      obs = merge(this.__sort__.sortChange,
+        this.paginator.page,
+        this.filterChanges
+      );
+    } else {
+      obs = merge(
+        this.__sort__.sortChange,
+        this.filterChanges
+      );
+    }
+
+    obs.pipe(
         startWith({}),
         switchMap(() => {
           this.__isLoading__ = true;

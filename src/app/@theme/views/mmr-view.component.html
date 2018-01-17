@@ -1,8 +1,6 @@
 <mat-toolbar class="content-header" color="primary" >{{viewJson?.title}}</mat-toolbar>
 
 <div class="content-view">
-  <button (click)="donave()">donav</button>
-  <button (click)="donave2()">donav2</button>
   <ng-container *ngFor="let option of viewJson?.children"  mmrLoadView [options]="option"></ng-container>
 </div>
 
