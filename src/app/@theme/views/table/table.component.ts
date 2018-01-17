@@ -25,6 +25,7 @@ import {
 } from '@angular/animations';
 import { FormBuilder } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
+import { EventEmitter } from '@angular/core';
 
 
 @Component({
@@ -75,6 +76,12 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   private ds: DataStore;
 
+  /**
+   * 过滤条件改变后数据
+   */
+  filterChanges: EventEmitter<any> = new EventEmitter<any>();
+  filterValues: any;
+
   constructor(
     private formBuilder: FormBuilder,
     private dataStoreService: MmrDataStoreService
@@ -116,7 +123,10 @@ export class TableComponent implements OnInit, AfterViewInit {
       }
     });
 
-    merge(this.__sort__.sortChange, this.paginator.page)
+    merge(this.__sort__.sortChange,
+      this.paginator.page,
+      this.filterChanges
+    )
       .pipe(
         startWith({}),
         switchMap(() => {
@@ -126,7 +136,7 @@ export class TableComponent implements OnInit, AfterViewInit {
             'sort': this.__sort__.active,
             'direction': this.__sort__.direction,
             'pageIndex': this.paginator == null ? 0 : this.paginator.pageIndex
-          });
+          }, this.filterValues );
           this.runtime.init.args = args;
 
           return this.dataStoreService.execute(this.runtime.init, this);
@@ -144,7 +154,6 @@ export class TableComponent implements OnInit, AfterViewInit {
       })
   }
 
- 
   /**
    * 展开／关闭高级过滤
    */
@@ -179,7 +188,6 @@ export class TableComponent implements OnInit, AfterViewInit {
     }
   }
 
-  quickerFilterForm: FormGroup;
   filterForm: FormGroup;
   /**
    * 设置过滤条件界面
@@ -187,8 +195,9 @@ export class TableComponent implements OnInit, AfterViewInit {
   private setupFilterView() {
 
     this.quickerFilterFields   = new Array<MmrFilterField>();
-    this.quickerFilterForm = this.formBuilder.group({});
     this.filterForm = this.formBuilder.group({});
+    const quickFilterForm = this.formBuilder.group({});
+    this.filterValues = {};
 
     this.filterFields = this.columns
     .filter(c => (c.quickFilter === true || c.filterable === true))
@@ -202,19 +211,22 @@ export class TableComponent implements OnInit, AfterViewInit {
       field.desc = c.text || field.desc;
       field.formGroup = this.filterForm;
 
-      if (c.quickFilter) {
-        this.quickerFilterFields.push(field);
-      }
+      this.filterValues[field.id] = field.value;
 
+      if (c.quickFilter) {
+        const qfield = Object.assign({}, field);
+        qfield.formGroup = quickFilterForm;
+        this.quickerFilterFields.push(qfield);
+      }
       return field;
     });
 
-    this.filterForm.valueChanges.subscribe(xx => {
-      console.log('xxx', xx)
+    quickFilterForm.valueChanges.subscribe(values => {
+      this.filterValues = values;
+      this.filterChanges.emit(values);
     })
- 
-    this.__enableQuickFilterBar__ = this.quickerFilterFields.length > 0;
 
+    this.__enableQuickFilterBar__ = this.quickerFilterFields.length > 0;
   }
 
   private resloveEditor(attr: MmrAttribute): MmrFilterField {
