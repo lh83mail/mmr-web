@@ -7,7 +7,7 @@ import {catchError} from 'rxjs/operators/catchError';
 import {map} from 'rxjs/operators/map';
 import {startWith} from 'rxjs/operators/startWith';
 import {switchMap} from 'rxjs/operators/switchMap';
-import {MmrDataStoreService, ValueType} from '../../services';
+import {MmrDataStoreService, ValueType, CommandResponse} from '../../services';
 import {MmrAttribute, DataStore } from '../../services';
 import { viewClassName } from '@angular/compiler';
 import {MatSort, MatButton, PageEvent, MatPaginator} from '@angular/material';
@@ -82,6 +82,8 @@ export class TableComponent implements OnInit, AfterViewInit {
   filterChanges: EventEmitter<any> = new EventEmitter<any>();
   filterValues: any;
 
+  filterForm: FormGroup;
+
   constructor(
     private formBuilder: FormBuilder,
     private dataStoreService: MmrDataStoreService
@@ -150,7 +152,7 @@ export class TableComponent implements OnInit, AfterViewInit {
 
           return this.dataStoreService.execute(this.runtime.init, this);
         }),
-        map(cmdResponse => {
+        map<CommandResponse, any>(cmdResponse => {
           this.__isLoading__ = false;
           if (this.paginator) {
             this.paginator.length = cmdResponse.data.total || 0;
@@ -197,7 +199,7 @@ export class TableComponent implements OnInit, AfterViewInit {
     }
   }
 
-  filterForm: FormGroup;
+
   /**
    * 设置过滤条件界面
    */
