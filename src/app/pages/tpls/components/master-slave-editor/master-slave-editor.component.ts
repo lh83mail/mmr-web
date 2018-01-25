@@ -10,7 +10,7 @@ export class MasterSlaveEditorComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    
+
   }
 
 }
