@@ -49,7 +49,18 @@ export class MmrViewComponent {
         this.viewJson = d
         this.dataSotreManager = DataStoreManager.createManager(this.viewJson.dataStores)
         this.dataStoreService.setDataStoreManager(this.dataSotreManager);
+
+        this.runInitAction()
       });
+  }
+
+  /**
+   * 页面生命周期:执行页面初始化
+   */
+  runInitAction() {
+    if (this.viewJson && this.viewJson.runtime) {
+
+    }
   }
 
   navigateView(viewId: string) {
@@ -63,7 +74,8 @@ export class MmrViewComponent {
   }
 
   donave() {
-    console.log('xxx');
+  
+
   }
 }
 

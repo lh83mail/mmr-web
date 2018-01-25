@@ -12,6 +12,7 @@ export const MMR_ROOT_ROUTE: Routes = [
   {path: 'enums-mgr', component: EnumsMgrComponent, data: {}},
   {path: 'users-mgr', component: UsersMgrComponent, data: {}},
   {path: 'objects',  loadChildren: './pages/system/object-def/object-def.module#ObjectDefModule'},
+  {path: 'tpl',  loadChildren: './pages/tpls/tpls.module#TplsModule'},
   //{path: '', redirectTo:'dv/table-view', pathMatch: 'full', data: {}},
   //{path: 'dv/:viewId', component: HmeComponent, data: {}},
  // {path: '**', redirectTo: ''},

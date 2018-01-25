@@ -168,6 +168,16 @@ export const MODEL_EDITOR = {
   desc: '数据模型定义表单，用来定义对象模型',
   title: '数据模型定义',
 
+  runtime: {
+    'init': {
+      command: 'init-model-editor',
+      args: { }
+    },
+    'close': {
+      command: 'close-model-editor',
+      args: {}
+    },
+  },
   children: [
     {
       id: 'main-card',
@@ -182,7 +192,7 @@ export const MODEL_EDITOR = {
               command: {
                 command: 'ViewAction',
                 args: {
-                  action: 'form1.submit' 
+                  action: 'form1.submit'
                 }
               }
             },
