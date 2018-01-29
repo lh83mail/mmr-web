@@ -10,7 +10,10 @@ import {
   MatSelectModule,
   MatSidenavModule, MatSlideToggleModule,
   MatToolbarModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatTableModule,
+  MatSortModule,
+  MatPaginatorModule
 } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MMRModule } from 'app/@theme/mmr.module';
@@ -45,6 +48,10 @@ import { MMRModule } from 'app/@theme/mmr.module';
 
     MatListModule,  // 系统模块
 
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    
     TplsRoutingModule
   ],
   declarations: [MasterSlaveEditorComponent, TplsComponent]
