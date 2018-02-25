@@ -65,7 +65,15 @@ export class MasterDetailsFormComponent implements OnInit {
   setupDetails() {
     this.columns = [
       { name: 'id', text: 'ID'},
-      { name: 'name', text: '姓名'},
+      { name: 'name', text: '规格编码'},
+      { name: 'col2', text: '货品名称'},
+      { name: 'col3', text: '简称'},
+      { name: 'col4', text: '规格'},
+      { name: 'col5', text: '数量'},
+      { name: 'col6', text: '实际单价'},
+      { name: 'col7', text: '小计'},
+      { name: 'col8', text: '可用库存'},
+      { name: 'col9', text: '备注'}
     ];
     this.displayColumns = this.columns.map(c => c.name);
     this.dataSource = new MatTableDataSource()

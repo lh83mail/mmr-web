@@ -1,46 +1,132 @@
-<mat-toolbar class="content-header" color="primary" >{{viewConfig?.title}}</mat-toolbar>
+<mat-toolbar class="content-header" color="primary">公司采购单</mat-toolbar>
 
 <div class="content-view">
+
+
+
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Here</mat-card-title>
+      <mat-card-title>xxx公司采购单</mat-card-title>
+      <mat-card-subtitle>主从单据模板示例程序</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <form>
-        <mat-form-field>
-          <input matInput placeholder="姓名"  required>
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput placeholder="姓名"  required>
-        </mat-form-field>          
-      </form>
+      <mat-horizontal-stepper linear="true" #stepper="matHorizontalStepper">
+        <mat-step>
+          <ng-template matStepLabel>基本信息</ng-template>
+          <button mat-button primary>导入采购单</button>
+          <form class="mmr-form">
+            <mat-form-field>
+              <input matInput placeholder="编号" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="来源编号" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="原单据号" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="供应商" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="仓库" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="物流公司" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="物流单号" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="经办人" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="日期" required>
+            </mat-form-field>
+            <div>
+              <button mat-button matStepperPrevious>前一页</button>
+              <button mat-button matStepperNext>继续</button>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>详细信息</ng-template>
+          <mat-table #table [dataSource]="dataSource" matSort>
+
+            <ng-container *ngFor="let c of columns" [matColumnDef]="c.name">
+              <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!c.sortable"> {{c.text}} </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element[c.name]}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+
+          </mat-table>
+          <button mat-button>添加新记录</button>
+          <mat-paginator [length]="total" [pageSize]="pageSize" [pageSizeOptions]="pageOptions">
+          </mat-paginator>
+          <div>
+            <button mat-button matStepperPrevious>前一页</button>
+            <button mat-button matStepperNext>继续</button>
+          </div>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>合计信息</ng-template>
+          <form class="mmr-form">
+            <mat-form-field>
+              <input matInput placeholder="合计种类" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="数量" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="金额" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="供应商" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="折后金额" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="折扣率" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="其他费用" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="总金额" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="备注" required>
+            </mat-form-field>
+          </form>
+          <div>
+            <button mat-button matStepperPrevious>前一页</button>
+            <button mat-button matStepperNext>继续</button>
+          </div>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>确认并完成</ng-template>
+          这里显示确认的数据信息。
+          <br/> 点击完成按钮结束表单创建
+          <div>
+            <button mat-button matStepperPrevious>前一页</button>
+            <button mat-button (click)="stepper.reset()">保存</button>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+
+
+
     </mat-card-content>
-    <mat-card-actions>
-        <button mat-button primary>保存</button>
-  </mat-card-actions>      
-</mat-card>
+
+  </mat-card>
 
 </div>
 
 
 
-<div>
-  <mat-table #table [dataSource]="dataSource" matSort>
 
-    <ng-container *ngFor="let c of columns" [matColumnDef]="c.name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!c.sortable"> {{c.text}} </mat-header-cell>
-      <mat-cell *matCellDef="let element" > {{element[c.name]}} </mat-cell>
-    </ng-container>
-  
-    <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
-  
-  </mat-table>
-  <mat-paginator [length]="total"
-                 [pageSize]="pageSize"
-                 [pageSizeOptions]="pageOptions"> 
-  </mat-paginator>
-</div>
 
 <mat-toolbar class="content-footer" color="primary">
   <a href="https://material.angular.io" target="_blank">meterial2</a>
