@@ -1,0 +1,48 @@
+<mat-toolbar class="content-header" color="primary" >{{viewConfig?.title}}</mat-toolbar>
+
+<div class="content-view">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Here</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form>
+        <mat-form-field>
+          <input matInput placeholder="姓名"  required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="姓名"  required>
+        </mat-form-field>          
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button primary>保存</button>
+  </mat-card-actions>      
+</mat-card>
+
+</div>
+
+
+
+<div>
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <ng-container *ngFor="let c of columns" [matColumnDef]="c.name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!c.sortable"> {{c.text}} </mat-header-cell>
+      <mat-cell *matCellDef="let element" > {{element[c.name]}} </mat-cell>
+    </ng-container>
+  
+    <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+  
+  </mat-table>
+  <mat-paginator [length]="total"
+                 [pageSize]="pageSize"
+                 [pageSizeOptions]="pageOptions"> 
+  </mat-paginator>
+</div>
+
+<mat-toolbar class="content-footer" color="primary">
+  <a href="https://material.angular.io" target="_blank">meterial2</a>
+  <a href="https://angular.cn/docs" target="_blank">angular docs</a>
+</mat-toolbar>

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TplsComponent } from './tpls.component';
+import { MasterDetailsFormComponent } from './master-details-form.component';
 
-describe('TplsComponent', () => {
-  let component: TplsComponent;
-  let fixture: ComponentFixture<TplsComponent>;
+describe('MasterDetailsFormComponent', () => {
+  let component: MasterDetailsFormComponent;
+  let fixture: ComponentFixture<MasterDetailsFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TplsComponent ]
+      declarations: [ MasterDetailsFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TplsComponent);
+    fixture = TestBed.createComponent(MasterDetailsFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

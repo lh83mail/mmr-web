@@ -14,6 +14,8 @@ import { InputComponent } from 'app/@theme/views/form/fields/input/input.compone
 import { CommonModule } from '@angular/common';
 import { MmrViewComponent } from 'app/@theme/views/mmr-view.component';
 import { MmrConfiguration } from 'app/@theme';
+import { SimpleFormComponent } from './pages/forms/simple-form/simple-form.component';
+import { MasterDetailsFormComponent } from './pages/forms/master-details-form/master-details-form.component';
 
 const components = [
   MmrViewComponent,
@@ -23,6 +25,10 @@ const components = [
 
   FormComponent,
   InputComponent,
+
+  // view templates
+  SimpleFormComponent,
+  MasterDetailsFormComponent,
 ];
 
 const directives = [

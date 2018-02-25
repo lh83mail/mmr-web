@@ -12,9 +12,10 @@ export class AppComponent {
     {text:'首页', link:'/views/table-view'},
     {text:'testx', link:'/views/add-user'},
     {text:'设置', link:'/modules'},
-    {text:'枚举维护', link:'/enums-mgr'},
-    {text:'用户管理', link:'/users-mgr'},
+    {text:'创建销售单', link:'/forms/mdf/salebill'},
+    {text:'创建用户', link:'/forms/simple/user-editor'},
     {text:'对象', link:'/objects'},
+
   ];
 
 

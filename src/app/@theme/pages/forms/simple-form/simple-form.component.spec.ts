@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MasterSlaveEditorComponent } from './master-slave-editor.component';
+import { SimpleFormComponent } from './simple-form.component';
 
-describe('MasterSlaveEditorComponent', () => {
-  let component: MasterSlaveEditorComponent;
-  let fixture: ComponentFixture<MasterSlaveEditorComponent>;
+describe('SimpleFormComponent', () => {
+  let component: SimpleFormComponent;
+  let fixture: ComponentFixture<SimpleFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MasterSlaveEditorComponent ]
+      declarations: [ SimpleFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MasterSlaveEditorComponent);
+    fixture = TestBed.createComponent(SimpleFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

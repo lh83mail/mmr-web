@@ -306,6 +306,81 @@ export const MODEL_EDITOR = {
   }
 }
 
+/** 
+ * 简单表单配置
+ */
+export const SIMPLE_EDITOR = {
+  id: 'user-editor',
+  desc: '用于展示简单的单表数据处理',
+  title: '用户信息编辑',
+
+  children: [
+    {
+      id: 'card1',
+      type: 'card',
+      title: '用户表单',
+      subTitle: '用来编辑用户信息的表单',
+
+      toolbars: [
+        {
+          position: 'bottom',
+          children: [
+            { type: 'button', text: '提交表单',
+              command: {
+                command: 'ViewAction',
+                args: {
+                  action: 'form1.submit'  // /add-user/card1/form1/submit($id)
+                }
+              }
+            },
+            { type: 'button', text: '返回' , command: {
+              command: 'LoadViewExecutor',
+              args: {
+               viewId: 'table-view'
+              }
+            }},
+          ]
+        },
+      ],
+
+      children: [
+        {
+          id: 'form1',
+          type: 'form',
+          children: [
+            {
+              id: 'position',
+              type: 'input',
+              desc: '序号',
+              value: 0,
+            },
+            {
+              id: 'name',
+              type: 'input',
+              desc: '姓名',
+            },
+            {
+              id: 'weight',
+              type: 'input',
+              desc: '体重',
+            },
+            {
+              id: 'symbol',
+              type: 'input',
+              desc: '标识',
+            }
+          ],
+
+          runtime: {
+            'submit':{},
+            'load': {}
+          }
+        }
+
+      ]
+    }    
+  ]
+}
 /**
  * 配置:
  *   特性选择,修改
