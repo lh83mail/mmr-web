@@ -5,8 +5,8 @@
     
   }
   .mmr-form > * {
-    width: 100%;
-    columns: .5;
+    width: 40%;
+    flex:0.5;
   }
   
   .example-full-width {

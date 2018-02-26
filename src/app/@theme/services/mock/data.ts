@@ -381,6 +381,119 @@ export const SIMPLE_EDITOR = {
     }    
   ]
 }
+
+export const MASTER_DETAILS_FROM = {
+  id: 'purchase_orders_form',
+  desc: '主从结构表单模式',
+  title: 'xx公司采购单',
+
+  children: [
+    {
+      id: 'card1',
+      type: 'card',
+      title: '编辑采购单',
+      subTitle: '采购单是公司业务常见的一种单据',
+
+      children: [
+        {
+          id: 'steper1',
+          type: 'steper',
+          children: [
+            {
+              id: 'step1',
+              title: '基本信息',
+              type: 'step',
+              children: [
+                {
+                  id: 'form1',
+                  type: 'form',
+                  children: [
+                    {
+                      id: 'position',
+                      type: 'input',
+                      desc: '序号',
+                      value: 0,
+                    },
+                    {
+                      id: 'name',
+                      type: 'input',
+                      desc: '姓名',
+                    },
+                    {
+                      id: 'weight',
+                      type: 'input',
+                      desc: '体重',
+                    },
+                    {
+                      id: 'symbol',
+                      type: 'input',
+                      desc: '标识',
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 'step2',
+              title: '详细信息',
+              type: 'step',
+              children: [
+                
+              ]
+            },
+            {
+              id: 'step3',
+              title: '合计信息',
+              type: 'step',
+              children: [
+                {
+                  id: 'form2',
+                  type: 'form',
+                  children: [
+                    {
+                      id: 'position',
+                      type: 'input',
+                      desc: '序号',
+                      value: 0,
+                    },
+                    {
+                      id: 'name',
+                      type: 'input',
+                      desc: '姓名',
+                    },
+                    {
+                      id: 'weight',
+                      type: 'input',
+                      desc: '体重',
+                    },
+                    {
+                      id: 'symbol',
+                      type: 'input',
+                      desc: '标识',
+                    }
+                  ],
+        
+                  runtime: {
+                    'submit':{},
+                    'load': {}
+                  }
+                }                
+              ]
+            },
+            {
+              id: 'step4',
+              title: '确认并完成',
+              type: 'step',
+              children: [
+                
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
 /**
  * 配置:
  *   特性选择,修改

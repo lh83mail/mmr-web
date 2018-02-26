@@ -2,15 +2,13 @@
 
 <div class="content-view">
 
-
-
   <mat-card>
     <mat-card-header>
       <mat-card-title>xxx公司采购单</mat-card-title>
       <mat-card-subtitle>主从单据模板示例程序</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <mat-horizontal-stepper linear="true" #stepper="matHorizontalStepper">
+      <mat-vertical-stepper linear="true" #stepper="matVerticalStepper">
         <mat-step>
           <ng-template matStepLabel>基本信息</ng-template>
           <button mat-button primary>导入采购单</button>
@@ -114,7 +112,7 @@
             <button mat-button (click)="stepper.reset()">保存</button>
           </div>
         </mat-step>
-      </mat-horizontal-stepper>
+      </mat-vertical-stepper>
 
 
 

@@ -1,11 +1,14 @@
-import { Component, OnInit, NgZone } from '@angular/core';
-import { MmrDataStoreService, DataStoreService, MmrConfiguration, RootView } from '../../..';
+import { Component, OnInit, NgZone, ViewChildren, ComponentRef, ElementRef, ViewContainerRef, ComponentFactoryResolver, ViewRef, QueryList, ViewChild, AfterContentInit } from '@angular/core';
+import { MmrDataStoreService, DataStoreService, MmrConfiguration, RootView, MmrComponentRef } from '../../..';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource, PageEvent } from '@angular/material';
+import { MmrAbstractPage } from '../../MmrAbstractPage'
+import { MMRLoadViewDirective } from '../../../mmr.directive';
 
 @Component({
   selector: 'app-master-details-form',
-  templateUrl: './master-details-form.component.html',
+  //templateUrl: './master-details-form.component.html',
+  template: '<div *ngFor="let option of __viewConfig?.children" #dxxxx  mmrLoadView [options]="option"></div>',
   styleUrls: ['./master-details-form.component.css'],
   providers: [
     {
@@ -13,9 +16,14 @@ import { MatTableDataSource, PageEvent } from '@angular/material';
     }
   ]
 })
-export class MasterDetailsFormComponent implements OnInit {
-  protected  viewId: string
-  viewConfig: any;
+export class MasterDetailsFormComponent extends MmrAbstractPage implements OnInit, AfterContentInit{
+  ngAfterContentInit(): void {
+   console.log("ok")
+  }
+  @ViewChildren(MMRLoadViewDirective) __mmclx;
+  @ViewChild("dxxxx") xxxxxx;
+
+  @ViewChildren(MMRLoadViewDirective) viewChildren: QueryList<MMRLoadViewDirective>;
 
     // ----------grid ---------------
     private columns;
@@ -29,7 +37,6 @@ export class MasterDetailsFormComponent implements OnInit {
     private pageSize = 20;
     private pageOptions = [15, 20, 50, 100];
     private pageEvent: PageEvent;
-
     
 
   constructor(
@@ -38,26 +45,15 @@ export class MasterDetailsFormComponent implements OnInit {
     private router: Router,
     private dataStoreService: MmrDataStoreService,
     private mmrConfiguration: MmrConfiguration,
+    private _ref: ElementRef,
+    private viewContainerRef: ViewContainerRef,
+    private cfr: ComponentFactoryResolver,
+
   ) {
-    this.route.paramMap.subscribe(paramMap => {
-      this.viewId = paramMap.get('id')
-      this.initView(this.viewId)
-    })
+    super(_ngZone, route, router, dataStoreService, mmrConfiguration)
   }
 
-  initView(viewId: any): any {
-    this.dataStoreService.setupViewId(viewId, new MmrRootView(
-      this.dataStoreService, this
-    ))
-
-    this.dataStoreService.loadView(this.viewId)
-      .toPromise()
-      .then(
-        cfg => {
-          this.viewConfig = cfg
-        }
-      )
-  }
+  
 
   /**
    * 初始化表格
@@ -82,12 +78,12 @@ export class MasterDetailsFormComponent implements OnInit {
   ngOnInit() {
 
     if (this.isNewForm()) {
-      //  this.dataStoreService.execute({command: 'create-user-form', args: {
-      //     method: "GET"
-      //  }}, this)
-      //   .subscribe(response => {
-      //       console.log('response', response)
-      //   })
+       this.dataStoreService.execute({command: 'from-master-detail-create', args: {
+          method: "GET"
+       }}, this)
+        .subscribe(response => {
+            console.log('response', response)
+        })
     }
 
     this.setupDetails();
@@ -100,22 +96,4 @@ export class MasterDetailsFormComponent implements OnInit {
     return true;
   }
 
-
-  navigateView(viewId: string) {
-    const command = ['views'];
-    // if (this.route.snapshot.data.next !== '') {
-    //   command.push(this.route.snapshot.data.next);
-    // }
-    command.push(viewId);
-
-    this.router.navigate(command);
-  }
-
-}
-
-class MmrRootView implements RootView {
-  constructor(private dataStoreService: MmrDataStoreService, private view: MasterDetailsFormComponent) { }
-  loadView(viewId: string) {
-    this.view.navigateView(viewId);
-  }
 }
