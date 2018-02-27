@@ -3,6 +3,8 @@ import { MmrDataStoreService, DataStoreService, MmrConfiguration, RootView } fro
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource, PageEvent } from '@angular/material';
 import { MMRLoadViewDirective } from '../mmr.directive';
+import { Command, DataStore, DataStoreManager } from '..';
+
 
 const empyFun = ()=>{}
 
@@ -23,7 +25,6 @@ export abstract class MmrAbstractPage {
             this.__viewId = paramMap.get('id')
             this.mmrPageLoad(this.__viewId)
         })
-
     }
 
     /**
@@ -33,13 +34,17 @@ export abstract class MmrAbstractPage {
     mmrPageLoad(viewId: string) {
         this.__dataStoreService.setupViewId(viewId, new MmrRootView(
             this.__dataStoreService, this
-          ))
-      
+        ))
+
         this.__dataStoreService.loadView(this.__viewId)
             .toPromise()
             .then(
               cfg => {
                 this.__viewConfig = cfg
+                
+                const dataSotreManager = DataStoreManager.createManager(cfg.dataStores)
+                this.__dataStoreService.setDataStoreManager(dataSotreManager);
+
                 this.mmrViewConfigLoaded()
               }
           )
@@ -50,12 +55,16 @@ export abstract class MmrAbstractPage {
      */
     mmrViewConfigLoaded = empyFun
 
-
     navigateView(viewId: string) {
         const command = ['views'];
         command.push(viewId);
         this.__router.navigate(command);
     }
+
+    /** 
+     * 创建页面初始化命令
+     */
+    abstract createInitlizedCommand(ds: DataStore): Command
 }
 
 class MmrRootView implements RootView {

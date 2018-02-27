@@ -1,5 +1,5 @@
-import { Component, OnInit, NgZone, ViewChildren, ComponentRef, ElementRef, ViewContainerRef, ComponentFactoryResolver, ViewRef, QueryList, ViewChild, AfterContentInit } from '@angular/core';
-import { MmrDataStoreService, DataStoreService, MmrConfiguration, RootView, MmrComponentRef } from '../../..';
+import { Component, OnInit, NgZone, ViewChildren, ComponentRef, ElementRef, ViewContainerRef, ComponentFactoryResolver, ViewRef, QueryList, ViewChild, AfterContentInit, AfterViewInit } from '@angular/core';
+import { MmrDataStoreService, DataStoreService, MmrConfiguration, RootView, MmrComponentRef, Command, DataStore } from '../../..';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource, PageEvent } from '@angular/material';
 import { MmrAbstractPage } from '../../MmrAbstractPage'
@@ -16,14 +16,13 @@ import { MMRLoadViewDirective } from '../../../mmr.directive';
     }
   ]
 })
-export class MasterDetailsFormComponent extends MmrAbstractPage implements OnInit, AfterContentInit{
-  ngAfterContentInit(): void {
+export class MasterDetailsFormComponent extends MmrAbstractPage implements OnInit, AfterViewInit{
+
+  ngAfterViewInit(): void {
    console.log("ok")
   }
-  @ViewChildren(MMRLoadViewDirective) __mmclx;
-  @ViewChild("dxxxx") xxxxxx;
 
-  @ViewChildren(MMRLoadViewDirective) viewChildren: QueryList<MMRLoadViewDirective>;
+  @ViewChildren(MMRLoadViewDirective) __mmrViews: QueryList<MMRLoadViewDirective>;
 
     // ----------grid ---------------
     private columns;
@@ -52,9 +51,7 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
   ) {
     super(_ngZone, route, router, dataStoreService, mmrConfiguration)
   }
-
   
-
   /**
    * 初始化表格
    */
@@ -78,14 +75,20 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
   ngOnInit() {
 
     if (this.isNewForm()) {
-       this.dataStoreService.execute({command: 'from-master-detail-create', args: {
+      this.dataStoreService.execute({
+        command: 'from-master-detail-create', args: {
           method: "GET"
-       }}, this)
-        .subscribe(response => {
-            console.log('response', response)
-        })
+        }
+      }, this)
+      .subscribe(response => {
+          this.__mmrViews.forEach(v => {
+            const ds = this.dataStoreService.getDataStoreManager().lookupDataStore("ds0");
+            ds.data = response.data
+            v.mmrComponentRef.applyValues(ds)
+          })
+      })
     }
-
+    
     this.setupDetails();
   }
 
@@ -96,4 +99,12 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
     return true;
   }
 
+  createInitlizedCommand(ds: DataStore): Command {
+    return {
+      command: 'from-master-detail-create', args: {
+        method: "GET"
+      }
+    }
+  }
+  
 }

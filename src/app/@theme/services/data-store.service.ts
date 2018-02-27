@@ -9,6 +9,8 @@ import * as executors from './cmd/cmd-excutors';
 import { HttpClient } from '@angular/common/http';
 import { MmrConfiguration } from './config-interface';
 import { DataStoreManager } from './data-model';
+import { MmrEventBus } from './mmr-event-bus';
+import { MmrAbstractPage } from '../pages/MmrAbstractPage';
 
 
 @Injectable()
@@ -20,7 +22,9 @@ export class DataStoreService extends MmrDataStoreService {
 
   constructor(
     private mmrConfiguration: MmrConfiguration,
-    private httpClient: HttpClient) {
+    private httpClient: HttpClient,
+    private eventBus: MmrEventBus,
+  ) {
     super(mmrConfiguration, httpClient);
   }
 
@@ -79,4 +83,21 @@ export class DataStoreService extends MmrDataStoreService {
     return observableOf(v);
   }
 
+  /** 
+   * 初始化数据仓库
+   */
+  initPageData(page: MmrAbstractPage): void {
+    const stores = this.getDataStoreManager().getDataStores();
+    if (stores == null) {
+      return;
+    }
+
+    for (var key in stores) {
+      const s = stores[key];    
+      this.execute(page.createInitlizedCommand(s), page)
+    }
+
+  }
 }
+
+export const EVT_MMR_DATASTORE_INITLIZED = 'mmr_datastoe_initlized'

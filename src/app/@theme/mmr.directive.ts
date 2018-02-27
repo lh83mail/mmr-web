@@ -74,4 +74,8 @@ export class MMRLoadViewDirective implements OnDestroy {
   ngOnDestroy(): void {
     this.mmrComponentRef.destory();
   }
+
+  applyPageDataChanaged(data: any) {
+    
+  }
 }

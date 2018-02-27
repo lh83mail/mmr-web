@@ -2,7 +2,7 @@
 import {CommandExecutor, CommandResponse, Command, MmrDataStoreService} from '../interfaces';
 import { ComponentRef, Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http/src/client';
-import { MmrConfiguration } from 'app/@theme/services';
+import { MmrConfiguration, MmrComponentRef } from 'app/@theme/services';
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch'
 import {catchError} from 'rxjs/operators/catchError';
@@ -99,18 +99,23 @@ export class Action {
 
 export class CommponetFinder {
 
+
   findComponetInstance(cmd: string, commponent: any): Action {
     const cmds = cmd.split('.');
-    let next = commponent.__mmrComponentRef;
+    let next:MmrComponentRef = commponent.__mmrComponentRef;
+    while (next.parentMMrComponentRef != null) {
+      next = next.parentMMrComponentRef
+    }
+    
     const i = 0;
     const inst = null;
 
-    function find(id, mmrComponentRef) {
+    function find(id: string, mmrComponentRef: MmrComponentRef) {
       if (mmrComponentRef == null) {
         return null;
       }
 
-      if (mmrComponentRef._componentRef.instance.id === id) {
+      if (mmrComponentRef.componentRef.instance.id === id) {
         return mmrComponentRef;
       }
 
@@ -129,17 +134,18 @@ export class CommponetFinder {
       return null;
     }
 
-    next = find(cmds[0], commponent.__mmrComponentRef);
+    next = find(cmds[0], next);
     for (let i = 1; i < cmds.length - 1 && next != null; i++) {
       next = find(cmds[i], next);
+      console.log("::::", next + " = " + cmds[i])
     }
 
     if (next == null) {
       throw new Error('command not found');
     }
     const act = new Action();
-    act.ref  =  next._componentRef.instance[cmds[cmds.length - 1]];
-    act.target = next._componentRef.instance;
+    act.ref  =  next.componentRef.instance[cmds[cmds.length - 1]];
+    act.target = next.componentRef.instance;
     return act;
   }
 

@@ -407,6 +407,7 @@ export const MASTER_DETAILS_FROM = {
                 {
                   id: 'form1',
                   type: 'form',
+                  dsName: 'ds0',
                   children: [
                     {
                       id: 'position',
@@ -449,6 +450,7 @@ export const MASTER_DETAILS_FROM = {
                 {
                   id: 'form2',
                   type: 'form',
+                  dsName: 'ds0',
                   children: [
                     {
                       id: 'position',
@@ -485,14 +487,71 @@ export const MASTER_DETAILS_FROM = {
               title: '确认并完成',
               type: 'step',
               children: [
-                
+                {
+                  id: 'main-card',
+                  type: 'card',
+                  title: '模型信息',
+            
+                  toolbars: [
+                    {
+                      position: 'bottom',
+                      children: [
+                        { type: 'button', text: '保存',
+                          command: {
+                            command: 'ViewAction',
+                            args: {
+                              action: 'card1.steper1.form1.submit'
+                            }
+                          }
+                        }
+                      ]
+                    },
+                  ],
+            
+                  children:[]
+                }
               ]
             }
           ]
         }
       ]
     }
-  ]
+  ],
+
+  dataStores: {
+    'ds0' : {
+      id: 'ds0',
+      dsType: 0,
+      model: {
+        id: 'model-basic',
+        attributes: {
+          id: {
+            id: 'id',
+            valueType: 0,
+            desc: '模型ID'
+          },
+          name: {
+            id: 'name',
+            valueType: 0,
+            desc: '模型名称'
+          },
+
+          desc: {
+            id: 'desc',
+            valueType: 0,
+            desc: '模型简述'
+          }
+        }
+      }
+    },
+    'ds1': {
+      id: 'ds1',
+      dsType: 1,
+      model: {
+
+      }
+    }
+  }
 }
 /**
  * 配置:

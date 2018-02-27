@@ -17,6 +17,7 @@ import { MmrConfiguration } from 'app/@theme';
 import { SimpleFormComponent } from './pages/forms/simple-form/simple-form.component';
 import { MasterDetailsFormComponent } from './pages/forms/master-details-form/master-details-form.component';
 import { SteperComponent } from './views/steper/steper.component';
+import { MmrEventBus } from './services/mmr-event-bus'
 
 const components = [
   MmrViewComponent,
@@ -74,6 +75,7 @@ const directives = [
   ],
   providers: [
     MMRComponetRegisty,
+    MmrEventBus,
   ],
   entryComponents: [
     ...components

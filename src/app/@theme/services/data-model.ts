@@ -69,4 +69,9 @@ export class DataStoreManager {
     lookupDataStore(dsName: any): DataStore {
         return this.stores[dsName];
     }
+
+    getDataStores(): {[key: string]: DataStore} {
+        return this.stores;
+    }
+
 }
