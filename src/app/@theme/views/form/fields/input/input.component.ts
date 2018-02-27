@@ -34,14 +34,14 @@ export class InputComponent implements OnInit, MmrAttribute, MmrViewOption, MmrV
     this.formGroup.setControl(this.id, this.control);
   }
 
-  private _value;
+  private _value: ValueRef;
 
   applyValues(ds: DataStore) {
    if (ds.id == 'ds0' && ds.data != null) {
       this.value = ds.data[this.id]
       this.control.setValue(this.value)
 
-      bind(new Value(this.value, this, this.id, (val) => this._value = val))
+     // datastore bind(new Value(this.value, this, this.id, (val) => this._value = val))
    }
   }
   updateValues(ds: DataStore) {
@@ -54,13 +54,13 @@ export class InputComponent implements OnInit, MmrAttribute, MmrViewOption, MmrV
 
 const refs= {}
 
-function bind(value: Value) {
+function bind(value: ValueRef) {
   const ref = refs[value.id] || []
   ref.push(value)
   refs[value.id] = ref
 }
 
-class Value {
+class ValueRef {
   private _val
    _source
    id
@@ -78,7 +78,7 @@ class Value {
     const ref = refs[this.id] || []  // 这里需要考虑排除重复的值，减少不必要的循环，？？是否需要排队防止提交冲突
     ref.forEach(element => {
       if (element._source !== this._source) {
-        this.updater(new Value(val, element._source, element.id, element.updater)) /** id, updater原始updater */
+        this.updater(new ValueRef(val, element._source, element.id, element.updater)) /** id, updater原始updater */
       }
     });
   }
