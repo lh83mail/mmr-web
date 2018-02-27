@@ -1,3 +1,6 @@
+import { Observer } from "rxjs/Observer";
+import { Observable } from "rxjs/Observable";
+
 export interface MmrModel {
     id: string;
     attributes: {
@@ -40,6 +43,10 @@ export interface DataStore {
     model: MmrModel;
     isSet?: boolean;
     data?: any;
+    associates?: {
+        [key:string]: any
+    };
+    associateStores?: Array<DataStore>;
 }
 
 /**
@@ -67,11 +74,47 @@ export class DataStoreManager {
     }
 
     lookupDataStore(dsName: any): DataStore {
-        return this.stores[dsName];
+
+        function find(stores: Array<DataStore>): DataStore {
+            for (let i = 0; i < stores.length; i++) {
+                if (dsName == stores[i].id) {
+                    return stores[i];
+                }
+                if (stores[i].associateStores != null) {
+                    const s = find(stores[i].associateStores)
+                    if (s != null) {
+                        return s
+                    }
+                }
+            }
+            return null
+        }
+
+        const storeArray = []
+        for (let key in this.stores) {
+            storeArray.push(this.stores[key])
+        }
+        return find(storeArray)
     }
 
     getDataStores(): {[key: string]: DataStore} {
         return this.stores;
     }
+
+}
+
+
+export class DataStoreExecutor {
+    constructor(private ds:DataStore){}
+
+    createNew(): Observable<DataStore> {
+        return null
+    }
+
+    load(params: any): Observable<DataStore> {
+        return null
+    }
+
+
 
 }

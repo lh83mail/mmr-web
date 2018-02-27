@@ -74,7 +74,7 @@ export abstract class CommandExecutor {
 
 export interface MmrValueAccessable  {
   applyValues(ds: DataStore)
-  updateValues()
+  updateValues(ds: DataStore)
 }
 
 export function instanceOfMmrValueAccessable(object: any): object is MmrValueAccessable {

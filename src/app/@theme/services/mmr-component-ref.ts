@@ -39,4 +39,11 @@ export class MmrComponentRef {
     }
     this.children.forEach(ref => ref.applyValues(ds))
   }
+
+  readValues(ds:DataStore) {
+    if (instanceOfMmrValueAccessable(this._componentRef.instance)) { 
+      this._componentRef.instance.updateValues(ds);
+    }
+    this.children.forEach(ref => ref.readValues(ds))
+  }
 }

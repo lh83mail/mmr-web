@@ -5,10 +5,23 @@ import { MatTableDataSource, PageEvent } from '@angular/material';
 import { MmrAbstractPage } from '../../MmrAbstractPage'
 import { MMRLoadViewDirective } from '../../../mmr.directive';
 
+class Data {
+  constructor(private _name){}
+
+  
+  set name(val) {
+    this._name = val
+  }
+
+  get name() {
+    return this._name
+  }
+}
+
 @Component({
   selector: 'app-master-details-form',
   //templateUrl: './master-details-form.component.html',
-  template: '<div *ngFor="let option of __viewConfig?.children" #dxxxx  mmrLoadView [options]="option"></div>',
+  template: ' <input  [(ngModel)]="testv.name" /> {{testv.name}} <div *ngFor="let option of __viewConfig?.children" #dxxxx  mmrLoadView [options]="option"></div>',
   styleUrls: ['./master-details-form.component.css'],
   providers: [
     {
@@ -18,78 +31,115 @@ import { MMRLoadViewDirective } from '../../../mmr.directive';
 })
 export class MasterDetailsFormComponent extends MmrAbstractPage implements OnInit, AfterViewInit{
 
-  ngAfterViewInit(): void {
-   console.log("ok")
-  }
+  private testv = new Data("Hello")
 
   @ViewChildren(MMRLoadViewDirective) __mmrViews: QueryList<MMRLoadViewDirective>;
-
-    // ----------grid ---------------
-    private columns;
-    private dataSource: MatTableDataSource<any[]>;
-    private displayColumns: Array<String>;
-  
-    private isLoading: boolean;
-  
-    // 用于分页
-    private total = 0;
-    private pageSize = 20;
-    private pageOptions = [15, 20, 50, 100];
-    private pageEvent: PageEvent;
     
 
-  constructor(
-    private _ngZone: NgZone,
-    private route: ActivatedRoute,
-    private router: Router,
-    private dataStoreService: MmrDataStoreService,
-    private mmrConfiguration: MmrConfiguration,
-    private _ref: ElementRef,
-    private viewContainerRef: ViewContainerRef,
-    private cfr: ComponentFactoryResolver,
+    constructor(
+      private _ngZone: NgZone,
+      private route: ActivatedRoute,
+      private router: Router,
+      private dataStoreService: MmrDataStoreService,
+      private mmrConfiguration: MmrConfiguration,
+      private _ref: ElementRef,
+      private viewContainerRef: ViewContainerRef,
+      private cfr: ComponentFactoryResolver,
+    ) {
+      super(_ngZone, route, router, dataStoreService, mmrConfiguration)
 
-  ) {
-    super(_ngZone, route, router, dataStoreService, mmrConfiguration)
-  }
-  
-  /**
-   * 初始化表格
-   */
-  setupDetails() {
-    this.columns = [
-      { name: 'id', text: 'ID'},
-      { name: 'name', text: '规格编码'},
-      { name: 'col2', text: '货品名称'},
-      { name: 'col3', text: '简称'},
-      { name: 'col4', text: '规格'},
-      { name: 'col5', text: '数量'},
-      { name: 'col6', text: '实际单价'},
-      { name: 'col7', text: '小计'},
-      { name: 'col8', text: '可用库存'},
-      { name: 'col9', text: '备注'}
-    ];
-    this.displayColumns = this.columns.map(c => c.name);
-    this.dataSource = new MatTableDataSource()
-  }
+      this.route.params.subscribe(params => {
+        
+      })
+    }
 
   ngOnInit() {
 
+  }
+
+  ngAfterViewInit(): void {
+
     if (this.isNewForm()) {
+      this.createNewFrom();
+      // this.dataStoreService.execute({
+      //   command: 'from-master-detail-create', args: {
+      //     method: "GET"
+      //   }
+      // }, this)
+      // .subscribe(response => {
+      //     this.__mmrViews.forEach(v => {
+      //       const ds = this.dataStoreService.getDataStoreManager().lookupDataStore("ds0");
+      //       ds.data = response.data
+      //       v.mmrComponentRef.applyValues(ds)
+      //     })
+      // })
+    }
+    // 加载就的数据
+    else {
       this.dataStoreService.execute({
-        command: 'from-master-detail-create', args: {
-          method: "GET"
+        command: 'form-master-detail-load', args: {
+          method: "GET",
+          params: {
+            id: '0001'
+          }
         }
       }, this)
       .subscribe(response => {
-          this.__mmrViews.forEach(v => {
-            const ds = this.dataStoreService.getDataStoreManager().lookupDataStore("ds0");
-            ds.data = response.data
-            v.mmrComponentRef.applyValues(ds)
-          })
+        this.__mmrViews.forEach(v => {
+          const ds = this.dataStoreService.getDataStoreManager().lookupDataStore("ds0");
+          ds.data = response.data
+          v.mmrComponentRef.applyValues(ds)
+        })
       })
     }
-    
-    this.setupDetails();
+   }
+
+  createNewFrom() {
+    const stores:{[key: string]: DataStore} = this.dataStoreService.getDataStoreManager().getDataStores() || {}
+    for (const key in stores) {
+      const ds = stores[key]
+      this.__mmrViews.forEach(v => {
+        this.dataStoreService.execute({
+          command: 'from-master-detail-create',
+          args: {
+            method: "GET",
+            params: {
+              "viewId": this.__viewId
+            }
+          }
+        }, this)
+        .subscribe(response => {
+          this.applyData(ds, response.data);
+          v.mmrComponentRef.applyValues(ds)
+        })
+      })
+    }
+  }
+
+  applyData(ds: DataStore, data: any) {
+    ds.data = data
+    if (ds.associateStores != null && data && data['substores'] != null) {
+      ds.associateStores.forEach(substore => {
+        this.applyData(substore, data['substores'][substore.id])
+      })
+    }
+  }
+
+  createData(ds: DataStore): any {
+    return {}
+  }
+
+  finish() {
+ 
+    const stores:{[key: string]: DataStore} = this.dataStoreService.getDataStoreManager().getDataStores() || {}
+    for (const key in stores) {
+      this.__mmrViews.forEach(v => {
+        v.mmrComponentRef.readValues(stores[key])
+      })
+
+      const data = this.createData(stores[key])
+      console.log('save-data', stores[key].data)
+    }
   }
 
   /**

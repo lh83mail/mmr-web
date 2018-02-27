@@ -34,13 +34,56 @@ export class InputComponent implements OnInit, MmrAttribute, MmrViewOption, MmrV
     this.formGroup.setControl(this.id, this.control);
   }
 
+  private _value;
+
   applyValues(ds: DataStore) {
    if (ds.id == 'ds0' && ds.data != null) {
       this.value = ds.data[this.id]
       this.control.setValue(this.value)
+
+      bind(new Value(this.value, this, this.id, (val) => this._value = val))
    }
   }
-  updateValues() {
-    console.log("SSSS")
+  updateValues(ds: DataStore) {
+    if (ds.id == 'ds0') {
+      ds.data = ds.data || {}
+      ds.data[this.id] = this.control.value
+    }
+  }
+}
+
+const refs= {}
+
+function bind(value: Value) {
+  const ref = refs[value.id] || []
+  ref.push(value)
+  refs[value.id] = ref
+}
+
+class Value {
+  private _val
+   _source
+   id
+   updater:(Value)=>void
+
+  constructor(val, source, _id, _updater) {
+    this._val = val
+    this._source = source
+    this.id = _id
+    this.updater = _updater
+  }
+
+  set value(val) {
+    this._val = val
+    const ref = refs[this.id] || []  // 这里需要考虑排除重复的值，减少不必要的循环，？？是否需要排队防止提交冲突
+    ref.forEach(element => {
+      if (element._source !== this._source) {
+        this.updater(new Value(val, element._source, element.id, element.updater)) /** id, updater原始updater */
+      }
+    });
+  }
+
+  get value() {
+    return this._val
   }
 }

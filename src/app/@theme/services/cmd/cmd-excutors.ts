@@ -17,6 +17,16 @@ export class LoadViewExecutor extends  CommandExecutor {
   }
 }
 
+export class PageExecutor extends CommandExecutor {
+  execute(): Observable<CommandResponse> {
+    const cmd = this.cmd.args['action'];
+    const action = new Action()
+    action.target = (<any>this.dataStoreService.getRootView()).view
+    action.ref = (<any>this.dataStoreService.getRootView()).view[cmd]
+    return observableOf({status: 200, command: this.cmd, data: action.execute()});
+  }
+}
+
 export class NavigateViewExecutor extends CommandExecutor {
 
   execute(): Observable<CommandResponse> {
@@ -80,7 +90,7 @@ export class ViewAction extends CommandExecutor {
     const cmd = this.cmd.args['action'];
     const action = MMR_COMPONENT_FINDER.findComponetInstance(cmd, this.component);
     if (action == null) {
-      throw new Error('找不到指定的命令');
+      throw new Error(`找不到指定的命令${cmd}`);
     }
     return observableOf({status: 200, command: this.cmd, data: action.execute()});
   }
@@ -141,7 +151,7 @@ export class CommponetFinder {
     }
 
     if (next == null) {
-      throw new Error('command not found');
+      return null;
     }
     const act = new Action();
     act.ref  =  next.componentRef.instance[cmds[cmds.length - 1]];

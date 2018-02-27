@@ -439,7 +439,30 @@ export const MASTER_DETAILS_FROM = {
               title: '详细信息',
               type: 'step',
               children: [
-                
+                {
+                  id:'user-grid',
+                  type: 'table',
+                  dsName: 'ds1',
+                  columns: [
+                    {name:"position", filterable: true, quickFilter: true},
+                    {name:"name", filterable: true, sortable: true, quickFilter: true},
+                    {name:"weight",  text: "体重c", filterable: true },
+                    {name:"symbol",  },
+                    {name:"symbol_", text: '操作'},
+                  ],
+                  runtime: {
+                    'init': {
+                      command: 'list-data',
+                      args: {
+                        viewId: 'table-view',
+                      }
+                    }
+                  },
+                  pageable: {
+                    pageSize: 20,
+                    pageSizeOptions: [5, 10, 25, 300]
+                  }
+                }                
               ]
             },
             {
@@ -498,9 +521,9 @@ export const MASTER_DETAILS_FROM = {
                       children: [
                         { type: 'button', text: '保存',
                           command: {
-                            command: 'ViewAction',
+                            command: 'PageExecutor',
                             args: {
-                              action: 'card1.steper1.form1.submit'
+                              action: 'finish'
                             }
                           }
                         }
@@ -535,22 +558,47 @@ export const MASTER_DETAILS_FROM = {
             valueType: 0,
             desc: '模型名称'
           },
-
           desc: {
             id: 'desc',
             valueType: 0,
             desc: '模型简述'
           }
         }
-      }
+      },     
+      associateStores: [
+         {
+          id: 'ds1',
+          dsType: 1,
+          model: {
+            id: 'model1',
+            attributes: {
+              position: {
+                id: 'position',
+                valueType: 0,
+                desc: '序号'
+              },
+              name: {
+                id: 'name',
+                valueType: 0,
+                desc: '姓名'
+              },
+              weight: {
+                id: 'weight',
+                valueType: 0,
+                desc: '体重'
+              },
+              symbol: {
+                id: 'symbol',
+                valueType: 0,
+                desc: '代号'
+              }
+            }
+          },
+          associates: ['id']
+        }        
+      ]     
     },
-    'ds1': {
-      id: 'ds1',
-      dsType: 1,
-      model: {
-
-      }
-    }
+    
   }
 }
 /**
