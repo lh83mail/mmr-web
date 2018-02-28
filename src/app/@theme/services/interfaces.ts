@@ -1,11 +1,13 @@
 import {Component} from '@angular/core';
-import { MmrConfiguration, DataStoreManager, DataStore } from 'app/@theme';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { MmrAbstractPage } from '../pages/MmrAbstractPage';
+import { MmrConfiguration } from './config-interface';
+import { DataStoreManager } from './mmr-data-store';
 
 
 export abstract class MmrDataStoreService {
+   
   constructor(
     mmrConfiguration: MmrConfiguration,
     httpClient: HttpClient) {}
@@ -25,6 +27,11 @@ export abstract class MmrDataStoreService {
    * 初始化数据仓库
    */
   abstract initPageData(page: MmrAbstractPage): void;
+
+  setUpDataStore(storesConfigs: any): any {
+    const dataSotreManager = DataStoreManager.createManager(storesConfigs, this)
+    this.setDataStoreManager(dataSotreManager);
+  }
 }
 
 export interface RootView {
@@ -69,14 +76,4 @@ export abstract class CommandExecutor {
     this.component = component;
   }
   abstract execute(): Observable<CommandResponse>;
-}
-
-
-export interface MmrValueAccessable  {
-  applyValues(ds: DataStore)
-  updateValues(ds: DataStore)
-}
-
-export function instanceOfMmrValueAccessable(object: any): object is MmrValueAccessable {
-  return 'applyValues' in object && 'updateValues' in object;
 }

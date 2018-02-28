@@ -1,16 +1,16 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormControl } from '@angular/forms';
-import { MmrAttribute, ValueType, DateValueOptions, NumberValueType, MmrValueAccessable} from '../../../../services';
+import { MmrAttribute, ValueType, DateValueOptions, NumberValueType } from '../../../../services';
 import { MmrViewOption } from '../../../../mmr-view.model';
-import { DataStore } from '../../../..';
+import { DataStoreConfig } from '../../../..';
 
 @Component({
   selector: 'app-input',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.css']
 })
-export class InputComponent implements OnInit, MmrAttribute, MmrViewOption, MmrValueAccessable {
+export class InputComponent implements OnInit, MmrAttribute, MmrViewOption {
 
  
   @Input() type: string;
@@ -35,21 +35,6 @@ export class InputComponent implements OnInit, MmrAttribute, MmrViewOption, MmrV
   }
 
   private _value: ValueRef;
-
-  applyValues(ds: DataStore) {
-   if (ds.id == 'ds0' && ds.data != null) {
-      this.value = ds.data[this.id]
-      this.control.setValue(this.value)
-
-     // datastore bind(new Value(this.value, this, this.id, (val) => this._value = val))
-   }
-  }
-  updateValues(ds: DataStore) {
-    if (ds.id == 'ds0') {
-      ds.data = ds.data || {}
-      ds.data[this.id] = this.control.value
-    }
-  }
 }
 
 const refs= {}

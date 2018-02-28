@@ -3,7 +3,7 @@ import { MmrDataStoreService, DataStoreService, MmrConfiguration, RootView } fro
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource, PageEvent } from '@angular/material';
 import { MMRLoadViewDirective } from '../mmr.directive';
-import { Command, DataStore, DataStoreManager } from '..';
+import { Command, DataStoreConfig, DataStoreManager, DataStore } from '..';
 
 
 const empyFun = ()=>{}
@@ -15,16 +15,17 @@ export abstract class MmrAbstractPage {
     @ViewChildren(MMRLoadViewDirective) __mmcl;
 
     constructor(
-       protected __ngZone: NgZone,
-       protected __route: ActivatedRoute,
-       protected __router: Router,
-       protected __dataStoreService: MmrDataStoreService,
-       protected __mmrConfiguration: MmrConfiguration,
+       protected ngZone: NgZone,
+       protected route: ActivatedRoute,
+       protected router: Router,
+       protected dataStoreService: MmrDataStoreService,
+       protected mmrConfiguration: MmrConfiguration,
     ) {
-        this.__route.paramMap.subscribe(paramMap => {
+        this.route.paramMap.subscribe(paramMap => {
             this.__viewId = paramMap.get('id')
             this.mmrPageLoad(this.__viewId)
         })
+    
     }
 
     /**
@@ -32,19 +33,16 @@ export abstract class MmrAbstractPage {
      * @param viewId 
      */
     mmrPageLoad(viewId: string) {
-        this.__dataStoreService.setupViewId(viewId, new MmrRootView(
-            this.__dataStoreService, this
+        this.dataStoreService.setupViewId(viewId, new MmrRootView(
+            this.dataStoreService, this
         ))
 
-        this.__dataStoreService.loadView(this.__viewId)
+        this.dataStoreService.loadView(this.__viewId)
             .toPromise()
             .then(
               cfg => {
                 this.__viewConfig = cfg
-                
-                const dataSotreManager = DataStoreManager.createManager(cfg.dataStores)
-                this.__dataStoreService.setDataStoreManager(dataSotreManager);
-
+                this.dataStoreService.setUpDataStore(cfg.dataStores);
                 this.mmrViewConfigLoaded()
               }
           )
@@ -53,12 +51,12 @@ export abstract class MmrAbstractPage {
     /**
      * 页面配置加载完成后
      */
-    mmrViewConfigLoaded = empyFun
+    mmrViewConfigLoaded(){}
 
     navigateView(viewId: string) {
         const command = ['views'];
         command.push(viewId);
-        this.__router.navigate(command);
+        this.router.navigate(command);
     }
 
     /** 

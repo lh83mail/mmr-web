@@ -8,7 +8,7 @@ import {map} from 'rxjs/operators/map';
 import {startWith} from 'rxjs/operators/startWith';
 import {switchMap} from 'rxjs/operators/switchMap';
 import {MmrDataStoreService, ValueType, CommandResponse} from '../../services';
-import {MmrAttribute, DataStore } from '../../services';
+import {MmrAttribute, DataStoreConfig } from '../../services';
 import { viewClassName } from '@angular/compiler';
 import {MatSort, MatButton, PageEvent, MatPaginator} from '@angular/material';
 import { MatTableDataSource } from './table-data-source';
@@ -26,6 +26,7 @@ import {
 import { FormBuilder } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
+import { DataStore } from '../..';
 
 
 @Component({
@@ -107,7 +108,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   private getAttribute(name: string): MmrAttribute {
-    const attr = this.ds.model.attributes[name];
+    const attr = this.ds.config.model.attributes[name];
     return attr;
   }
 

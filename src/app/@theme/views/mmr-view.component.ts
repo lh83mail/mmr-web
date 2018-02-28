@@ -47,9 +47,9 @@ export class MmrViewComponent {
       .toPromise()
       .then(d => {
         this.viewJson = d
-        this.dataSotreManager = DataStoreManager.createManager(this.viewJson.dataStores)
-        this.dataStoreService.setDataStoreManager(this.dataSotreManager);
-
+        // this.dataSotreManager = DataStoreManager.createManager(this.viewJson.dataStores)
+        // this.dataStoreService.setDataStoreManager(this.dataSotreManager);
+        this.dataStoreService.setUpDataStore(this.viewJson.dataStores)
         this.runInitAction()
       });
   }

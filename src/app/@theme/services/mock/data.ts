@@ -407,7 +407,7 @@ export const MASTER_DETAILS_FROM = {
                 {
                   id: 'form1',
                   type: 'form',
-                  dsName: 'ds0',
+                  dsName: 'purchase_order',
                   children: [
                     {
                       id: 'position',
@@ -442,7 +442,7 @@ export const MASTER_DETAILS_FROM = {
                 {
                   id:'user-grid',
                   type: 'table',
-                  dsName: 'ds1',
+                  dsName: 'purchase_order_items',
                   columns: [
                     {name:"position", filterable: true, quickFilter: true},
                     {name:"name", filterable: true, sortable: true, quickFilter: true},
@@ -473,7 +473,7 @@ export const MASTER_DETAILS_FROM = {
                 {
                   id: 'form2',
                   type: 'form',
-                  dsName: 'ds0',
+                  dsName: 'purchase_order',
                   children: [
                     {
                       id: 'position',
@@ -542,9 +542,10 @@ export const MASTER_DETAILS_FROM = {
   ],
 
   dataStores: {
-    'ds0' : {
-      id: 'ds0',
+    'purchase_order' : {
+      id: 'purchase_order',
       dsType: 0,
+      associates: ['id'],
       model: {
         id: 'model-basic',
         attributes: {
@@ -567,7 +568,7 @@ export const MASTER_DETAILS_FROM = {
       },     
       associateStores: [
          {
-          id: 'ds1',
+          id: 'purchase_order_items',
           dsType: 1,
           model: {
             id: 'model1',

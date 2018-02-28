@@ -8,7 +8,7 @@ import {Command, CommandResponse,  MmrDataStoreService, RootView} from './interf
 import * as executors from './cmd/cmd-excutors';
 import { HttpClient } from '@angular/common/http';
 import { MmrConfiguration } from './config-interface';
-import { DataStoreManager } from './data-model';
+import { DataStoreManager } from './mmr-data-store';
 import { MmrEventBus } from './mmr-event-bus';
 import { MmrAbstractPage } from '../pages/MmrAbstractPage';
 
