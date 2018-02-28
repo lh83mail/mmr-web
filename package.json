@@ -5,6 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:proxy": "ng serve --proxy-config proxy.conf.json",
     "start:hmr": "ng serve --hmr --open",
     "build": "ng build",
     "test": "ng test",

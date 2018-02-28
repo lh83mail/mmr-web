@@ -53,8 +53,6 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
 
   ngAfterViewInit(): void {
 
-    
-
     // if (this.isNewForm()) {
     //   this.createNewFrom();
     //   // this.dataStoreService.execute({
@@ -88,6 +86,7 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
     //     })
     //   })
     // }
+    
    }
 
   createNewFrom() {
