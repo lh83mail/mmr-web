@@ -1,5 +1,6 @@
 import { Observer } from "rxjs/Observer";
 import { Observable } from "rxjs/Observable";
+import { ReaderCongfig } from "./interfaces";
 
 export interface MmrModel {
     id: string;

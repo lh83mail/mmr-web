@@ -607,7 +607,10 @@ export const MASTER_DETAILS_FROM = {
                 type: 'remote',
                 command: 'load_purchase_order_items',
                 args: {
-                  method: 'POST'
+                  method: 'POST',
+                  params: [
+                    { name:'id', type: 'datastore', from: 'purchase_order'}
+                  ]
                 }
             }
 
