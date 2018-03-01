@@ -1,9 +1,10 @@
 import { Component, OnInit, NgZone, ViewChildren, ComponentRef, ElementRef, ViewContainerRef, ComponentFactoryResolver, ViewRef, QueryList, ViewChild, AfterContentInit, AfterViewInit } from '@angular/core';
-import { MmrDataStoreService, DataStoreService, MmrConfiguration, RootView, MmrComponentRef, Command, DataStoreConfig, DataStore } from '../../..';
+import { MmrDataStoreService, DataStoreService, MmrConfiguration, RootView, MmrComponentRef, Command, DataStore } from '../../..';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource, PageEvent } from '@angular/material';
 import { MmrAbstractPage } from '../../MmrAbstractPage'
 import { MMRLoadViewDirective } from '../../../mmr.directive';
+import { PageArgumentReader, ScriptArgumentReader, mmrResloveParamters } from '../../../services/arguments-reader';
 
 
 @Component({
@@ -40,14 +41,12 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
       const stores:{[key: string]: DataStore} = this.dataStoreService.getDataStoreManager().getDataStores() || {}
       for (const key in stores) {
         const ds = stores[key]
-        var as = ds.config.associates || []
-        var params = {}
-        as.forEach(param => {
-          params[param] = this.route.snapshot.queryParamMap.get(param)
-        });
+        var as = ds.config.arguments || []
+        var params = mmrResloveParamters(ds.config.arguments, this.route, this.dataStoreService)
         ds.load(params)
       }
     }
+
 
     ngOnInit() {}
 
@@ -97,6 +96,7 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
 
       this.__mmrViews.forEach(v => {
         this.dataStoreService.execute({
+          type:'remote',
           command: 'from-master-detail-create',
           args: {
             method: "GET",
@@ -149,6 +149,7 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
 
   createInitlizedCommand(ds: DataStore): Command {
     return {
+      type:'remote',
       command: 'from-master-detail-create', args: {
         method: "GET"
       }

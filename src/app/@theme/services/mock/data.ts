@@ -452,10 +452,11 @@ export const MASTER_DETAILS_FROM = {
                   ],
                   runtime: {
                     'init': {
-                      command: 'list-data',
-                      args: {
-                        viewId: 'table-view',
-                      }
+                      type: 'remote',
+                      command: 'load_purchase_order_items',
+                      args: [
+                        { name:'id', type: 'datastore', from: 'purchase_order'}
+                      ]
                     }
                   },
                   pageable: {
@@ -545,7 +546,10 @@ export const MASTER_DETAILS_FROM = {
     'purchase_order' : {
       id: 'purchase_order',
       dsType: 0,
-      associates: ['id'],
+      arguments: [
+        { name:'id', type: 'page'},
+        { name:'eval', type: 'eval', script:`'from_customer'`}
+      ],
       model: {
         id: 'model-basic',
         attributes: {
@@ -595,7 +599,19 @@ export const MASTER_DETAILS_FROM = {
               }
             }
           },
-          associates: ['id']
+          arguments: [
+            { name:'id', type: 'datastore', from: 'purchase_order'}
+          ],
+          actions: {
+            'load' : {
+                type: 'remote',
+                command: 'load_purchase_order_items',
+                args: [
+                  { name:'id', type: 'datastore', from: 'purchase_order'}
+                ]
+            }
+
+          }
         }        
       ]     
     },

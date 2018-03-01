@@ -3,7 +3,7 @@ import { MmrDataStoreService, DataStoreService, MmrConfiguration, RootView } fro
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource, PageEvent } from '@angular/material';
 import { MMRLoadViewDirective } from '../mmr.directive';
-import { Command, DataStoreConfig, DataStoreManager, DataStore } from '..';
+import { Command, DataStoreManager, DataStore } from '..';
 
 
 const empyFun = ()=>{}

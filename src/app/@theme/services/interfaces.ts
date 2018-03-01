@@ -40,6 +40,7 @@ export interface RootView {
 
 
 export interface Command {
+  type:string;
   command: string;
   args?: {
     [name: string]: any

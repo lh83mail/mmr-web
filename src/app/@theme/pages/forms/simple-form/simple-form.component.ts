@@ -46,7 +46,10 @@ export class SimpleFormComponent implements OnInit {
   ngOnInit() {
 
     if (this.isNewForm()) {
-       this.dataStoreService.execute({command: 'create-user-form', args: {
+       this.dataStoreService.execute({
+        type: 'remote',
+        command: 'create-user-form', 
+        args: {
           method: "GET"
        }})
         .subscribe(response => {

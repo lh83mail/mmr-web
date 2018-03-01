@@ -36,6 +36,7 @@ export class DataStore {
      */
     load(params) {
         this.dataStroeService.execute({
+            type: 'remote',
             command: 'load_purchase_order',
             args: {
                 method: 'POST',

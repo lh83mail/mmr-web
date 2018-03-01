@@ -16,6 +16,7 @@ export class LoadViewExecutor extends  CommandExecutor {
     return observableOf({status: 200, command: this.cmd});
   }
 }
+LoadViewExecutor['type'] = 'loadView'
 
 export class PageExecutor extends CommandExecutor {
   execute(): Observable<CommandResponse> {
@@ -26,6 +27,7 @@ export class PageExecutor extends CommandExecutor {
     return observableOf({status: 200, command: this.cmd, data: action.execute()});
   }
 }
+PageExecutor['type'] = 'page'
 
 export class NavigateViewExecutor extends CommandExecutor {
 
@@ -36,6 +38,8 @@ export class NavigateViewExecutor extends CommandExecutor {
   }
 
 }
+NavigateViewExecutor['type'] = 'navigate'
+
 
 export class RemoteExecutor extends CommandExecutor {
   constructor(cmd: Command,
@@ -85,6 +89,7 @@ export class RemoteExecutor extends CommandExecutor {
     // });
   }
 }
+RemoteExecutor['type'] = 'remote'
 
 export class ViewAction extends CommandExecutor {
 
@@ -98,6 +103,7 @@ export class ViewAction extends CommandExecutor {
   }
 
 }
+ViewAction['type'] = 'view-action'
 
 export class Action {
   ref: Function;

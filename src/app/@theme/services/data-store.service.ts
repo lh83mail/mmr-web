@@ -57,8 +57,9 @@ export class DataStoreService extends MmrDataStoreService {
     // 2. 选择远程命令
     let executor = null;
     for (const e in executors) {
-      if (executors[e].name === command.command) {
-        executor = new executors[e](command, this, this.viewId);
+      if (executors[e].type && executors[e].type == command.type) {
+        executor = new executors[e](command, this, this.viewId, this.httpClient, this.mmrConfiguration);
+        break;
       }
     }
 

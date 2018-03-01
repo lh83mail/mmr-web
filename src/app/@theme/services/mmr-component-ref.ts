@@ -1,5 +1,4 @@
 import { ComponentRef } from '@angular/core';
-import { DataStoreConfig  } from './data-model';
 import { MmrValueAccessable, instanceOfMmrValueAccessable, DataStore } from './mmr-data-store';
 
 export class MmrComponentRef {

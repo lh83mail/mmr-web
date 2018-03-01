@@ -3,7 +3,6 @@ import { FormGroup } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { MmrAttribute, ValueType, DateValueOptions, NumberValueType } from '../../../../services';
 import { MmrViewOption } from '../../../../mmr-view.model';
-import { DataStoreConfig } from '../../../..';
 
 @Component({
   selector: 'app-input',

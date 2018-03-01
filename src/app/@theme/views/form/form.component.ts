@@ -4,7 +4,7 @@ import { FormBuilder } from '@angular/forms';
 import { MMRDirective, MMRLoadViewDirective } from 'app/@theme/mmr.directive';
 import { MmrDataStoreService, DataStore } from 'app/@theme/services';
 import 'rxjs/add/operator/toPromise';
-import { DataStoreConfig, MmrValueAccessable } from '../..';
+import { MmrValueAccessable } from '../..';
 
 @Component({
   selector: 'app-form',
@@ -49,6 +49,7 @@ export class FormComponent implements OnInit, MmrValueAccessable {
 
   submit() {
     this.dataStoreService.execute({
+      type: 'remote',
       command: 'submit-form',
       args: {
         body: this.formGroup.value
