@@ -42,8 +42,21 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
       for (const key in stores) {
         const ds = stores[key]
         var as = ds.config.arguments || []
-        var params = this.dataStoreService.resloveParamters(ds.config.arguments)
-        ds.load(params)
+        // var params = this.dataStoreService.resloveParamters(ds.config.arguments)
+        // ds.load(params)
+
+        this.dataStoreService.execute({
+          type: 'remote',
+          command: 'load_purchase_order',
+          args: {
+              method: 'POST',
+              params: ds.config.arguments
+          }
+      })  
+      .subscribe(response => {
+          ds.set(response.data)
+      })
+
       }
     }
 
