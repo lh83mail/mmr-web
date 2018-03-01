@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { MmrAbstractPage } from '../pages/MmrAbstractPage';
 import { MmrConfiguration } from './config-interface';
 import { DataStoreManager } from './mmr-data-store';
+import { ArgumentReader } from './arguments-reader';
 
 
 export abstract class MmrDataStoreService {
@@ -23,6 +24,12 @@ export abstract class MmrDataStoreService {
 
   abstract getRootView(): RootView;
 
+  abstract addReader(type:string, reader: ArgumentReader);
+
+  abstract resloveParamter(cfg: ReaderCongfig): any;
+
+  abstract resloveParamters(configs:Array<ReaderCongfig>);
+
   /**
    * 初始化数据仓库
    */
@@ -38,13 +45,19 @@ export interface RootView {
   loadView(viewId: string);
 }
 
+export interface ReaderCongfig {
+  name: string,
+  type: string,
+  [key:string]: any
+}
+
 
 export interface Command {
   type:string;
   command: string;
   args?: {
     [name: string]: any
-  };
+  }
 }
 
 export interface CommandResponse {

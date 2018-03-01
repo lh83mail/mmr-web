@@ -1,6 +1,5 @@
 import { Observer } from "rxjs/Observer";
 import { Observable } from "rxjs/Observable";
-import { ReadCongfig } from "./arguments-reader";
 
 export interface MmrModel {
     id: string;
@@ -44,6 +43,6 @@ export interface DataStoreConfig {
     model: MmrModel;
     isSet?: boolean;
     data?: any;
-    arguments?: Array<ReadCongfig>;
+    arguments?: Array<ReaderCongfig>;
     associateStores?: Array<DataStoreConfig>;
 }

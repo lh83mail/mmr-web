@@ -11,6 +11,10 @@ import { MmrConfiguration } from './config-interface';
 import { DataStoreManager } from './mmr-data-store';
 import { MmrEventBus } from './mmr-event-bus';
 import { MmrAbstractPage } from '../pages/MmrAbstractPage';
+import { ArgumentReader, PageArgumentReader, ScriptArgumentReader, ValueArgumentReader } from './arguments-reader';
+import { ReaderCongfig } from './interfaces';
+import { Route } from '@angular/compiler/src/core';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Injectable()
@@ -19,14 +23,47 @@ export class DataStoreService extends MmrDataStoreService {
   viewId: string;
   rootView: RootView;
   __dataStoreManager__: DataStoreManager;
+  
+  
+  /** 参数解析器 */
+  private paramReaders: {
+    [type: string] : ArgumentReader
+  } = {}
 
   constructor(
     private mmrConfiguration: MmrConfiguration,
     private httpClient: HttpClient,
     private eventBus: MmrEventBus,
+    private activatedRoute: ActivatedRoute,
   ) {
     super(mmrConfiguration, httpClient);
+
+    this.addReader('eval', new ScriptArgumentReader(this.activatedRoute.snapshot, this))
+    this.addReader('page', new PageArgumentReader(this.activatedRoute.snapshot))
+    this.addReader('value', new ValueArgumentReader())
   }
+
+  addReader(type:string, reader:ArgumentReader) {
+    this.paramReaders[type] = reader
+  }
+
+  resloveParamter(cfg: ReaderCongfig): any {
+    return this.paramReaders[cfg.type || 'value'].get(cfg)
+  }
+
+  resloveParamters(configs:Array<ReaderCongfig>) {
+    const params = {}
+    configs = configs || []
+    let value
+    configs.forEach(cfg => {
+      value = this.resloveParamter(cfg)
+      if (value != null) {
+        params[cfg.name] = value
+      }
+    });
+    return params
+  }
+
 
   setDataStoreManager(dataStoreManager: DataStoreManager): void {
     this.__dataStoreManager__ = dataStoreManager;

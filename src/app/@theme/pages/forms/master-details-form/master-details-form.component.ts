@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource, PageEvent } from '@angular/material';
 import { MmrAbstractPage } from '../../MmrAbstractPage'
 import { MMRLoadViewDirective } from '../../../mmr.directive';
-import { PageArgumentReader, ScriptArgumentReader, mmrResloveParamters } from '../../../services/arguments-reader';
+import { PageArgumentReader, ScriptArgumentReader } from '../../../services/arguments-reader';
 
 
 @Component({
@@ -42,7 +42,7 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
       for (const key in stores) {
         const ds = stores[key]
         var as = ds.config.arguments || []
-        var params = mmrResloveParamters(ds.config.arguments, this.route, this.dataStoreService)
+        var params = this.dataStoreService.resloveParamters(ds.config.arguments)
         ds.load(params)
       }
     }

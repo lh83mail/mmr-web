@@ -454,9 +454,9 @@ export const MASTER_DETAILS_FROM = {
                     'init': {
                       type: 'remote',
                       command: 'load_purchase_order_items',
-                      args: [
-                        { name:'id', type: 'datastore', from: 'purchase_order'}
-                      ]
+                      args: {
+                        method: 'POST'
+                      }
                     }
                   },
                   pageable: {
@@ -603,12 +603,12 @@ export const MASTER_DETAILS_FROM = {
             { name:'id', type: 'datastore', from: 'purchase_order'}
           ],
           actions: {
-            'load' : {
+            'load' : {              
                 type: 'remote',
                 command: 'load_purchase_order_items',
-                args: [
-                  { name:'id', type: 'datastore', from: 'purchase_order'}
-                ]
+                args: {
+                  method: 'POST'
+                }
             }
 
           }

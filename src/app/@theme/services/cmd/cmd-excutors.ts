@@ -53,13 +53,13 @@ export class RemoteExecutor extends CommandExecutor {
 
   execute(): Observable<CommandResponse> {
     const method = this.cmd.args.method || 'GET';
+    
+
     const options: any = {
-      params: this.cmd.args.params,
+      params:  this.dataStoreService.resloveParamters(this.cmd.args.params),
       observe: 'response',
-    };
-    this.cmd.args.body = {
-      "hello":"ggog"
     }
+
     if ((method === 'POST' || method === 'PUT') && this.cmd.args.body) {
       options.body = this.cmd.args.body;
     }
