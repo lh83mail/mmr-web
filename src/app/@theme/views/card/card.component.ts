@@ -31,7 +31,7 @@ hello(e) {
   execute(command: Command) {
     // here execute your command
     // this.pageState.execute(this, command);
-    this.dataStoreService.execute(command, this);
+    this.dataStoreService.execute(command);
   }
 
 

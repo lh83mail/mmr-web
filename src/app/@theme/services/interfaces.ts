@@ -15,7 +15,7 @@ export abstract class MmrDataStoreService {
   abstract setDataStoreManager(dataStoreManager: DataStoreManager): void;
   abstract getDataStoreManager(): DataStoreManager;
 
-  abstract execute(cmd: Command, component: any): Observable<CommandResponse>;
+  abstract execute(cmd: Command): Observable<CommandResponse>;
 
   abstract setupViewId(viewId: string, rootView: RootView): void;
 
@@ -68,12 +68,12 @@ export interface CommandResponse {
 export abstract class CommandExecutor {
   cmd: Command;
   dataStoreService: MmrDataStoreService;
-  component: Component;
+  viewId: string;
 
-  constructor(cmd: Command, dataStoreService: MmrDataStoreService, component: Component) {
+  constructor(cmd: Command, dataStoreService: MmrDataStoreService, viewId: string) {
     this.cmd = cmd;
     this.dataStoreService = dataStoreService;
-    this.component = component;
+    this.viewId = viewId;
   }
   abstract execute(): Observable<CommandResponse>;
 }

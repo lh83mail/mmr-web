@@ -40,11 +40,11 @@ export class NavigateViewExecutor extends CommandExecutor {
 export class RemoteExecutor extends CommandExecutor {
   constructor(cmd: Command,
     dataStoreService: MmrDataStoreService,
-    component: Component,
+    viewId: string,
     private httpClient: HttpClient,
     private mmrConfiguration: MmrConfiguration
   ) {
-    super(cmd, dataStoreService, component);
+    super(cmd, dataStoreService, viewId);
   }
 
   execute(): Observable<CommandResponse> {
@@ -53,14 +53,16 @@ export class RemoteExecutor extends CommandExecutor {
       params: this.cmd.args.params,
       observe: 'response',
     };
-
+    this.cmd.args.body = {
+      "hello":"ggog"
+    }
     if ((method === 'POST' || method === 'PUT') && this.cmd.args.body) {
       options.body = this.cmd.args.body;
     }
 
     return this.httpClient.request<HttpResponse<any>>(
         method,
-        this.mmrConfiguration.getRemoteCommandUrl(this.cmd.command),
+        this.mmrConfiguration.getRemoteCommandUrl(`core/remote/${this.viewId}/${this.cmd.command}`),
         options
     )
     .map(response => {
@@ -88,7 +90,7 @@ export class ViewAction extends CommandExecutor {
 
   execute(): Observable<CommandResponse> {
     const cmd = this.cmd.args['action'];
-    const action = MMR_COMPONENT_FINDER.findComponetInstance(cmd, this.component);
+    const action = MMR_COMPONENT_FINDER.findComponetInstance(cmd, this.dataStoreService.getRootView());
     if (action == null) {
       throw new Error(`找不到指定的命令${cmd}`);
     }

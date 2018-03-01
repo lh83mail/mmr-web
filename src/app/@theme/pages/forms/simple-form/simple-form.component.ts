@@ -48,7 +48,7 @@ export class SimpleFormComponent implements OnInit {
     if (this.isNewForm()) {
        this.dataStoreService.execute({command: 'create-user-form', args: {
           method: "GET"
-       }}, this)
+       }})
         .subscribe(response => {
             console.log('response', response)
         })

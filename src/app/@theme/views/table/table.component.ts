@@ -151,7 +151,7 @@ export class TableComponent implements OnInit, AfterViewInit {
           }, this.filterValues );
           this.runtime.init.args = args;
 
-          return this.dataStoreService.execute(this.runtime.init, this);
+          return this.dataStoreService.execute(this.runtime.init);
         }),
         map<CommandResponse, any>(cmdResponse => {
           this.__isLoading__ = false;

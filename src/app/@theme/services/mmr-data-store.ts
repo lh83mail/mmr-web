@@ -36,12 +36,12 @@ export class DataStore {
      */
     load(params) {
         this.dataStroeService.execute({
-            command: this.id,
+            command: 'load_purchase_order',
             args: {
-                method: 'GET',
+                method: 'POST',
                 params: params
             }
-        }, this.dataStroeService.getRootView())
+        })  
         .subscribe(response => {
             this.set(response.data)
         })

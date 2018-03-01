@@ -104,7 +104,7 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
               "viewId": this.__viewId
             }
           }
-        }, this)
+        }) 
         .subscribe(response => {
           ds.set(response.data)
          // this.applyData(ds, response.data);

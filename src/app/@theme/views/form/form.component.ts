@@ -53,7 +53,7 @@ export class FormComponent implements OnInit, MmrValueAccessable {
       args: {
         body: this.formGroup.value
       }
-    }, this)
+    })
     .toPromise()
     .then(response => {
       console.log('submited', response);

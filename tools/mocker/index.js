@@ -20,8 +20,8 @@ app.get('/', function(req, res) {
 });
 
 
-let ordersApi = require('./module/orders')
-app.use('/api', ordersApi);
+let coreＡpi = require('./module/core/core')
+app.use('/core', coreＡpi);
   
 
 app.listen(port)
