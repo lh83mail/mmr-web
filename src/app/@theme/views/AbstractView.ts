@@ -6,6 +6,7 @@ export abstract class AbstractView implements MmrValueAccessable, OnInit {
     @Input() id
     @Input() dsName
     @Input() children
+    @Input() commands
 
     constructor(protected dataStoreService: MmrDataStoreService) {
         

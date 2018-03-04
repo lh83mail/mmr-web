@@ -27,6 +27,7 @@ import { FormBuilder } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
 import { MmrDataStore } from '../..';
+import { AbstractView } from '../AbstractView';
 
 
 @Component({
@@ -47,8 +48,7 @@ import { MmrDataStore } from '../..';
     ])
   ]
 })
-export class TableComponent implements OnInit, AfterViewInit {
-  dsName: string;
+export class TableComponent extends AbstractView implements OnInit, AfterViewInit {
   columns: Array<any>;
   runtime: any;
   pageable: boolean | PageOption
@@ -87,8 +87,10 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private dataStoreService: MmrDataStoreService
-  ) {}
+    protected dataStoreService: MmrDataStoreService
+  ) {
+    super(dataStoreService)
+  }
 
   /**
    * 初始化UI
@@ -114,56 +116,63 @@ export class TableComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit() {
-    this.initView();
+    this.initView()
+    super.ngOnInit()
   }
+
+  applyValuesIfMatch(ds: MmrDataStore) {
+    const rs = ds.get()
+    this.__dataSource__.data = rs.map(r => r.data) as Array<any>
+  }
+  updateValuesIfMatch(ds: MmrDataStore) {}
 
   ngAfterViewInit() {
 
-    // 排序改变时重设置页码
-    this.__sort__.sortChange.subscribe(() => {
-      if (this.paginator) {
-        this.paginator.pageIndex = 0;
-      }
-    });
+    // // 排序改变时重设置页码
+    // this.__sort__.sortChange.subscribe(() => {
+    //   if (this.paginator) {
+    //     this.paginator.pageIndex = 0;
+    //   }
+    // });
 
-    let obs = null;
-    if (this.pageable) {
-      obs = merge(this.__sort__.sortChange,
-        this.paginator.page,
-        this.filterChanges
-      );
-    } else {
-      obs = merge(
-        this.__sort__.sortChange,
-        this.filterChanges
-      );
-    }
+    // let obs = null;
+    // if (this.pageable) {
+    //   obs = merge(this.__sort__.sortChange,
+    //     this.paginator.page,
+    //     this.filterChanges
+    //   );
+    // } else {
+    //   obs = merge(
+    //     this.__sort__.sortChange,
+    //     this.filterChanges
+    //   );
+    // }
 
-    obs.pipe(
-        startWith({}),
-        switchMap(() => {
-          this.__isLoading__ = true;
+    // obs.pipe(
+    //     startWith({}),
+    //     switchMap(() => {
+    //       this.__isLoading__ = true;
 
-          const args = Object.assign(this.runtime.init.args || {}, {
-            'sort': this.__sort__.active,
-            'direction': this.__sort__.direction,
-            'pageIndex': this.paginator == null ? 0 : this.paginator.pageIndex
-          }, this.filterValues );
-          this.runtime.init.args = args;
+    //       const args = Object.assign(this.runtime.init.args || {}, {
+    //         'sort': this.__sort__.active,
+    //         'direction': this.__sort__.direction,
+    //         'pageIndex': this.paginator == null ? 0 : this.paginator.pageIndex
+    //       }, this.filterValues );
+    //       this.runtime.init.args = args;
 
-          return this.dataStoreService.execute(this.runtime.init);
-        }),
-        map<CommandResponse, any>(cmdResponse => {
-          this.__isLoading__ = false;
-          if (this.paginator) {
-            this.paginator.length = cmdResponse.data.total || 0;
-          }
-          return cmdResponse.data.data;
-        })
-      )
-      .subscribe(data => {
-        this.__dataSource__.data = data;
-      })
+    //       return this.dataStoreService.execute(this.runtime.init);
+    //     }),
+    //     map<CommandResponse, any>(cmdResponse => {
+    //       this.__isLoading__ = false;
+    //       if (this.paginator) {
+    //         this.paginator.length = cmdResponse.data.total || 0;
+    //       }
+    //       return cmdResponse.data.data;
+    //     })
+    //   )
+    //   .subscribe(data => {
+    //     this.__dataSource__.data = data;
+    //   })
   }
 
   /**

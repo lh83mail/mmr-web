@@ -10,7 +10,7 @@ import { PageArgumentReader, ScriptArgumentReader } from '../../../services/argu
 @Component({
   selector: 'app-master-details-form',
   //templateUrl: './master-details-form.component.html',
-  template: '<div *ngFor="let option of __viewConfig?.children" #dxxxx  mmrLoadView [options]="option"></div>',
+  template: '<div *ngFor="let option of __viewConfig?.children" mmrLoadView [options]="option"></div>',
   styleUrls: ['./master-details-form.component.css'],
   providers: [
     {
@@ -35,90 +35,25 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
       super(ngZone, route, router, dataStoreService, mmrConfiguration)
     }
 
-
-    mmrViewConfigLoaded() {
-      super.mmrViewConfigLoaded()
-
-    }
-
-
     ngOnInit() {}
 
-  ngAfterViewInit(): void {
+   ngAfterViewInit(): void {
     const stores:{[key: string]: MmrDataStore} = this.dataStoreService.getDataStoreManager().getDataStores() || {}
     for (const key in stores) {
       const ds = stores[key]
       ds.load()
-    }
-    
+    }    
    }
-
-  createNewFrom() {
-    const stores:{[key: string]: MmrDataStore} = this.dataStoreService.getDataStoreManager().getDataStores() || {}
-    for (const key in stores) {
-      const ds = stores[key]
- 
-      // ds.load()
-      this.__mmrViews.forEach(v => {
-        this.dataStoreService.execute({
-          type:'remote',
-          command: 'from-master-detail-create',
-          args: {
-            method: "GET",
-            params: {
-              "viewId": this.__viewId
-            }
-          }
-        }) 
-        .subscribe(response => {
-          ds.set(response.data, this)
-         // this.applyData(ds, response.data);
-         // v.mmrComponentRef.applyValues(ds)
-        })
-      })
-    }
-  }
-
-  // applyData(ds: DataStore, data: any) {
-  //   ds.data = data
-  //   if (ds.associateStores != null && data && data['substores'] != null) {
-  //     ds.associateStores.forEach(substore => {
-  //       this.applyData(substore, data['substores'][substore.id])
-  //     })
-  //   }
-  // }
 
   createData(ds: MmrDataStore): any {
     return {}
   }
-
+  
   finish() {
- 
     const stores:{[key: string]: MmrDataStore } = this.dataStoreService.getDataStoreManager().getDataStores() || {}
     for (const key in stores) {
-      // this.__mmrViews.forEach(v => {
-      //   v.mmrComponentRef.readValues(stores[key])
-      // })
-
       const data = this.createData(stores[key])
       console.log('save-data', stores[key].get())
     }
   }
-
-  /**
-   * 探测是否为新建表单
-   */
-  isNewForm(): boolean {
-    return true;
-  }
-
-  createInitlizedCommand(ds: MmrDataStore): Command {
-    return {
-      type:'remote',
-      command: 'from-master-detail-create', args: {
-        method: "GET"
-      }
-    }
-  }
-  
 }

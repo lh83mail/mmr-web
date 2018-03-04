@@ -137,7 +137,7 @@ export class MmrDataStore {
     /** 
      * 获取所有数据记录
      */
-    get(): any {
+    get(): Array<MmrRecord> {
         return this._records
     }
 

@@ -450,15 +450,6 @@ export const MASTER_DETAILS_FROM = {
                     {name:"symbol",  },
                     {name:"symbol_", text: '操作'},
                   ],
-                  runtime: {
-                    'init': {
-                      type: 'remote',
-                      command: 'load_purchase_order_items',
-                      args: {
-                        method: 'POST'
-                      }
-                    }
-                  },
                   pageable: {
                     pageSize: 20,
                     pageSizeOptions: [5, 10, 25, 300]

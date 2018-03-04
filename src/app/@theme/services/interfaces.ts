@@ -30,11 +30,6 @@ export abstract class MmrDataStoreService {
 
   abstract resloveParamters(configs:Array<ReaderCongfig>);
 
-  /**
-   * 初始化数据仓库
-   */
-  abstract initPageData(page: MmrAbstractPage): void;
-
   setUpDataStore(storesConfigs: any): any {
     const dataSotreManager = DataStoreManager.createManager(storesConfigs, this)
     this.setDataStoreManager(dataSotreManager);

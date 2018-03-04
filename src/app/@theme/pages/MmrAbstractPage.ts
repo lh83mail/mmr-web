@@ -13,7 +13,6 @@ export abstract class MmrAbstractPage {
     protected __viewConfig: any     // 页面配置数据
     
     @ViewChildren(MMRLoadViewDirective) __mmcl;
-
     constructor(
        protected ngZone: NgZone,
        protected route: ActivatedRoute,
@@ -24,8 +23,7 @@ export abstract class MmrAbstractPage {
         this.route.paramMap.subscribe(paramMap => {
             this.__viewId = paramMap.get('id')
             this.mmrPageLoad(this.__viewId)
-        })
-    
+        })    
     }
 
     /**
@@ -58,11 +56,6 @@ export abstract class MmrAbstractPage {
         command.push(viewId);
         this.router.navigate(command);
     }
-
-    /** 
-     * 创建页面初始化命令
-     */
-    abstract createInitlizedCommand(ds: MmrDataStore): Command
 }
 
 class MmrRootView implements RootView {

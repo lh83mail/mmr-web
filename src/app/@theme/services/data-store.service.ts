@@ -121,22 +121,6 @@ export class DataStoreService extends MmrDataStoreService {
 
     return observableOf(v);
   }
-
-  /** 
-   * 初始化数据仓库
-   */
-  initPageData(page: MmrAbstractPage): void {
-    const stores = this.getDataStoreManager().getDataStores();
-    if (stores == null) {
-      return;
-    }
-
-    for (var key in stores) {
-      const s = stores[key]; 
-      this.execute(page.createInitlizedCommand(s))
-    }
-
-  }
 }
 
 export const EVT_MMR_DATASTORE_INITLIZED = 'mmr_datastoe_initlized'
