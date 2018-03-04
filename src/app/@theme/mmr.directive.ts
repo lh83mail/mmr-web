@@ -7,6 +7,7 @@ import { Provider } from '@angular/core/src/di/provider';
 import { MmrComponentRef } from './services';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { MmrViewOption } from './mmr-view.model';
+import { CodegenComponentFactoryResolver } from '@angular/core/src/linker/component_factory_resolver';
 
 
 @Directive({
@@ -31,6 +32,7 @@ export class MMRLoadViewDirective implements OnDestroy {
     private dataStoreService: MmrDataStoreService,
     private _hostDomElement: ElementRef,
     private componentFactoryResolver: ComponentFactoryResolver,
+    //private codegenComponentFactoryResolver: CodegenComponentFactoryResolver,
     @Optional() private parentMmrComponetRef: MmrComponentRef,
     private _appRef: ApplicationRef,
     private __defaultInjector: Injector

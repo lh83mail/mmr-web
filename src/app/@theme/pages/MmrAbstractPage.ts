@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource, PageEvent } from '@angular/material';
 import { MMRLoadViewDirective } from '../mmr.directive';
 import { Command, DataStoreManager, MmrDataStore } from '..';
+import { Application, AppState } from '../../@core';
 
 
 const empyFun = ()=>{}
@@ -19,13 +20,13 @@ export abstract class MmrAbstractPage {
        protected router: Router,
        protected dataStoreService: MmrDataStoreService,
        protected mmrConfiguration: MmrConfiguration,
+       protected application: Application,
     ) {
         this.route.paramMap.subscribe(paramMap => {
             this.__viewId = paramMap.get('id')
             this.mmrPageLoad(this.__viewId)
         })    
     }
-
     /**
      * 页面加载开始
      * @param viewId 

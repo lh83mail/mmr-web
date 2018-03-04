@@ -431,6 +431,35 @@ export const MASTER_DETAILS_FROM = {
                       desc: '标识',
                     }
                   ]
+                }, 
+                {
+                  id:'btn01',
+                  type: 'button',
+                  text: '下一步',
+                  commands: {
+                    'click': {
+                      type: 'remote',
+                      command: 'next',
+                      desc: 'save data , then go to next step', 
+                      args: {
+                        
+                      }
+                    }
+                  }
+                },
+                {
+                  id:'btn01',
+                  type: 'button',
+                  text: '退出',
+                  commands: {
+                    'click': {
+                      type: 'remote',
+                      command: 'next',
+                      args: {
+                        
+                      }
+                    }
+                  }
                 }
               ]
             },
@@ -463,48 +492,8 @@ export const MASTER_DETAILS_FROM = {
                   args: {
                     store: 'purchase_order_items'
                   }
-                }
+                },
               }
-            },
-            {
-              id: 'step3',
-              title: '合计信息',
-              type: 'step',
-              children: [
-                {
-                  id: 'form2',
-                  type: 'form',
-                  dsName: 'purchase_order',
-                  children: [
-                    {
-                      id: 'position',
-                      type: 'input',
-                      desc: '序号',
-                      value: 0,
-                    },
-                    {
-                      id: 'name',
-                      type: 'input',
-                      desc: '姓名',
-                    },
-                    {
-                      id: 'weight',
-                      type: 'input',
-                      desc: '体重',
-                    },
-                    {
-                      id: 'symbol',
-                      type: 'input',
-                      desc: '标识',
-                    }
-                  ],
-        
-                  runtime: {
-                    'submit':{},
-                    'load': {}
-                  }
-                }                
-              ]
             },
             {
               id: 'step4',
@@ -530,9 +519,7 @@ export const MASTER_DETAILS_FROM = {
                         }
                       ]
                     },
-                  ],
-            
-                  children:[]
+                  ]
                 }
               ]
             }

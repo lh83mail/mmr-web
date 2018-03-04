@@ -5,6 +5,7 @@ import { MatTableDataSource, PageEvent } from '@angular/material';
 import { MmrAbstractPage } from '../../MmrAbstractPage'
 import { MMRLoadViewDirective } from '../../../mmr.directive';
 import { PageArgumentReader, ScriptArgumentReader } from '../../../services/arguments-reader';
+import { Application } from '../../../../@core';
 
 
 @Component({
@@ -28,11 +29,12 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
       protected router: Router,
       protected dataStoreService: MmrDataStoreService,
       protected mmrConfiguration: MmrConfiguration,
+      protected application: Application,
       private _ref: ElementRef,
       private viewContainerRef: ViewContainerRef,
       private cfr: ComponentFactoryResolver,
     ) {
-      super(ngZone, route, router, dataStoreService, mmrConfiguration)
+      super(ngZone, route, router, dataStoreService, mmrConfiguration, application)
     }
 
     ngOnInit() {}

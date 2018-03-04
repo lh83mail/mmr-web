@@ -8,9 +8,7 @@ export abstract class AbstractView implements MmrValueAccessable, OnInit {
     @Input() children
     @Input() commands
 
-    constructor(protected dataStoreService: MmrDataStoreService) {
-        
-    }
+    constructor(protected dataStoreService: MmrDataStoreService) {}
 
     ngOnInit() {
         this.subcribeDataStoreEvents()
