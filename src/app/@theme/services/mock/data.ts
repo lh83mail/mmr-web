@@ -442,7 +442,9 @@ export const MASTER_DETAILS_FROM = {
                       command: 'next',
                       desc: 'save data , then go to next step', 
                       args: {
-                        
+                        script: `
+                          
+                        `
                       }
                     }
                   }
