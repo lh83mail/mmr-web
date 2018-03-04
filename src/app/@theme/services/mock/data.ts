@@ -464,7 +464,16 @@ export const MASTER_DETAILS_FROM = {
                     pageSizeOptions: [5, 10, 25, 300]
                   }
                 }                
-              ]
+              ],
+              commands: {
+                'selected': {
+                  type: 'datastore',
+                  command: 'load',
+                  args: {
+                    store: 'purchase_order_items'
+                  }
+                }
+              }
             },
             {
               id: 'step3',
@@ -600,23 +609,37 @@ export const MASTER_DETAILS_FROM = {
             }
           },
           arguments: [
-            { name:'id', type: 'datastore', from: 'purchase_order'}
+            { name:'id', type: 'datastore', from: 'purchase_order', attrName: 'id'}
           ],
-          actions: {
+          commands: {
             'load' : {              
                 type: 'remote',
                 command: 'load_purchase_order_items',
                 args: {
                   method: 'POST',
                   params: [
-                    { name:'id', type: 'datastore', from: 'purchase_order'}
+                    { name:'order', type: 'datastore', from: 'purchase_order', attrName: 'id'}
                   ]
                 }
             }
-
           }
         }        
-      ]     
+      ],
+      
+      commands: {
+        'load' : {              
+            type: 'remote',
+            command: 'load_purchase_order',
+            args: {
+              method: 'POST',
+              params: [
+                { name:'id', type: 'page'},
+                { name:'eval', type: 'eval', script:`'from_customer'`}
+              ]
+            }
+        }
+      }
+
     },
     
   }

@@ -11,7 +11,7 @@ import { MmrConfiguration } from './config-interface';
 import { DataStoreManager } from './mmr-data-store';
 import { MmrEventBus } from './mmr-event-bus';
 import { MmrAbstractPage } from '../pages/MmrAbstractPage';
-import { ArgumentReader, PageArgumentReader, ScriptArgumentReader, ValueArgumentReader } from './arguments-reader';
+import { ArgumentReader, PageArgumentReader, ScriptArgumentReader, ValueArgumentReader, DataStoreArgumentReader } from './arguments-reader';
 import { ReaderCongfig } from './interfaces';
 import { Route } from '@angular/compiler/src/core';
 import { ActivatedRoute } from '@angular/router';
@@ -41,6 +41,7 @@ export class DataStoreService extends MmrDataStoreService {
     this.addReader('eval', new ScriptArgumentReader(this.activatedRoute.snapshot, this))
     this.addReader('page', new PageArgumentReader(this.activatedRoute.snapshot))
     this.addReader('value', new ValueArgumentReader())
+    this.addReader('datastore', new DataStoreArgumentReader(this))
   }
 
   addReader(type:string, reader:ArgumentReader) {

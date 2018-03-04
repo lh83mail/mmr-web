@@ -3,7 +3,7 @@ import { MmrDataStoreService, DataStoreService, MmrConfiguration, RootView } fro
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource, PageEvent } from '@angular/material';
 import { MMRLoadViewDirective } from '../mmr.directive';
-import { Command, DataStoreManager, DataStore } from '..';
+import { Command, DataStoreManager, MmrDataStore } from '..';
 
 
 const empyFun = ()=>{}
@@ -62,7 +62,7 @@ export abstract class MmrAbstractPage {
     /** 
      * 创建页面初始化命令
      */
-    abstract createInitlizedCommand(ds: DataStore): Command
+    abstract createInitlizedCommand(ds: MmrDataStore): Command
 }
 
 class MmrRootView implements RootView {

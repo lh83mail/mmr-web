@@ -8,7 +8,7 @@ import {map} from 'rxjs/operators/map';
 import {startWith} from 'rxjs/operators/startWith';
 import {switchMap} from 'rxjs/operators/switchMap';
 import {MmrDataStoreService, ValueType, CommandResponse} from '../../services';
-import {MmrAttribute, DataStoreConfig } from '../../services';
+import {MmrAttribute, MmrDataStoreConfig } from '../../services';
 import { viewClassName } from '@angular/compiler';
 import {MatSort, MatButton, PageEvent, MatPaginator} from '@angular/material';
 import { MatTableDataSource } from './table-data-source';
@@ -26,7 +26,7 @@ import {
 import { FormBuilder } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
-import { DataStore } from '../..';
+import { MmrDataStore } from '../..';
 
 
 @Component({
@@ -75,7 +75,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator;
 
 
-  private ds: DataStore;
+  private ds: MmrDataStore;
 
   /**
    * 过滤条件改变后数据

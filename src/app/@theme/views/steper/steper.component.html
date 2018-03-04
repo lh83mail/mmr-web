@@ -1,6 +1,6 @@
-<mat-vertical-stepper linear="true" #stepper="matVerticalStepper">
+<mat-horizontal-stepper linear="true" #stepper="matHorizontalStepper" (selectionChange)="onSelectionChange($event)">
   <mat-step *ngFor="let step of children">
     <ng-template matStepLabel>{{step.title}}</ng-template>
     <ng-container *ngFor="let option of step.children" mmrLoadView [options]="option"></ng-container>
   </mat-step>
-</mat-vertical-stepper>
+</mat-horizontal-stepper>

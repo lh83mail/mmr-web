@@ -1,5 +1,10 @@
 import { Subject }  from 'rxjs/Subject';
 
+export interface MmrEvent {
+  source?: any
+  data?: any
+}
+
 export class MmrEventBus {
     private _data = new Subject<Object>();
     private _dataStream$ = this._data.asObservable();

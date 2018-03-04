@@ -1,5 +1,5 @@
 import { ComponentRef } from '@angular/core';
-import { MmrValueAccessable, instanceOfMmrValueAccessable, DataStore } from './mmr-data-store';
+import { MmrValueAccessable, instanceOfMmrValueAccessable, MmrDataStore } from './mmr-data-store';
 
 export class MmrComponentRef {
   parentMMrComponentRef: MmrComponentRef;
@@ -32,14 +32,14 @@ export class MmrComponentRef {
   }
 
 
-  applyValues(ds:DataStore) {
+  applyValues(ds:MmrDataStore) {
     if (instanceOfMmrValueAccessable(this._componentRef.instance)) { 
       this._componentRef.instance.applyValues(ds);
     }
     this.children.forEach(ref => ref.applyValues(ds))
   }
 
-  readValues(ds:DataStore) {
+  readValues(ds:MmrDataStore) {
     if (instanceOfMmrValueAccessable(this._componentRef.instance)) { 
       this._componentRef.instance.updateValues(ds);
     }

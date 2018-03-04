@@ -2,45 +2,39 @@ import {Component, Input, OnInit, ViewChild, ViewChildren} from '@angular/core';
 import { FormGroup } from '@angular/forms/src/model';
 import { FormBuilder } from '@angular/forms';
 import { MMRDirective, MMRLoadViewDirective } from 'app/@theme/mmr.directive';
-import { MmrDataStoreService, DataStore } from 'app/@theme/services';
+import { MmrDataStoreService, MmrDataStore } from 'app/@theme/services';
 import 'rxjs/add/operator/toPromise';
-import { MmrValueAccessable } from '../..';
+import { AbstractView } from '../AbstractView';
 
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
-export class FormComponent implements OnInit, MmrValueAccessable {
-  @Input() children: Array<any>;
+export class FormComponent extends AbstractView  {
   formGroup: FormGroup;
-  dsName;
 
   constructor(
     private fb: FormBuilder,
-    private dataStoreService: MmrDataStoreService
+    protected dataStoreService: MmrDataStoreService
   ) {
-    // super()
+     super(dataStoreService)
   }
 
   ngOnInit() {
+    super.ngOnInit()
+
     this.formGroup = this.fb.group({});
     this.children.forEach(e => {
       e.formGroup = this.formGroup;
     });
 
     this.formGroup.valueChanges.subscribe(v => {
-      console.log('values', v)
       const ds = this.dataStoreService.getDataStoreManager().lookupDataStore(this.dsName);
       if (ds != null) {
          ds.set(v, this)
       }
     })
-
-    const ds = this.dataStoreService.getDataStoreManager().lookupDataStore(this.dsName);
-    if (ds != null) {
-      ds.bind(this)
-    }
   }
 
   toFormGroup() {
@@ -68,14 +62,13 @@ export class FormComponent implements OnInit, MmrValueAccessable {
   load() {}
 
 
-  applyValues(ds: DataStore) {
+  applyValuesIfMatch(ds: MmrDataStore) {
     if (ds.id == this.dsName) {
-    //  ds.bind(this)
-      this.formGroup.patchValue(ds.get(), {emitEvent:false})      
+      this.formGroup.patchValue(ds.getFirst().data, {emitEvent:false})      
     }
   }
 
-  updateValues(ds: DataStore) {
+  updateValuesIfMatch(ds: MmrDataStore) {
      if (ds.id == this.dsName) {
        ds.set(this.formGroup.value, this)
      }

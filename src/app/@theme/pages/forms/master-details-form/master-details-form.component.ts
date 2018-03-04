@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone, ViewChildren, ComponentRef, ElementRef, ViewContainerRef, ComponentFactoryResolver, ViewRef, QueryList, ViewChild, AfterContentInit, AfterViewInit } from '@angular/core';
-import { MmrDataStoreService, DataStoreService, MmrConfiguration, RootView, MmrComponentRef, Command, DataStore } from '../../..';
+import { MmrDataStoreService, DataStoreService, MmrConfiguration, RootView, MmrComponentRef, Command, MmrDataStore } from '../../..';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource, PageEvent } from '@angular/material';
 import { MmrAbstractPage } from '../../MmrAbstractPage'
@@ -38,75 +38,27 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
 
     mmrViewConfigLoaded() {
       super.mmrViewConfigLoaded()
-      const stores:{[key: string]: DataStore} = this.dataStoreService.getDataStoreManager().getDataStores() || {}
-      for (const key in stores) {
-        const ds = stores[key]
-        var as = ds.config.arguments || []
-        // var params = this.dataStoreService.resloveParamters(ds.config.arguments)
-        // ds.load(params)
 
-        this.dataStoreService.execute({
-          type: 'remote',
-          command: 'load_purchase_order',
-          args: {
-              method: 'POST',
-              params: ds.config.arguments
-          }
-      })  
-      .subscribe(response => {
-          ds.set(response.data)
-      })
-
-      }
     }
 
 
     ngOnInit() {}
 
   ngAfterViewInit(): void {
-
-    // if (this.isNewForm()) {
-    //   this.createNewFrom();
-    //   // this.dataStoreService.execute({
-    //   //   command: 'from-master-detail-create', args: {
-    //   //     method: "GET"
-    //   //   }
-    //   // }, this)
-    //   // .subscribe(response => {
-    //   //     this.__mmrViews.forEach(v => {
-    //   //       const ds = this.dataStoreService.getDataStoreManager().lookupDataStore("ds0");
-    //   //       ds.data = response.data
-    //   //       v.mmrComponentRef.applyValues(ds)
-    //   //     })
-    //   // })
-    // }
-    // // 加载就的数据
-    // else {
-    //   this.dataStoreService.execute({
-    //     command: 'form-master-detail-load', args: {
-    //       method: "GET",
-    //       params: {
-    //         id: '0001'
-    //       }
-    //     }
-    //   }, this)
-    //   .subscribe(response => {
-    //     this.__mmrViews.forEach(v => {
-    //       const ds = this.dataStoreService.getDataStoreManager().lookupDataStore("ds0");
-    //       ds.set(response.data)
-    //        v.mmrComponentRef.applyValues(ds)
-    //     })
-    //   })
-    // }
+    const stores:{[key: string]: MmrDataStore} = this.dataStoreService.getDataStoreManager().getDataStores() || {}
+    for (const key in stores) {
+      const ds = stores[key]
+      ds.load()
+    }
     
    }
 
   createNewFrom() {
-    const stores:{[key: string]: DataStore} = this.dataStoreService.getDataStoreManager().getDataStores() || {}
+    const stores:{[key: string]: MmrDataStore} = this.dataStoreService.getDataStoreManager().getDataStores() || {}
     for (const key in stores) {
       const ds = stores[key]
+ 
       // ds.load()
-
       this.__mmrViews.forEach(v => {
         this.dataStoreService.execute({
           type:'remote',
@@ -119,7 +71,7 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
           }
         }) 
         .subscribe(response => {
-          ds.set(response.data)
+          ds.set(response.data, this)
          // this.applyData(ds, response.data);
          // v.mmrComponentRef.applyValues(ds)
         })
@@ -136,13 +88,13 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
   //   }
   // }
 
-  createData(ds: DataStore): any {
+  createData(ds: MmrDataStore): any {
     return {}
   }
 
   finish() {
  
-    const stores:{[key: string]: DataStore } = this.dataStoreService.getDataStoreManager().getDataStores() || {}
+    const stores:{[key: string]: MmrDataStore } = this.dataStoreService.getDataStoreManager().getDataStores() || {}
     for (const key in stores) {
       // this.__mmrViews.forEach(v => {
       //   v.mmrComponentRef.readValues(stores[key])
@@ -160,7 +112,7 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
     return true;
   }
 
-  createInitlizedCommand(ds: DataStore): Command {
+  createInitlizedCommand(ds: MmrDataStore): Command {
     return {
       type:'remote',
       command: 'from-master-detail-create', args: {

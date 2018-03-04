@@ -44,3 +44,22 @@ export class ValueArgumentReader implements ArgumentReader {
         return cfg.value
     }
 }
+
+
+export class DataStoreArgumentReader implements ArgumentReader {
+    constructor(
+        private dataService: MmrDataStoreService
+    ) {}
+
+    get(cfg: ReaderCongfig) {
+       if (cfg.from != null) {
+           const ds = this.dataService.getDataStoreManager().lookupDataStore(cfg.from);
+           if (ds != null) {
+               return ds.getFirst().get(cfg.attrName || cfg.name)
+           }
+       }
+       else {
+           console.warn('未指定要查找的数据源')
+       }
+    }
+}

@@ -91,6 +91,7 @@ export class RemoteExecutor extends CommandExecutor {
 }
 RemoteExecutor['type'] = 'remote'
 
+
 export class ViewAction extends CommandExecutor {
 
   execute(): Observable<CommandResponse> {
@@ -113,6 +114,19 @@ export class Action {
     return this.ref.apply(this.target, args);
   }
 }
+
+
+export class DataStoreAction extends CommandExecutor {
+  
+  execute(): Observable<CommandResponse> {
+    const ds = this.dataStoreService.getDataStoreManager().lookupDataStore(this.cmd.args['store'])
+    if (ds[this.cmd.command]) {
+      ds[this.cmd.command].apply(ds)
+    }
+    return observableOf({status: 0, command: this.cmd});
+  }
+}
+DataStoreAction['type'] = 'datastore'
 
 
 export class CommponetFinder {

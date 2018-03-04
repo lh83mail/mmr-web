@@ -1,6 +1,6 @@
 import { Observer } from "rxjs/Observer";
 import { Observable } from "rxjs/Observable";
-import { ReaderCongfig } from "./interfaces";
+import { ReaderCongfig, Command } from "./interfaces";
 
 export interface MmrModel {
     id: string;
@@ -38,12 +38,17 @@ export enum DataStroeType {
     REMOTE,
 }
 
-export interface DataStoreConfig {
+export interface MmrDataStoreConfig {
     id: string;
     dsType: DataStroeType;
     model: MmrModel;
     isSet?: boolean;
     data?: any;
     arguments?: Array<ReaderCongfig>;
-    associateStores?: Array<DataStoreConfig>;
+    associateStores?: Array<MmrDataStoreConfig>;
+
+    commands?: {
+        [name:string]: Command
+    }
 }
+

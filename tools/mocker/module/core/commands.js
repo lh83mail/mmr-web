@@ -10,6 +10,11 @@ var orderItemsDs = [
     { id:4, "order": "001", "position": "26", "name": "36", "weight": "44", "symbol": "111" }
 ]
 
+function wrap(data) {
+    return {
+        data
+    }
+}
 
 // 新建master表
 function loadPurchaseOrder(req, res) {
@@ -17,7 +22,7 @@ function loadPurchaseOrder(req, res) {
     if (req.param('id') != null) {
         order = orderDs.find(d => d.id = req.param('id'))
     }
-    res.send(order)
+    res.send(wrap(order))
 }
 
 // 加载明细
@@ -26,7 +31,7 @@ function loadPurchaseOrderItems(req, res) {
     if (req.param('order') != null) {
         values = orderItemsDs.filter(d => d.order == req.param('order'))
     }
-    return values
+    res.send(wrap(values))
 }
 
 

@@ -1,114 +1,176 @@
-import { DataStoreConfig } from './data-model'
-import {  MmrDataStoreService } from './interfaces'
-
+import { MmrDataStoreConfig, MmrModel, MmrAttribute } from './data-model'
+import {  MmrDataStoreService, Command, CommandResponse } from './interfaces'
+import { isArray, isFunction } from 'util';
+import { Subject } from 'rxjs/Subject';
+import { EventEmitter } from '@angular/core';
+import { MmrEvent } from './mmr-event-bus';
+import { Observer } from 'rxjs/Observer';
+import { Observable } from 'rxjs/Observable';
+import {of as observableOf} from 'rxjs/observable/of'
 
 export interface MmrValueAccessable  {
-    applyValues(ds: DataStore)
-    updateValues(ds: DataStore)
+    applyValues(ds: MmrDataStore)
+    updateValues(ds: MmrDataStore)
 }
   
 export function instanceOfMmrValueAccessable(object: any): object is MmrValueAccessable {
 return 'applyValues' in object && 'updateValues' in object;
 }
+
+export class MmrRecord {
+    model: MmrModel
+    data: {
+        [name:string] : any
+    }
+
+    constructor(_model: MmrModel, _data: any) {
+        this.model = _model;
+        this.data = _data || {}
+    }
+ 
+    get(attrName:string): any {
+        return this.data[attrName]
+    }
+
+    set(attrName: string, value: any) {
+        this.data[attrName] = value
+    }
+}
+
+// export class Event {
+
+// }
+
+class MmrData {
+    data: any;
+    status?:number;
+    message?:string;
+    totalRecord?:number;
+    pageSize?:number;
+    start?: number;
+    page?: number;
+    totalPage?:number;
+    [name: string]: any;
+}
+
   
-export class DataStore {
+export class MmrDataStore {
     private _refs = []
-    private _data:any
-    private _substores:Array<DataStore> = []
+    private _records: Array<MmrRecord> = []
+    private _substores:Array<MmrDataStore> = []
     private dataStroeService: MmrDataStoreService
+
+    private totalRecord?:number = 0
+    private pageSize?:number = 20
+    private start?: number = 0
+
+
+    recordsChanged: EventEmitter<MmrEvent> = new EventEmitter<MmrEvent>()
     
+
+    /**
+     * 记录集ID
+     */
     id: string = ""
 
-    constructor(private _config: DataStoreConfig, dataStroeService: MmrDataStoreService) {
-        this._data = this._config.data
+    constructor(private _config: MmrDataStoreConfig, dataStroeService: MmrDataStoreService) {
+    
         this.id = this._config.id
         this.dataStroeService = dataStroeService
+        this.updateRecords(this._config.data, this)
 
         if (this._config.associateStores) {
             this._config.associateStores.forEach(cfg => {
-                this.addSubStore(new DataStore(cfg, dataStroeService))
+                this.addSubStore(new MmrDataStore(cfg, dataStroeService))
             })
         }
     }
 
-    /**
-     * 加载数据
+    private applyMmrData(data: MmrData) {
+        const record = data.data || []
+
+        const arr = isArray(record) ? record : [record]
+        arr.forEach( d => this._records.push(new MmrRecord(this._config.model, d)))
+        
+        this.start = data.start || 0
+        this.pageSize = data.pageSize || 20
+        this.totalRecord = data.totalPage || arr.length        
+    }
+
+    private updateRecords(data: any | any , source: any) {
+        data = data || new MmrData()
+        if (data instanceof MmrData || data.data != null) {
+           this.applyMmrData(data)
+        }else {
+            var r = new MmrData()
+            r.data = data
+            this.applyMmrData(r)
+        }
+
+        this.recordsChanged.emit({source: source, data: this._records})
+    }
+
+    /** 
+     * 清空记录集
      */
-    load(params) {
-        this.dataStroeService.execute({
-            type: 'remote',
-            command: 'load_purchase_order',
-            args: {
-                method: 'POST',
-                params: params
-            }
-        })  
-        .subscribe(response => {
-            this.set(response.data)
-        })
+    empty() {
+        this._records = []
     }
 
     /**
-     * 落实数据
+     * 读取配置
      */
-    commit() {
-
-    }
-
-    /**
-     * 数据是否被修改过
-     */
-    isDirty() {
-
-    }
-
-
-    get config(): DataStoreConfig {
+    get config(): MmrDataStoreConfig {
         return this._config
     }
-    
+
     /**
      * 
-     * @param data 
+     * @param 更新数据 data 
      * @param byWho 数据更新人是谁
      */
-    set(data:any, byWho: any = null) {
-        if (data != this._data) {
-            this._data = data
-            this.notifyDataＣhanged(byWho)
-        }
+    set(data:any | Array<any>, byWho: any = null) {
+        this.empty()
+        this.updateRecords(data, byWho)
     }
 
+    /** 
+     * 获取所有数据记录
+     */
     get(): any {
-        return this._data
+        return this._records
     }
 
-    addSubStore(store: DataStore) {
+    getFirst() : MmrRecord {
+        return this._records.length > 0 ? this._records[0] : null
+    }
+
+    addSubStore(store: MmrDataStore) {
         this._substores.push(store)
     }
 
-    getSubstores(): Array<DataStore> {
+    getSubstores(): Array<MmrDataStore> {
         return this._substores
     }
+
+    getCommand(name: string): Command {
+        if (this._config.commands == null) return null
+        var cmd = this._config.commands[name]
+        return cmd  
+    }
+
+    load() {
+        const cmd = this.getCommand('load')
+        if (cmd) {
+           this.dataStroeService.execute(cmd)
+            .subscribe(response => {
+                this.set(response.data, this)            
+            }) 
+            return           
+        }
+        throw new Error("command Not Found")
+    }
     
-    notifyDataＣhanged(exceptRef) {
-        for (let ref of this._refs) {
-            if (ref !== exceptRef && instanceOfMmrValueAccessable(ref)) {
-                (ref as MmrValueAccessable).applyValues(this)
-            }
-        }
-    }
-
-    bind(who:any) {
-        const idx = this._refs.indexOf(who);
-        if (idx < 0) {
-            this._refs.push(who)
-        }
-    }
-
-    unbind(who:any) {
-        this._refs = this._refs.filter(ref => ref !== who)
-    }
 }
 
 
@@ -118,7 +180,7 @@ export class DataStore {
  *
  */
 export class DataStoreManager {
-    private stores:  {[key: string]: DataStore} = {}
+    private stores:  {[key: string]: MmrDataStore} = {}
    
     /**
      * 根据配置创建数据仓库管理器实例
@@ -128,7 +190,7 @@ export class DataStoreManager {
      *      value： DataStore配置
      * @param options
      */
-    static createManager(options: {[key: string]: DataStoreConfig}, dataStroeService: MmrDataStoreService): DataStoreManager {
+    static createManager(options: {[key: string]: MmrDataStoreConfig}, dataStroeService: MmrDataStoreService): DataStoreManager {
         if (options == null) {
             return null;
         }
@@ -147,7 +209,7 @@ export class DataStoreManager {
         //     return s
         // }
         for (let key in options) {
-            manager.stores[key] = new DataStore(options[key], dataStroeService);// createDataStore(options[key], null)
+            manager.stores[key] = new MmrDataStore(options[key], dataStroeService);// createDataStore(options[key], null)
         }
         return manager;
     }
@@ -158,9 +220,9 @@ export class DataStoreManager {
 
     }
 
-    lookupDataStore(dsName: any): DataStore {
+    lookupDataStore(dsName: any): MmrDataStore {
 
-        function find(stores: Array<DataStore>): DataStore {
+        function find(stores: Array<MmrDataStore>): MmrDataStore {
             for (let i = 0; i < stores.length; i++) {
                 if (dsName == stores[i].id) {
                     return stores[i];
@@ -182,7 +244,7 @@ export class DataStoreManager {
         return find(storeArray)
     }
 
-    getDataStores(): {[key: string]: DataStore} {
+    getDataStores(): {[key: string]: MmrDataStore} {
         return this.stores;
     }
 
