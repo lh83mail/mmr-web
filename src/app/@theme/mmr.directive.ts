@@ -8,6 +8,7 @@ import { MmrComponentRef } from './services';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { MmrViewOption } from './mmr-view.model';
 import { CodegenComponentFactoryResolver } from '@angular/core/src/linker/component_factory_resolver';
+import { Action } from './services/cmd/cmd-excutors';
 
 
 @Directive({

@@ -5,6 +5,7 @@ import { MatTableDataSource, PageEvent } from '@angular/material';
 import { MMRLoadViewDirective } from '../mmr.directive';
 import { Command, DataStoreManager, MmrDataStore } from '..';
 import { Application, AppState } from '../../@core';
+import { Action } from '../services/cmd/cmd-excutors';
 
 
 const empyFun = ()=>{}
@@ -56,6 +57,10 @@ export abstract class MmrAbstractPage {
         const command = ['views'];
         command.push(viewId);
         this.router.navigate(command);
+    }
+
+    findAction(path:string) : Action {
+        return null
     }
 }
 

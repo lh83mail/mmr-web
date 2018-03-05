@@ -15,6 +15,7 @@ import { ArgumentReader, PageArgumentReader, ScriptArgumentReader, ValueArgument
 import { ReaderCongfig } from './interfaces';
 import { Route } from '@angular/compiler/src/core';
 import { ActivatedRoute } from '@angular/router';
+import { CommandExecutor } from './interfaces';
 
 
 @Injectable()
@@ -89,7 +90,10 @@ export class DataStoreService extends MmrDataStoreService {
    * @returns {Observable<CommandResponse>}
    */
   execute(command: Command): Observable<CommandResponse> {
+    return this.createCommandExecutor(command).execute();
+  }
 
+  createCommandExecutor(command: Command): CommandExecutor {
     // 解析一个命令执行器, 选择顺序:
     // 1. 选择本地命令
     // 2. 选择远程命令
@@ -105,7 +109,7 @@ export class DataStoreService extends MmrDataStoreService {
       executor = new RemoteExecutor(command, this, this.viewId, this.httpClient, this.mmrConfiguration);
     }
 
-    return executor.execute();
+    return executor
   }
 
   /**

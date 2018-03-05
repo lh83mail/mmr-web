@@ -9,7 +9,7 @@ import {catchError} from 'rxjs/operators/catchError';
 import {of as observableOf} from 'rxjs/observable/of'
 import { HttpEvent, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-
+import { concat } from 'rxjs/observable/concat'
 export class LoadViewExecutor extends  CommandExecutor {
   execute(): Observable<CommandResponse> {
     this.dataStoreService.getRootView().loadView(this.cmd.args['viewId']);
@@ -96,7 +96,8 @@ export class ViewAction extends CommandExecutor {
 
   execute(): Observable<CommandResponse> {
     const cmd = this.cmd.args['action'];
-    const action = MMR_COMPONENT_FINDER.findComponetInstance(cmd, this.dataStoreService.getRootView());
+    const el = (<any> this.dataStoreService.getRootView()).view.__mmrViews.first.mmrComponentRef
+    const action = MMR_COMPONENT_FINDER.findComponetInstance(cmd, el);
     if (action == null) {
       throw new Error(`找不到指定的命令${cmd}`);
     }
@@ -129,12 +130,26 @@ export class DataStoreAction extends CommandExecutor {
 DataStoreAction['type'] = 'datastore'
 
 
+/**
+ * 
+ */
+export class CommandChain extends CommandExecutor {
+
+  execute(): Observable<CommandResponse> {
+    const chain = this.cmd.args.chain    
+    const executors = chain.map(cmd => this.dataStoreService.createCommandExecutor(cmd).execute())
+    return concat(executors)
+  }
+}
+CommandChain['type'] = 'chain'
+
 export class CommponetFinder {
 
 
-  findComponetInstance(cmd: string, commponent: any): Action {
+  findComponetInstance(cmd: string, startComponent:MmrComponentRef): Action {
     const cmds = cmd.split('.');
-    let next:MmrComponentRef = commponent.__mmrComponentRef;
+    let next:MmrComponentRef = startComponent
+
     while (next.parentMMrComponentRef != null) {
       next = next.parentMMrComponentRef
     }

@@ -455,10 +455,18 @@ export const MASTER_DETAILS_FROM = {
                   text: '退出',
                   commands: {
                     'click': {
-                      type: 'remote',
-                      command: 'next',
+                      type: 'chain',
+                      command: 'chain',
                       args: {
-                        
+                        'chain': [
+                           {
+                            type:'view-action',
+                            command: 'card1.steper1.nextStep',
+                            args: {
+                              action: 'card1.steper1.nextStep'
+                            }
+                          }
+                        ]
                       }
                     }
                   }

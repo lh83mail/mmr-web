@@ -18,6 +18,8 @@ export abstract class MmrDataStoreService {
 
   abstract execute(cmd: Command): Observable<CommandResponse>;
 
+  abstract createCommandExecutor(command: Command): CommandExecutor;
+
   abstract setupViewId(viewId: string, rootView: RootView): void;
 
   abstract loadView(viewId: string): Observable<any>;
