@@ -1,14 +1,16 @@
 var express = require('express');
 var router = express.Router();
 var match = require('./commands')
+import {Config, loadConfig} from '../configs/config'
 
 /**
  * 加载视图配置
  */
 router.get('/viewconfig/${viewId}', (req, res) => {
     let viewId = req.param('viewId');
-    res.send(cmd.conf)
+    res.send(cmd.conf)    
 })
+
 
 
 /**
