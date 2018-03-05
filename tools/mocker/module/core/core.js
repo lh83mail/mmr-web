@@ -13,11 +13,8 @@ router.get('/viewconfig/:viewId', (req, res) => {
     }
     else {
         res.send({})
-    }
-    
+    }    
 })
-
-
 
 /**
  * 执行远程命令，并返回结果
