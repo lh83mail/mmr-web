@@ -1,5 +1,8 @@
+<div>
+    <button mat-button>添加</button>
+</div>
+
 <div  [@shrinkOut] class="mmr-quickfilter-form" *ngIf="__enableQuickFilterBar__ && __moreFilterExpanded__ !== true" >
-    
   <ng-container class="mmr-full-width" *ngFor="let field of quickerFilterFields" mmrLoadView [options]="field"></ng-container>
   <button mat-icon-button matTooltip="高级查询" (click)="toggleAdvanceFilter()">
     <mat-icon aria-label="Example icon-button with a heart icon">more_horiz</mat-icon>

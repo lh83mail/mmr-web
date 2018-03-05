@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { Command, MmrDataStoreService } from '../../services';
 import { AbstractView } from '../AbstractView';
+import { MatStep, MatStepper } from '@angular/material';
 
 @Component({
   selector: 'mmr-steper',
@@ -16,6 +17,8 @@ export class SteperComponent extends AbstractView {
 
   @Input() children: Array<any>;
 
+  @ViewChild('stepper') steperInstance: MatStepper
+
   constructor(
     protected dataStoreService: MmrDataStoreService
   ) {
@@ -28,13 +31,33 @@ export class SteperComponent extends AbstractView {
       if (step && step.commands && step.commands['selected']) {
         const cmd = step.commands['selected']
         this.dataStoreService.execute(cmd)
-          .subscribe()
+          .subscribe(x=>console.log(x))
       }
     }
   }
 
+  /**
+   * 进入下一标签
+   */
   nextStep() {
-    console.log('do-next-step')
+    let cmd = this.findCommand('nextStep')
+    if (cmd != null) {
+      this.dataStoreService.execute(cmd)
+        .subscribe(r =>  {
+          if (r.status == 200) {
+            this.steperInstance.next()
+          }
+        })
+    } else {
+      this.steperInstance.next()
+    }
   }
 
+  /**
+   * 前一标签
+   */
+  prevStep() {
+    console.log('do-prev-step')    
+    this.steperInstance.previous()
+  }
 }
