@@ -88,6 +88,7 @@ export class MmrDataStore {
 
     private applyMmrData(data: MmrData) {
         const record = data.data || []
+        this._records = []
 
         const arr = isArray(record) ? record : [record]
         arr.forEach( d => this._records.push(new MmrRecord(this._config.model, d)))
@@ -110,11 +111,28 @@ export class MmrDataStore {
         this.recordsChanged.emit({source: source, data: this._records})
     }
 
+    /**
+     * 添加记录
+     * @param record 
+     */
+    append(...record: Array<MmrRecord>) {
+
+    }
+
+    /**
+     * 删除记录
+     * @param record
+     */
+    remove(record: MmrRecord) {
+
+    }
+
+    
     /** 
      * 清空记录集
      */
     empty() {
-        this.applyMmrData(new MmrData())
+        this.updateRecords(null, this)
     }
 
     /**

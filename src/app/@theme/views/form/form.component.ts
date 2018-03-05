@@ -64,7 +64,10 @@ export class FormComponent extends AbstractView  {
 
   applyValuesIfMatch(ds: MmrDataStore) {
     if (ds.id == this.dsName) {
-      this.formGroup.patchValue(ds.getOne().data, {emitEvent:false})      
+      const r = ds.getOne()
+      if (r != null) {
+        this.formGroup.patchValue(r.data, {emitEvent:false})   
+      }         
     }
   }
 

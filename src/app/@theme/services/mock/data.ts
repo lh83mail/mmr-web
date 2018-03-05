@@ -438,23 +438,6 @@ export const MASTER_DETAILS_FROM = {
                   text: '下一步',
                   commands: {
                     'click': {
-                      type: 'remote',
-                      command: 'next',
-                      desc: 'save data , then go to next step', 
-                      args: {
-                        script: `
-                          
-                        `
-                      }
-                    }
-                  }
-                },
-                {
-                  id:'btn01',
-                  type: 'button',
-                  text: '退出',
-                  commands: {
-                    'click': {
                       type: 'chain',
                       command: 'chain',
                       args: {
@@ -606,9 +589,7 @@ export const MASTER_DETAILS_FROM = {
             }
         }
       }
-
-    },
-    
+    },    
   }
 }
 /**
