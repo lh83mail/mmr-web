@@ -5,6 +5,5 @@ export class Config {
 }
 
 export function loadConfig() {
-    let c = new Config(null)
-    
+    return new Config(null) 
 }
