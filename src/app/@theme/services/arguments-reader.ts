@@ -55,7 +55,7 @@ export class DataStoreArgumentReader implements ArgumentReader {
        if (cfg.from != null) {
            const ds = this.dataService.getDataStoreManager().lookupDataStore(cfg.from);
            if (ds != null) {
-               return ds.getFirst().get(cfg.attrName || cfg.name)
+               return ds.getOne().get(cfg.attrName || cfg.name)
            }
        }
        else {

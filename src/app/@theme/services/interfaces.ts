@@ -87,4 +87,8 @@ export abstract class CommandExecutor {
     this.viewId = viewId;
   }
   abstract execute(): Observable<CommandResponse>;
+
+  apply(name:string, data: any) : CommandExecutor {
+    return this
+  }
 }

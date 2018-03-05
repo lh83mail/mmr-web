@@ -459,6 +459,13 @@ export const MASTER_DETAILS_FROM = {
                       command: 'chain',
                       args: {
                         'chain': [
+                          {
+                            type: 'datastore',
+                            command: 'commit',
+                            args: {
+                              store: 'purchase_order'
+                            }                            
+                          },
                            {
                             type:'view-action',
                             command: 'card1.steper1.nextStep',
@@ -498,40 +505,12 @@ export const MASTER_DETAILS_FROM = {
               commands: {
                 'selected': {
                   type: 'datastore',
-                  command: 'load',
+                  command: 'filter',
                   args: {
                     store: 'purchase_order_items'
                   }
                 },
               }
-            },
-            {
-              id: 'step4',
-              title: '确认并完成',
-              type: 'step',
-              children: [
-                {
-                  id: 'main-card',
-                  type: 'card',
-                  title: '模型信息',
-            
-                  toolbars: [
-                    {
-                      position: 'bottom',
-                      children: [
-                        { type: 'button', text: '保存',
-                          command: {
-                            command: 'PageExecutor',
-                            args: {
-                              action: 'finish'
-                            }
-                          }
-                        }
-                      ]
-                    },
-                  ]
-                }
-              ]
             }
           ]
         }
@@ -600,7 +579,7 @@ export const MASTER_DETAILS_FROM = {
             { name:'id', type: 'datastore', from: 'purchase_order', attrName: 'id'}
           ],
           commands: {
-            'load' : {              
+            'filter' : {              
                 type: 'remote',
                 command: 'load_purchase_order_items',
                 args: {
@@ -615,14 +594,14 @@ export const MASTER_DETAILS_FROM = {
       ],
       
       commands: {
-        'load' : {              
+        'filter' : {              
             type: 'remote',
             command: 'load_purchase_order',
             args: {
               method: 'POST',
               params: [
                 { name:'id', type: 'page'},
-                { name:'eval', type: 'eval', script:`'from_customer'`}
+                { name:'eval', type: 'eval', script:`'from_customer'`},
               ]
             }
         }

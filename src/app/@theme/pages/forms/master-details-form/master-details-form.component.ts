@@ -43,7 +43,7 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
     const stores:{[key: string]: MmrDataStore} = this.dataStoreService.getDataStoreManager().getDataStores() || {}
     for (const key in stores) {
       const ds = stores[key]
-      ds.load()
+      ds.filter()
     }    
    }
 

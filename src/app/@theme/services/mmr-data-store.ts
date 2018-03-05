@@ -114,7 +114,7 @@ export class MmrDataStore {
      * 清空记录集
      */
     empty() {
-        this._records = []
+        this.applyMmrData(new MmrData())
     }
 
     /**
@@ -141,7 +141,7 @@ export class MmrDataStore {
         return this._records
     }
 
-    getFirst() : MmrRecord {
+    getOne() : MmrRecord {
         return this._records.length > 0 ? this._records[0] : null
     }
 
@@ -159,8 +159,33 @@ export class MmrDataStore {
         return cmd  
     }
 
-    load() {
-        const cmd = this.getCommand('load')
+    addFilters() {
+
+    }
+
+    clearFilters() {
+
+    }
+
+    addSorts() {
+
+    }
+
+    clearSorts() {
+
+    }
+
+
+    setPageable() {
+
+    }
+
+
+    /**
+     * 加载数据
+     */
+    filter() {
+        const cmd = this.getCommand('filter')
         if (cmd) {
            this.dataStroeService.execute(cmd)
             .subscribe(response => {
@@ -168,9 +193,23 @@ export class MmrDataStore {
             }) 
             return           
         }
-        throw new Error("command Not Found")
+        throw new Error("undefined command")
     }
     
+    /**
+     * 提交数据改变
+     */
+    commit() {
+        const cmd = this.getCommand('commit')
+        if (cmd) {
+           this.dataStroeService.execute(cmd)
+            .subscribe(response => {
+                this.set(response.data, this)            
+            }) 
+            return           
+        }
+        throw new Error("undefined command")
+    }    
 }
 
 
