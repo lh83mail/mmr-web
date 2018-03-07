@@ -9,7 +9,8 @@ import {
   MatButtonModule, MatCardModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule,
   MatSelectModule,
   MatSidenavModule, MatSlideToggleModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatDialogModule
 } from '@angular/material';
 import {RouterModule} from '@angular/router';
 import {MMR_ROOT_ROUTE} from './app.route';
@@ -25,6 +26,7 @@ import { MmrConfiguration} from './@theme';
 
 //---- for develop mock -- //
 import {MmrConfigurationMock} from './mock'
+import { DialogOverviewExampleDialog } from './pages/system/object-def/componets/object-list/object-list.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,7 @@ import {MmrConfigurationMock} from './mock'
     HomeComponent,
     ModulesComponent,
     EnumsMgrComponent,
-    UsersMgrComponent
+    UsersMgrComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +53,8 @@ import {MmrConfigurationMock} from './mock'
     MatSelectModule,
     MatAutocompleteModule,
     MatSlideToggleModule,
-
+    MatDialogModule,
+    
     MatButtonModule,
     MatToolbarModule,
     MatSidenavModule,

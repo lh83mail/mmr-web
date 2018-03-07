@@ -6,7 +6,7 @@ import * as VIEWS from './mock/data';
 import {RemoteExecutor} from './cmd/cmd-excutors';
 import {Command, CommandResponse,  MmrDataStoreService, RootView} from './interfaces';
 import * as executors from './cmd/cmd-excutors';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { MmrConfiguration } from './config-interface';
 import { DataStoreManager } from './mmr-data-store';
 import { MmrEventBus } from './mmr-event-bus';
@@ -43,6 +43,8 @@ export class DataStoreService extends MmrDataStoreService {
     this.addReader('page', new PageArgumentReader(this.activatedRoute.snapshot))
     this.addReader('value', new ValueArgumentReader())
     this.addReader('datastore', new DataStoreArgumentReader(this))
+
+    this.__dataStoreManager__ = DataStoreManager.createManager(null, this)
   }
 
   addReader(type:string, reader:ArgumentReader) {
@@ -117,13 +119,15 @@ export class DataStoreService extends MmrDataStoreService {
    * @param {string} viewIdxs
    */
   loadView(viewId: string): Observable<any> {
-    console.log('info', VIEWS)
-    let v = {};
-    for (const o in VIEWS) {
-      if (VIEWS[o].id === viewId) v = VIEWS[o];
-    }
-
-    return observableOf(v);
+    return this.httpClient.get(`/api/v1/views/${viewId}/config`,    {
+      observe: 'response',
+    })
+    .map((response: HttpResponse<any>) => {
+      if (response.body != null) {      
+        return response.body
+      }
+      return {}
+    });
   }
 }
 

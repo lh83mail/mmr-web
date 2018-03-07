@@ -1,59 +1,29 @@
-
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Here</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <form>
-      <mat-form-field>
-        <input matInput placeholder="姓名"  required>
-      </mat-form-field>
-    </form>
-  </mat-card-content>
-</mat-card>
-
-
-<div class="example-container mat-elevation-z8">
-  <div>
-    <a>对象定义</a> > <a>属性定义</a>
-  </div>
+<div class="example-container mat-elevation-z8" *ngIf="!editing">
   <div class="example-header">
-    <button mat-button color="primary">创建</button>
+    <button mat-button color="primary" (click)="createNew()">创建</button>
   </div>
 
 
   <mat-table #table [dataSource]="dataSource">
 
-    <!-- Position Column -->
-    <ng-container matColumnDef="position">
-      <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
-    </ng-container>
-
     <!-- Name Column -->
-    <ng-container matColumnDef="name">
+    <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef> 唯一标识 </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
     </ng-container>
 
     <!-- Weight Column -->
-    <ng-container matColumnDef="weight">
+    <ng-container matColumnDef="desc">
       <mat-header-cell *matHeaderCellDef> 名称 </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.desc}} </mat-cell>
     </ng-container>
 
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="symbol">
-      <mat-header-cell *matHeaderCellDef> 简述 </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="symbolx">
+    <ng-container matColumnDef="id_">
       <mat-header-cell *matHeaderCellDef> </mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <a mat-button>编辑</a>
-        <a mat-button>属性</a>
-        <a mat-button>删除</a>
+        <a mat-button (click)="open(element.id)">打开</a>
+        <a mat-button (click)="edit(element.id)">编辑</a>      
+        <a mat-button (click)="delete(element.id)">删除</a>
       </mat-cell>
     </ng-container>
 
@@ -61,3 +31,22 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 </div>
+
+
+<mat-card *ngIf="editing">
+  <form class="example-container" #editorForm="ngForm" >
+
+    <mat-form-field>
+      <input matInput placeholder="ID" name="id" [(ngModel)]="id" required>
+      <mat-error>错误提示信息</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea matInput matTextareaAutosize placeholder="配置" name="config" [(ngModel)]="config" matAutosizeMinRows="5"></textarea>
+    </mat-form-field>
+
+    <button mat-button primary (click)="save()">保存</button>
+    <button mat-button (click)="cancel()">取消</button>
+</form>
+
+</mat-card>

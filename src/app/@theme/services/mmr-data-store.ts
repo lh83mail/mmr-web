@@ -248,10 +248,12 @@ export class DataStoreManager {
      * @param options
      */
     static createManager(options: {[key: string]: MmrDataStoreConfig}, dataStroeService: MmrDataStoreService): DataStoreManager {
-        if (options == null) {
-            return null;
-        }
         const manager = new DataStoreManager()
+
+        if (options == null) {
+            return manager;
+        }
+        
 
         // function createDataStore(config: DataStoreConfig, parent: DataStore): DataStore {
         //     let s = new DataStore(config)
@@ -302,7 +304,7 @@ export class DataStoreManager {
     }
 
     getDataStores(): {[key: string]: MmrDataStore} {
-        return this.stores;
+        return this.stores || {};
     }
 
 }

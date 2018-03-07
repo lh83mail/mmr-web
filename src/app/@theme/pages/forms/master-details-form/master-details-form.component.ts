@@ -41,6 +41,11 @@ export class MasterDetailsFormComponent extends MmrAbstractPage implements OnIni
 
    ngAfterViewInit(): void {
     const stores:{[key: string]: MmrDataStore} = this.dataStoreService.getDataStoreManager().getDataStores() || {}
+    
+    if (stores == null) {
+      return;
+    }
+
     for (const key in stores) {
       const ds = stores[key]
       ds.filter()

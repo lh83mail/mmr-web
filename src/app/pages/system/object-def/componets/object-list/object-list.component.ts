@@ -1,7 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import {DataSource} from '@angular/cdk/collections';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of'
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Element } from '@angular/compiler';
+import { Subject } from 'rxjs/Subject';
+import { Router } from '@angular/router';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MASTER_DETAILS_FROM } from '../../../../../@theme/services/mock/data';
+
 
 @Component({
   selector: 'app-object-list',
@@ -9,125 +17,149 @@ import 'rxjs/add/observable/of'
   styleUrls: ['./object-list.component.css']
 })
 export class ObjectListComponent implements OnInit {
-  displayedColumns = ['position', 'name', 'weight', 'symbol','symbolx'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  displayedColumns = ['id', 'desc','id_'];
+  dataSource:MatTableDataSource<Element>
 
-  formConfig:any = {
-    children: [
-      {
-        id: "id",
-        text: "对象ID",
-        desc: "对象唯一标识",
-        required: true,
-        value: "0",
-        valueType: 'string',
-        editable: true,
-      },
-      {
-        id: "attributes",
-        text: "对象属性",
-        desc: "对象唯一标识",
-        required: true,
-        valueType: {
-          type: 'object',
-          ref: 'attribute'
-        },
-        isSet: true,
-        editable: true,
-      },
-    ]
-  };
+  editing = false
+  id:string
+  config: string
 
-  attributeFormConfig:any = {
-    children: [
-      {
-        id: "id",
-        text: "对象ID",
-        desc: "对象唯一标识",
-        required: true,
-        value: "0",
-        valueType: 'string',
-        editable: true,
-      },
-      {
-        id: "attributes",
-        text: "对象属性",
-        required: true,
-        valueType: {
-          type: 'set',
-          elementType: 'string'
-        },
-        isSet: true,
-        editable: true,
-      },
-      {
-        id: "flag",
-        text: "对象标识",
-        required: true,
-        valueType: {
-          type: 'enum',
-          elementType: 'string',
-          values: [
-            'new', 'deleted', 'updated'
-          ]
-        },
-        editable: true,
-      },
-    ]
-  };
-
-
-  ngOnInit(): void {
+  constructor(private httpClient: HttpClient,
+    private router: Router,
+    public dialog: MatDialog
+  ) {
+    this.dataSource = new MatTableDataSource(httpClient);
+    
+    
   }
 
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
+  ngOnInit(): void {
+    this.load()
+    console.log(JSON.stringify(MASTER_DETAILS_FROM))
+  }
+
+  createNew() {
+    this.id = null
+    this.config = null
+    this.editing = true
+  }
+
+  cancel() {
+    this.editing = false
+  }
+
+  open(id) {
+    this.router.navigateByUrl(`/forms/mdf/${id}`)
+  }
+
+  edit(id) {
+    this.httpClient.get(`/api/v1/views/${id}/config`, 
+    {
+      observe: 'response',
+    }
+  )
+  .subscribe(response => {
+    this.editing = true
+    if (response.body != null) {
+      this.id = response.body['id']
+      this.config = JSON.stringify(response.body,null, '\t')
+    }
+  });
+  }
+
+  delete(id) {
+      let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+        width: '300px',
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if (result !== 'yes') return;
+
+        this.httpClient.delete(`/api/v1/views/${id}/config`, 
+              {
+                observe: 'response',
+              }
+            )
+            .subscribe(response => {
+              this.load()
+            });
+      });
+  }
+
+  save() {
+    
+    this.httpClient.put(`/api/v1/views/${this.id}/config`, 
+      JSON.parse(this.config),
+      {
+        observe: 'response',
+      }
+    )
+    .subscribe(response => {
+      this.editing = false
+      this.load()
+    });
+  }
+
+  load() {
+    return this.httpClient.get('/api/v1/views/config', 
+    {
+      observe: 'response',
+    }
+  )
+  .subscribe(response => {
+    if (response.body != null) {
+      this.dataSource.data = response.body as Array<Element>;
+    }
+  });
   }
 }
 
-export class MatTableDataSource extends DataSource<any> {
+export class MatTableDataSource<T> extends DataSource<any> {
   filter;
 
-  constructor(private data: any) {
+  private _data = new BehaviorSubject<T[]>([])
+
+  constructor(private httpClient: HttpClient) {
     super();
   }
 
+  set data(data:Array<T>) {
+    this._data.next(data)
+  }
+
   /** Connect function called by the table to retrieve one stream containing the data to render. */
-  connect(): Observable<Element[]> {
-    return Observable.of(this.data);
+  connect(): Observable<T[]> {
+    return this._data;
+
   }
 
   disconnect() {}
 }
 
 export interface Element {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
+  id: string;
+  desc: string;
 }
 
-const ELEMENT_DATA: Element[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-  {position: 11, name: 'Sodium', weight: 22.9897, symbol: 'Na'},
-  {position: 12, name: 'Magnesium', weight: 24.305, symbol: 'Mg'},
-  {position: 13, name: 'Aluminum', weight: 26.9815, symbol: 'Al'},
-  {position: 14, name: 'Silicon', weight: 28.0855, symbol: 'Si'},
-  {position: 15, name: 'Phosphorus', weight: 30.9738, symbol: 'P'},
-  {position: 16, name: 'Sulfur', weight: 32.065, symbol: 'S'},
-  {position: 17, name: 'Chlorine', weight: 35.453, symbol: 'Cl'},
-  {position: 18, name: 'Argon', weight: 39.948, symbol: 'Ar'},
-  {position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K'},
-  {position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca'},
-];
+
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  template: `
+  <div>Are you Sure?</div>
+  <a mat-button (click)="onNoClick()">取消</a>
+  <a mat-button (click)="onYesClick()">确定</a> `, 
+})
+export class DialogOverviewExampleDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  onYesClick():void {
+    this.dialogRef.close('yes')
+  }
+}
