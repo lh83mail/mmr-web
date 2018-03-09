@@ -219,7 +219,9 @@ export class MmrDataStore {
      */
     commit() {
         const cmd = this.getCommand('commit')
+        
         if (cmd) {
+            cmd.args.body = this.getOne().data
            this.dataStroeService.execute(cmd)
             .subscribe(response => {
                 this.set(response.data, this)            

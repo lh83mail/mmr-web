@@ -60,13 +60,13 @@ export class RemoteExecutor extends CommandExecutor {
       observe: 'response',
     }
 
-    if ((method === 'POST' || method === 'PUT') && this.cmd.args.body) {
-      options.body = this.cmd.args.body;
+    if ((method === 'POST' || method === 'PUT')) {
+      options.body = this.cmd.args.body || {};
     }
 
     return this.httpClient.request<HttpResponse<any>>(
         method,
-        this.mmrConfiguration.getRemoteCommandUrl(`core/remote/${this.viewId}/${this.cmd.command}`),
+        this.mmrConfiguration.getRemoteCommandUrl(`v1/views/${this.viewId}/commands/${this.cmd.command}`),
         options
     )
     .map(response => {
