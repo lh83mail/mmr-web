@@ -52,9 +52,6 @@ export class SimpleFormComponent implements OnInit {
         args: {
           method: "GET"
        }})
-        .subscribe(response => {
-            console.log('response', response)
-        })
     }
   }
 

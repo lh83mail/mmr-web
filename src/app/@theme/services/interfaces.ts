@@ -16,7 +16,7 @@ export abstract class MmrDataStoreService {
   abstract setDataStoreManager(dataStoreManager: DataStoreManager): void;
   abstract getDataStoreManager(): DataStoreManager;
 
-  abstract execute(cmd: Command): Observable<CommandResponse>;
+  abstract execute(cmd: Command);
 
   abstract createCommandExecutor(command: Command): CommandExecutor;
 
@@ -43,9 +43,18 @@ export interface RootView {
 }
 
 export interface ReaderCongfig {
-  name: string,
-  type: string,
-  [key:string]: any
+  name: string;
+  type: string;
+  [key:string]: any;
+}
+
+/** 
+ * 数据处理配置
+ */
+export abstract class DataPipeConfig {
+  name: string = 'BasicDataPipe';   // 数据处理器唯一名称
+  next?: DataPipeConfig;            // 下一个处理器
+  [key:string]: any;                // 本处理器的附加配置
 }
 
 
@@ -54,8 +63,10 @@ export interface Command {
   command: string;
   args?: {
     [name: string]: any
-  }
+  },
+  resultOperation?: DataPipeConfig
 }
+
 
 export interface CommandResponse {
   /**

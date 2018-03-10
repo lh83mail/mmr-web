@@ -16,7 +16,6 @@ export abstract class AbstractView implements MmrValueAccessable, OnInit {
     }
 
     subcribeDataStoreEvents() {
-        console.log(this.dsName)
         if (this.dsName == null || this.dsName == '') return
 
         const ds = this.dataStoreService.getDataStoreManager().lookupDataStore(this.dsName);

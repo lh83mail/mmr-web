@@ -35,7 +35,6 @@ export class ObjectListComponent implements OnInit {
 
   ngOnInit(): void {
     this.load()
-    console.log(JSON.stringify(MASTER_DETAILS_FROM))
   }
 
   createNew() {

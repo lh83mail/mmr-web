@@ -221,14 +221,13 @@ export class MmrDataStore {
         const cmd = this.getCommand('commit')
         
         if (cmd) {
-            cmd.args.body = this.getOne().data
-           this.dataStroeService.execute(cmd)
-            .subscribe(response => {
-                this.set(response.data, this)            
-            }) 
+           this.dataStroeService.execute(cmd);
+            // .subscribe(response => {
+            //     this.set(response.data, this)            
+            // }) 
             return           
         }
-        throw new Error("undefined command")
+        // throw new Error("undefined command")
     }    
 }
 

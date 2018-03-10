@@ -16,6 +16,7 @@ import { ReaderCongfig } from './interfaces';
 import { Route } from '@angular/compiler/src/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommandExecutor } from './interfaces';
+import { createDataPipe } from './data-pipe';
 
 
 @Injectable()
@@ -91,8 +92,17 @@ export class DataStoreService extends MmrDataStoreService {
    * @param {Command} command
    * @returns {Observable<CommandResponse>}
    */
-  execute(command: Command): Observable<CommandResponse> {
-    return this.createCommandExecutor(command).execute();
+  execute(command: Command) {
+    this.createCommandExecutor(command)
+      .execute()
+      .map(response => {
+        if (command.resultOperation) {
+          return createDataPipe(command.resultOperation, this).translate(response)
+        }
+        return response;
+      })
+      .subscribe()
+  //  return this.createCommandExecutor(command).execute();
   }
 
   createCommandExecutor(command: Command): CommandExecutor {

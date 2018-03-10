@@ -19,8 +19,7 @@ export class ButtonComponent extends AbstractView {
   onClicked(evt) {
     let cmd = this.findCommand('click')
     if (cmd != null) {
-      this.dataStoreService.execute(cmd)
-        .subscribe(x=>console.log('xxxxx', x))
+      this.dataStoreService.execute(cmd);
     }
   }
 }
