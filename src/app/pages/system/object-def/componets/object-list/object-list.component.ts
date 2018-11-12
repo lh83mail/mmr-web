@@ -47,6 +47,23 @@ export class ObjectListComponent implements OnInit {
     this.editing = false
   }
 
+  /**
+   * 初始化数据空间
+   * @param id 对象ID
+   */
+  initStore(id) {
+    let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      width: '300px',
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== 'yes') return;
+      this.httpClient.get(`/api/v1/store/${id}`)
+        .subscribe(e => console.log(e))
+    })    
+  }
+
+
+
   open(id) {
     this.router.navigateByUrl(`/forms/mdf/${id}`)
   }
@@ -65,6 +82,7 @@ export class ObjectListComponent implements OnInit {
     }
   });
   }
+  
 
   delete(id) {
       let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {

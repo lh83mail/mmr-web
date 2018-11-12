@@ -21,6 +21,8 @@
     <ng-container matColumnDef="id_">
       <mat-header-cell *matHeaderCellDef> </mat-header-cell>
       <mat-cell *matCellDef="let element">
+        <a mat-button (click)="initStore(element.id)">初始化</a>
+        <a mat-button (click)="open(element.id)">清空数据</a>
         <a mat-button (click)="open(element.id)">打开</a>
         <a mat-button (click)="edit(element.id)">编辑</a>      
         <a mat-button (click)="delete(element.id)">删除</a>
