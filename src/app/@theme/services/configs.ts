@@ -79,7 +79,7 @@ export class ViewDataManager {
     /**
      * 全部数据空间
      */
-    private dataSet: any = {}
+    dataSet: any = {}
     /**
      * 视图管理器绑定的视图
      */
