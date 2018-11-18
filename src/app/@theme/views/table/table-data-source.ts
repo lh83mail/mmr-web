@@ -154,10 +154,10 @@ export class MatTableDataSource<T> implements DataSource<T> {
       combineLatest(this._filter),
       map(([data]) => this._filterData(data)),
       // Watch for filtered data or sort changes to provide an ordered set of data.
-      combineLatest(sortChange.pipe(startWith(null!))),
+      combineLatest(sortChange.pipe()),
       map(([data]) => this._orderData(data)),
       // Watch for ordered data or page changes to provide a paged set of data.
-      combineLatest(pageChange.pipe(startWith(null!))),
+      combineLatest(pageChange.pipe()),
       map(([data]) => this._pageData(data))
     )
     // Watched for paged data changes and send the result to the table to render.

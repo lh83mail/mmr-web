@@ -9,14 +9,50 @@ import { of } from "rxjs/observable/of";
  * 页面配置
  */
 export interface PageConfig {
-    /** 视图唯一ID */
+    /** 
+     * 视图唯一ID 
+     */
     id: string;
-    /** 视图描述 */
+    /** 
+     * 视图描述 
+     */
     description: string;
-    /** 视图配置版本号，用来识别配置 */
+    /** 
+     * 视图配置版本号，用来识别配置 
+     */
     version: number ;
-
+    /**
+     * 页面组件配置
+     */
+    views: ViewComponent;
 }
+
+/**
+ * 视图组件配置
+ */
+export interface ViewComponent {
+    /**
+     * 组件唯一标识
+     */
+    id: string;
+    /**
+     * 组件描述
+     */
+    description?: string;
+    /**
+     * 组件类型
+     */
+    type: string;
+    /**
+     * 布局方式
+     */
+    layout: string;
+    /**
+     * 配置子项
+     */
+    items?: Array<ViewComponent>;    
+}
+
 
 /**
  * 命令类型
@@ -91,7 +127,7 @@ export class ViewDataManager {
      */
     lookup(expression:String ): any {
 
-        if (!expression) {
+    if (!expression) {
             return null;
         }
         
