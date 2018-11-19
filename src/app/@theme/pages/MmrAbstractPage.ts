@@ -1,11 +1,12 @@
 import { Component, OnInit, NgZone, ViewChildren } from '@angular/core';
-import { MmrDataStoreService, DataStoreService, MmrConfiguration, RootView } from '../services';
+import { MmrConfiguration, RootView } from '../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource, PageEvent } from '@angular/material';
 import { MMRLoadViewDirective } from '../mmr.directive';
 import { Command, DataStoreManager, MmrDataStore } from '..';
 import { Application, AppState } from '../../@core';
 import { Action } from '../services/cmd/cmd-excutors';
+import { MmrDataStoreService } from '../services/mmr-data-store.service';
 
 
 const empyFun = ()=>{}

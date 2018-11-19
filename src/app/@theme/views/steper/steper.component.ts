@@ -30,8 +30,8 @@ export class SteperComponent extends AbstractView {
       const step = this.children.find((v, idx, all) => idx == evt.selectedIndex)
       if (step && step.commands && step.commands['selected']) {
         const cmd = step.commands['selected']
-        this.dataStoreService.execute(cmd)
-          .subscribe(x=>console.log(x))
+        // this.dataStoreService.execute(cmd)
+        //   .subscribe(x=>console.log(x))
       }
     }
   }
@@ -42,12 +42,12 @@ export class SteperComponent extends AbstractView {
   nextStep() {
     let cmd = this.findCommand('nextStep')
     if (cmd != null) {
-      this.dataStoreService.execute(cmd)
-        .subscribe(r =>  {
-          if (r.status == 200) {
-            this.steperInstance.next()
-          }
-        })
+      // this.dataStoreService.execute(cmd)
+      //   .subscribe(r =>  {
+      //     if (r.status == 200) {
+      //       this.steperInstance.next()
+      //     }
+      //   })
     } else {
       this.steperInstance.next()
     }

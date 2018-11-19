@@ -1,5 +1,5 @@
 import { MmrDataStoreConfig, MmrModel, MmrAttribute } from './data-model'
-import {  MmrDataStoreService, Command, CommandResponse } from './interfaces'
+import { Command, CommandResponse } from './interfaces'
 import { isArray, isFunction } from 'util';
 import { Subject } from 'rxjs/Subject';
 import { EventEmitter } from '@angular/core';
@@ -7,6 +7,7 @@ import { MmrEvent } from './mmr-event-bus';
 import { Observer } from 'rxjs/Observer';
 import { Observable } from 'rxjs/Observable';
 import {of as observableOf} from 'rxjs/observable/of'
+import { MmrDataStoreService } from './mmr-data-store.service';
 
 export interface MmrValueAccessable  {
     applyValues(ds: MmrDataStore)
@@ -205,10 +206,10 @@ export class MmrDataStore {
     filter() {
         const cmd = this.getCommand('filter')
         if (cmd) {
-           this.dataStroeService.execute(cmd)
-            .subscribe(response => {
-                this.set(response.data, this)            
-            }) 
+        //    this.dataStroeService.execute(cmd)
+        //     .subscribe(response => {
+        //         this.set(response.data, this)            
+        //     }) 
             return           
         }
         throw new Error("undefined command")

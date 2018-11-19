@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AbstractView } from '../AbstractView';
-import { DataStoreService, MmrDataStoreService } from '../../services';
+import { MmrDataStoreService } from '../../services';
 
 @Component({
   selector: 'mmr-button',

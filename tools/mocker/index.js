@@ -23,6 +23,8 @@ app.get('/', function(req, res) {
 let coreＡpi = require('./module/core/core')
 app.use('/core', coreＡpi);
   
+let api = require('./module/api/api')
+app.use('/v1', api)
 
 app.listen(port)
 console.log(`server is runing at http://localhost:${port}`)

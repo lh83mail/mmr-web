@@ -1,5 +1,6 @@
 import { ActivatedRouteSnapshot } from "@angular/router";
-import { MmrDataStoreService, ReaderCongfig } from "./interfaces";
+import { ReaderCongfig } from "./interfaces";
+import { MmrDataStoreService } from "./mmr-data-store.service";
 
 /**
  * 参数读取器

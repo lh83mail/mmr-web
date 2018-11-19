@@ -1,5 +1,5 @@
 import { Input, OnInit } from "@angular/core";
-import { MmrDataStoreService, MmrValueAccessable, MmrDataStore } from "../services";
+import { MmrDataStoreService, MmrValueAccessable, MmrDataStore, ViewDataManager } from "../services";
 import { Command } from "../services";
 
 export abstract class AbstractView implements MmrValueAccessable, OnInit {
@@ -8,6 +8,7 @@ export abstract class AbstractView implements MmrValueAccessable, OnInit {
     @Input() dsName
     @Input() children
     @Input() commands: {[name:string]: Command}
+    @Input() viewDataManager: ViewDataManager;
 
     constructor(protected dataStoreService: MmrDataStoreService) {}
 

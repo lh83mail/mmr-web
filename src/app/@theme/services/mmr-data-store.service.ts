@@ -4,7 +4,7 @@ import {Observable} from 'rxjs/Observable';
 import {of as observableOf} from 'rxjs/observable/of'
 import * as VIEWS from './mock/data';
 import {RemoteExecutor} from './cmd/cmd-excutors';
-import {Command, CommandResponse,  MmrDataStoreService, RootView} from './interfaces';
+import {Command, CommandResponse,  RootView} from './interfaces';
 import * as executors from './cmd/cmd-excutors';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { MmrConfiguration } from './config-interface';
@@ -20,7 +20,7 @@ import { createDataPipe } from './data-pipe';
 
 
 @Injectable()
-export class DataStoreService extends MmrDataStoreService {
+export class MmrDataStoreService {
 
   viewId: string;
   rootView: RootView;
@@ -38,7 +38,6 @@ export class DataStoreService extends MmrDataStoreService {
     private eventBus: MmrEventBus,
     private activatedRoute: ActivatedRoute,
   ) {
-    super(mmrConfiguration, httpClient);
 
     this.addReader('eval', new ScriptArgumentReader(this.activatedRoute.snapshot, this))
     this.addReader('page', new PageArgumentReader(this.activatedRoute.snapshot))
@@ -138,6 +137,11 @@ export class DataStoreService extends MmrDataStoreService {
       }
       return {}
     });
+  }
+  
+  setUpDataStore(storesConfigs: any): any {
+    const dataSotreManager = DataStoreManager.createManager(storesConfigs, this)
+    this.setDataStoreManager(dataSotreManager);
   }
 }
 

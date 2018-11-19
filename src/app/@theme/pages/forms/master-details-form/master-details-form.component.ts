@@ -1,11 +1,12 @@
 import { Component, OnInit, NgZone, ViewChildren, ComponentRef, ElementRef, ViewContainerRef, ComponentFactoryResolver, ViewRef, QueryList, ViewChild, AfterContentInit, AfterViewInit } from '@angular/core';
-import { MmrDataStoreService, DataStoreService, MmrConfiguration, RootView, MmrComponentRef, Command, MmrDataStore } from '../../..';
+import {  MmrConfiguration, RootView, MmrComponentRef, Command, MmrDataStore } from '../../..';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource, PageEvent } from '@angular/material';
 import { MmrAbstractPage } from '../../MmrAbstractPage'
 import { MMRLoadViewDirective } from '../../../mmr.directive';
 import { PageArgumentReader, ScriptArgumentReader } from '../../../services/arguments-reader';
 import { Application } from '../../../../@core';
+import { MmrDataStoreService } from 'app/@theme/services/mmr-data-store.service';
 
 
 @Component({
@@ -14,9 +15,7 @@ import { Application } from '../../../../@core';
   template: '<div *ngFor="let option of __viewConfig?.children" mmrLoadView [options]="option"></div>',
   styleUrls: ['./master-details-form.component.css'],
   providers: [
-    {
-      provide: MmrDataStoreService, useClass: DataStoreService
-    }
+    MmrDataStoreService
   ]
 })
 export class MasterDetailsFormComponent extends MmrAbstractPage implements OnInit, AfterViewInit{

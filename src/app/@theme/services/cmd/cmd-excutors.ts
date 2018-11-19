@@ -1,8 +1,8 @@
 
-import {CommandExecutor, CommandResponse, Command, MmrDataStoreService} from '../interfaces';
+import {CommandExecutor, CommandResponse, Command} from '../interfaces';
 import { ComponentRef, Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http/src/client';
-import { MmrConfiguration, MmrComponentRef } from 'app/@theme/services';
+import { MmrConfiguration, MmrComponentRef, MmrDataStoreService } from 'app/@theme/services';
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch'
 import {catchError} from 'rxjs/operators/catchError';

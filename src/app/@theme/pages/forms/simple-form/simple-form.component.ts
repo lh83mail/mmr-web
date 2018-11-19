@@ -1,15 +1,14 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { MmrDataStoreService, DataStoreService, MmrConfiguration, RootView } from '../../..';
+import {   MmrConfiguration, RootView } from '../../..';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MmrDataStoreService } from 'app/@theme/services/mmr-data-store.service';
 
 @Component({
   selector: 'app-simple-form',
   templateUrl: './simple-form.component.html',
   styleUrls: ['./simple-form.component.css'],
   providers: [
-    {
-      provide: MmrDataStoreService, useClass: DataStoreService
-    }
+    MmrDataStoreService
   ]
 })
 export class SimpleFormComponent implements OnInit {

@@ -1,5 +1,5 @@
-import { NgModule, NgZone, ViewChildren, Component } from '@angular/core';
-import { MmrDataStoreService, DataStoreService, RootView } from 'app/@theme/services';
+import { NgModule, NgZone, ViewChildren, Component, OnInit, AfterViewInit } from '@angular/core';
+import { RootView, PageConfig, ViewDataManager, MmrDataStoreService } from 'app/@theme/services';
 import { MMRLoadViewDirective } from 'app/@theme/mmr.directive';
 import { ActivatedRoute, Router } from '@angular/router'
 import { MmrConfiguration, DataStoreManager } from 'app/@theme';
@@ -10,14 +10,14 @@ import 'rxjs/add/operator/toPromise';
   selector: 'mmr-view',
   templateUrl: './mmr-view.component.html',
   providers: [
-    {
-      provide: MmrDataStoreService, useClass: DataStoreService
-    }
+    MmrDataStoreService
   ]
 })
 export class MmrViewComponent {
 
-  viewJson: any;
+
+  config: PageConfig;
+  viewDataManager: ViewDataManager
 
   @ViewChildren(MMRLoadViewDirective) __mmcl;
 
@@ -40,16 +40,21 @@ export class MmrViewComponent {
   initView(viewId: string) {
     this.viewId = viewId;
 
+  
     this.dataStoreService.setupViewId(this.viewId, new MmrRootView(
       this.dataStoreService, this
     ));
     this.dataStoreService.loadView(viewId)
       .toPromise()
       .then(d => {
-        this.viewJson = d
+        this.config = d;
+        // this.dataStoreService.setupPageConfig(d);
+        // this.__mmcl.forEach(el => {
+        //   el.loadComponent();
+        // });
         // this.dataSotreManager = DataStoreManager.createManager(this.viewJson.dataStores)
         // this.dataStoreService.setDataStoreManager(this.dataSotreManager);
-        this.dataStoreService.setUpDataStore(this.viewJson.dataStores)
+        // this.dataStoreService.setUpDataStore(this.config.dataStores)
         this.runInitAction()
       });
   }
@@ -58,9 +63,11 @@ export class MmrViewComponent {
    * 页面生命周期:执行页面初始化
    */
   runInitAction() {
-    if (this.viewJson && this.viewJson.runtime) {
-
+    if (this.config == null) {
+      throw new Error("config should not be null")
     }
+    
+    this.viewDataManager.loadData();
   }
 
   navigateView(viewId: string) {

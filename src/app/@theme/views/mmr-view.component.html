@@ -1,7 +1,7 @@
-<mat-toolbar class="content-header" color="primary" >{{viewJson?.title}}</mat-toolbar>
+<mat-toolbar class="content-header" color="primary" >{{config?.description}}</mat-toolbar>
 
 <div class="content-view">
-  <ng-container *ngFor="let option of viewJson?.children"  mmrLoadView [options]="option"></ng-container>
+  <ng-container *ngFor="let view of config?.views"  mmrLoadView [options]="view" [viewDataManager]="viewDataManager"></ng-container>
 </div>
 
 <mat-toolbar class="content-footer" color="primary">

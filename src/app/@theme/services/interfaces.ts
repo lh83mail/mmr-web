@@ -5,38 +5,8 @@ import { MmrAbstractPage } from '../pages/MmrAbstractPage';
 import { MmrConfiguration } from './config-interface';
 import { DataStoreManager } from './mmr-data-store';
 import { ArgumentReader } from './arguments-reader';
-
-
-export abstract class MmrDataStoreService {
-   
-  constructor(
-    mmrConfiguration: MmrConfiguration,
-    httpClient: HttpClient) {}
-
-  abstract setDataStoreManager(dataStoreManager: DataStoreManager): void;
-  abstract getDataStoreManager(): DataStoreManager;
-
-  abstract execute(cmd: Command);
-
-  abstract createCommandExecutor(command: Command): CommandExecutor;
-
-  abstract setupViewId(viewId: string, rootView: RootView): void;
-
-  abstract loadView(viewId: string): Observable<any>;
-
-  abstract getRootView(): RootView;
-
-  abstract addReader(type:string, reader: ArgumentReader);
-
-  abstract resloveParamter(cfg: ReaderCongfig): any;
-
-  abstract resloveParamters(configs:Array<ReaderCongfig>);
-
-  setUpDataStore(storesConfigs: any): any {
-    const dataSotreManager = DataStoreManager.createManager(storesConfigs, this)
-    this.setDataStoreManager(dataSotreManager);
-  }
-}
+import { PageConfig } from './configs';
+import { MmrDataStoreService } from './mmr-data-store.service';
 
 export interface RootView {
   loadView(viewId: string);

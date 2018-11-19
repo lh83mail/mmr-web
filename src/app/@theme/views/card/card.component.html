@@ -15,7 +15,7 @@
   <mat-card-content>
     <!-- <mmr-view *ngFor="let option of children" [options]="option"></mmr-view> -->
   
-    <ng-container *ngFor="let option of children" mmrLoadView [options]="option"></ng-container>
+    <ng-container *ngFor="let option of items" mmrLoadView [options]="option"></ng-container>
   </mat-card-content>
 
   <mat-card-actions *ngFor="let tbar of toolbars">
