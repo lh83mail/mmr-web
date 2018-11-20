@@ -17,6 +17,7 @@ import { Route } from '@angular/compiler/src/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommandExecutor } from './interfaces';
 import { createDataPipe } from './data-pipe';
+import { PageConfig, Expression } from './configs';
 
 
 @Injectable()
@@ -26,6 +27,7 @@ export class MmrDataStoreService {
   rootView: RootView;
   __dataStoreManager__: DataStoreManager;
   
+  private pageConfig: PageConfig;
   
   /** 参数解析器 */
   private paramReaders: {
@@ -127,21 +129,92 @@ export class MmrDataStoreService {
    * 加载初始视图
    * @param {string} viewIdxs
    */
-  loadView(viewId: string): Observable<any> {
+  loadView(viewId: string): Observable<PageConfig> {
     return this.httpClient.get(`/api/v1/views/${viewId}/config`,    {
       observe: 'response',
     })
-    .map((response: HttpResponse<any>) => {
-      if (response.body != null) {      
-        return response.body
+    .map((response: HttpResponse<PageConfig>) => {
+      if (response.body != null) {   
+        this.pageConfig = response.body;   
+        return this.pageConfig
       }
-      return {}
+      return this.pageConfig
     });
   }
   
   setUpDataStore(storesConfigs: any): any {
     const dataSotreManager = DataStoreManager.createManager(storesConfigs, this)
     this.setDataStoreManager(dataSotreManager);
+  }
+
+
+  /**
+   * 已绑定的数据表达式
+   */
+  private bindings = {}
+  /*
+    * 全部数据空间
+    */
+  private dataSet: any = {}
+  
+
+  /**
+   * 绑定数据到指定数据空间
+   * @param expression 
+   * @param data 
+   */
+  binding(componentRef, property, expression: Expression) {
+      if (!this.bindings[componentRef.instance.id]) {
+          this.bindings[componentRef.instance.id] = {
+              '@@ref@@': componentRef,
+          }
+      }
+      this.bindings[componentRef.instance.id][property] = expression;
+  }
+
+  notifyDataChanged(id, instanceProp, value: any) {
+    let ref = this.bindings[id];
+    let expression = ref[instanceProp].str
+    expression = expression.replace(/(?:^\$\{)|(?:\})$/g, '')
+
+    let exps = expression.split("\.");
+    let last = this.dataSet;
+    for (let i = 0; i < exps.length-1; i++) {
+      last = last[exps[i]];    
+    }
+    last[exps[exps.length - 1]] = value;
+
+    this.updateBindings()
+  }
+
+  /**
+   * 加载初始数据
+   */
+  loadData(): any {
+
+      //FIXME 从服务器端加载视图的初始化数据
+      this.dataSet = ({
+          id: 1,
+          name: '张三',
+          age: 20,
+          birthday: '2018-11-11'
+      });
+
+      this.updateBindings()
+  }
+
+  /**
+   * 更新绑定的数据
+   */
+  updateBindings() {
+      for (let id in this.bindings) {
+          let ob = this.bindings[id]
+          let ref = ob['@@ref@@']
+          for (let prop in ob) {
+              if (prop == '@@ref@@') continue;
+              ref.instance[prop] = ob[prop].doEval(this.dataSet)
+          }
+      }
   }
 }
 

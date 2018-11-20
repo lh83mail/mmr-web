@@ -1,7 +1,7 @@
 <mat-toolbar class="content-header" color="primary" >{{viewConfig?.title}}</mat-toolbar>
 
 <div class="content-view">
-  <ng-container *ngFor="let option of viewConfig?.children"  mmrLoadView [options]="option"></ng-container>
+  <ng-container *ngFor="let option of viewConfig?.views"  mmrLoadView [options]="option"></ng-container>
 </div>
 
 <mat-toolbar class="content-footer" color="primary">

@@ -17,8 +17,7 @@ export class MMRDirective {
 @Directive({
   selector: '[mmrLoadView]'
 })
-export class MMRLoadViewDirective implements OnDestroy, OnChanges {
- 
+export class MMRLoadViewDirective implements OnDestroy{
 
   __options: ViewComponent;
   mmrComponentRef: MmrComponentRef;
@@ -36,20 +35,10 @@ export class MMRLoadViewDirective implements OnDestroy, OnChanges {
   ) {
   }
 
-  private inited = false;
-  ngOnChanges(changes: SimpleChanges): void {
-    if (!this.inited && this.__options && this.viewDataManager) {    
-      this.loadComponent()
-      this.inited = true;
-    }
-  }
-
   @Input() set options(arg: ViewComponent) {
     this.__options = arg;
-   //this.loadComponent();
+    this.loadComponent()
   }
-
-  @Input() viewDataManager: ViewDataManager
 
   loadComponent() {
     const viewType = this.mmrComponetRegisty.getComponetType(this.__options.type);
@@ -78,7 +67,7 @@ export class MMRLoadViewDirective implements OnDestroy, OnChanges {
         this.bindIfExpression(componentRef, p, this.__options[p]);
       }
     }
-    this.viewDataManager.updateBindings()
+    this.dataStoreService.updateBindings();
     this.mmrComponentRef.componentRef = componentRef;
   }
 
@@ -90,7 +79,7 @@ export class MMRLoadViewDirective implements OnDestroy, OnChanges {
    */
   bindIfExpression(componetRef, property, expression) {
     if (expression && /\$\{[^\}]*?\}/.test(expression)) {
-        this.viewDataManager.binding(componetRef, property, new Expression(expression))
+        this.dataStoreService.binding(componetRef, property, new Expression(expression))
     }
   }
 

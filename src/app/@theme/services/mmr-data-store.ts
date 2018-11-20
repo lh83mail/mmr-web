@@ -18,6 +18,44 @@ export function instanceOfMmrValueAccessable(object: any): object is MmrValueAcc
 return 'applyValues' in object && 'updateValues' in object;
 }
 
+export class Value {
+    constructor(private rawValue: any) {}
+
+    set(value) {
+        this.rawValue = value;
+    }
+
+    get():any {
+        return this.rawValue
+    }    
+}
+
+/**
+ * 数据集
+ */
+export class MmrDataSet {
+    /**
+     * 数据集唯一标识
+     */
+    id: string;
+    /**
+     * 数据集模型
+     */
+    model: MmrModel;
+
+    /**
+     * 记录集合
+     */
+    records?: Array<MmrRecord>;
+
+
+    create(rawData: Array<any>) {
+
+    }
+
+    
+}
+
 export class MmrRecord {
     model: MmrModel
     data: {

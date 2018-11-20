@@ -53,6 +53,25 @@ export interface ViewComponent {
     items?: Array<ViewComponent>;
 }
 
+/**
+ * 卡片配置
+ */
+export interface CardViewComponent extends ViewComponent {
+    title: string;
+    subTitle: string;
+    toolbars?: any;
+}
+
+/**
+ * 支持数据集编辑器组件
+ */
+export interface EditorComponent extends ViewComponent {
+    /**
+     * 要编辑的数据表达式
+     */
+    binddingTarget: string    
+}
+
 
 /**
  * 命令类型
@@ -149,50 +168,7 @@ export class ViewDataManager {
         return val
     }
 
-    private bindings = {}
-    /**
-     * 绑定数据到指定数据空间
-     * @param expression 
-     * @param data 
-     */
-    binding(componentRef, property, expression: Expression) {
-        if (!this.bindings[componentRef.instance.id]) {
-            this.bindings[componentRef.instance.id] = {
-                '@@ref@@': componentRef,
-            }
-        }
-        this.bindings[componentRef.instance.id][property] = expression;
-    }
-
-    /**
-     * 加载数据
-     */
-    loadData(): any {
-
-        //FIXME 从服务器端加载视图的初始化数据
-        this.dataSet = ({
-            id: 1,
-            name: '张三',
-            age: 20,
-            birthday: '2018-11-11'
-        });
-
-        this.updateBindings()
-    }
-
-    /**
-     * 更新绑定的数据
-     */
-    updateBindings() {
-        for (let id in this.bindings) {
-            let ob = this.bindings[id]
-            let ref = ob['@@ref@@']
-            for (let prop in ob) {
-                if (prop == '@@ref@@') continue;
-                ref.instance[prop] = ob[prop].doEval(this.dataSet)
-            }
-        }
-    }
+  
 
 }
 
@@ -218,9 +194,9 @@ export class Expression {
     }
 
     /**
- * 获取指定数据
- * @param expression 表达式
- */
+     * 获取指定数据
+     * @param expression 表达式
+     */
     lookup(expression: String, dataSet: any): any {
         if (!expression) {
             return null;

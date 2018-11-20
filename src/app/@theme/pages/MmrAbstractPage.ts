@@ -43,7 +43,7 @@ export abstract class MmrAbstractPage {
             .then(
               cfg => {
                 this.__viewConfig = cfg
-                this.dataStoreService.setUpDataStore(cfg.dataStores);
+                // this.dataStoreService.setUpDataStore(cfg.dataStores);
                 this.mmrViewConfigLoaded()
               }
           )

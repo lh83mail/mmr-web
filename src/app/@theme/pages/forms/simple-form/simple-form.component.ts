@@ -37,7 +37,49 @@ export class SimpleFormComponent implements OnInit {
       .toPromise()
       .then(
         cfg => {
-          this.viewConfig = cfg
+          this.viewConfig = {
+            title:'编辑用户信息',
+            items: [
+              {
+                id: 'card1',
+                title: '${name}',
+                subTitle:'${name} 的个人数据',
+                type:'card',
+                items: [
+                    {
+                        type: 'input',
+                        id: 'name',
+                        bindingTo: '${name}'               
+                    }
+                ]
+              }
+            ],
+            
+            buttongs: ['save','custom'],
+            commands: {
+                createData: {
+                    type: 'remote',
+                    command: 'createForm', 
+                    args: {
+                      method: "GET"
+                    }
+                },
+                saveData: {
+                  type: 'remote',
+                  command: 'saveFrom', 
+                  args: {
+                    method: "POST"
+                  }
+                },
+                custom1: {
+                  type: 'remote',
+                  command: 'save-user-form', 
+                  args: {
+                    method: "POST"
+                  }
+                }
+            }
+          }
         }
       )
   }
@@ -45,12 +87,15 @@ export class SimpleFormComponent implements OnInit {
   ngOnInit() {
 
     if (this.isNewForm()) {
-       this.dataStoreService.execute({
-        type: 'remote',
-        command: 'create-user-form', 
-        args: {
-          method: "GET"
-       }})
+      this.dataStoreService.getCommand('createData')
+        .execute(d => this.data = d);
+
+      //  this.dataStoreService.execute({
+      //   type: 'remote',
+      //   command: 'create-user-form', 
+      //   args: {
+      //     method: "GET"
+      //  }})
     }
   }
 

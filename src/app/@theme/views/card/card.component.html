@@ -13,9 +13,7 @@
   </mat-card-actions>
 
   <mat-card-content>
-    <!-- <mmr-view *ngFor="let option of children" [options]="option"></mmr-view> -->
-  
-    <ng-container *ngFor="let option of items" mmrLoadView [options]="option"></ng-container>
+    <ng-container *ngFor="let c of items" mmrLoadView [options]="c"></ng-container>
   </mat-card-content>
 
   <mat-card-actions *ngFor="let tbar of toolbars">
@@ -23,7 +21,6 @@
         <button mat-button *ngFor="let btn of tbar.children" (click)="execute(btn.command)">{{btn.text}}</button>
       </div>
   </mat-card-actions>
-
 </mat-card>
 
 

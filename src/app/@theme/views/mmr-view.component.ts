@@ -14,15 +14,10 @@ import 'rxjs/add/operator/toPromise';
   ]
 })
 export class MmrViewComponent {
-
-
+  viewId: string;
   config: PageConfig;
-  viewDataManager: ViewDataManager
 
   @ViewChildren(MMRLoadViewDirective) __mmcl;
-
-  viewId: string;
-  dataSotreManager: DataStoreManager;
 
   constructor(
     private _ngZone: NgZone,
@@ -39,8 +34,6 @@ export class MmrViewComponent {
 
   initView(viewId: string) {
     this.viewId = viewId;
-
-  
     this.dataStoreService.setupViewId(this.viewId, new MmrRootView(
       this.dataStoreService, this
     ));
@@ -48,13 +41,7 @@ export class MmrViewComponent {
       .toPromise()
       .then(d => {
         this.config = d;
-        // this.dataStoreService.setupPageConfig(d);
-        // this.__mmcl.forEach(el => {
-        //   el.loadComponent();
-        // });
-        // this.dataSotreManager = DataStoreManager.createManager(this.viewJson.dataStores)
-        // this.dataStoreService.setDataStoreManager(this.dataSotreManager);
-        // this.dataStoreService.setUpDataStore(this.config.dataStores)
+        this.dataStoreService.loadData()
         this.runInitAction()
       });
   }
@@ -65,9 +52,7 @@ export class MmrViewComponent {
   runInitAction() {
     if (this.config == null) {
       throw new Error("config should not be null")
-    }
-    
-    this.viewDataManager.loadData();
+    }    
   }
 
   navigateView(viewId: string) {
@@ -76,7 +61,6 @@ export class MmrViewComponent {
     //   command.push(this.route.snapshot.data.next);
     // }
     command.push(viewId);
-
     this.router.navigate(command);
   }
 
