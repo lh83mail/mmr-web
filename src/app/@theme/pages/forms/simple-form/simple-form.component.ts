@@ -2,6 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import {   MmrConfiguration, RootView } from '../../..';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MmrDataStoreService } from 'app/@theme/services/mmr-data-store.service';
+import { PageConfig } from 'app/@theme/services';
 
 @Component({
   selector: 'app-simple-form',
@@ -13,8 +14,8 @@ import { MmrDataStoreService } from 'app/@theme/services/mmr-data-store.service'
 })
 export class SimpleFormComponent implements OnInit {
   protected  viewId: string
-  viewConfig: any;
-  
+  viewConfig: PageConfig;
+
   constructor(
     private _ngZone: NgZone,
     private route: ActivatedRoute,
@@ -37,73 +38,27 @@ export class SimpleFormComponent implements OnInit {
       .toPromise()
       .then(
         cfg => {
-          this.viewConfig = {
-            title:'编辑用户信息',
-            items: [
-              {
-                id: 'card1',
-                title: '${name}',
-                subTitle:'${name} 的个人数据',
-                type:'card',
-                items: [
-                    {
-                        type: 'input',
-                        id: 'name',
-                        bindingTo: '${name}'               
-                    }
-                ]
-              }
-            ],
-            
-            buttongs: ['save','custom'],
-            commands: {
-                createData: {
-                    type: 'remote',
-                    command: 'createForm', 
-                    args: {
-                      method: "GET"
-                    }
-                },
-                saveData: {
-                  type: 'remote',
-                  command: 'saveFrom', 
-                  args: {
-                    method: "POST"
-                  }
-                },
-                custom1: {
-                  type: 'remote',
-                  command: 'save-user-form', 
-                  args: {
-                    method: "POST"
-                  }
-                }
-            }
-          }
+          this.viewConfig = cfg
+          this.dataStoreService.loadData(this.route.snapshot.params)
         }
       )
   }
 
-  ngOnInit() {
-
-    if (this.isNewForm()) {
-      this.dataStoreService.getCommand('createData')
-        .execute(d => this.data = d);
-
-      //  this.dataStoreService.execute({
-      //   type: 'remote',
-      //   command: 'create-user-form', 
-      //   args: {
-      //     method: "GET"
-      //  }})
-    }
+  saveData() {
+    
   }
 
-  /**
-   * 探测是否为新建表单
-   */
-  isNewForm(): boolean {
-    return true;
+
+  ngOnInit() {
+     
+  }
+
+  creeateNewData() {
+
+  }
+
+  loadData() {
+
   }
 
 

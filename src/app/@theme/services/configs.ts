@@ -3,6 +3,7 @@ import { HttpResponse, HttpClient } from "@angular/common/http";
 import { MmrConfiguration } from "./config-interface";
 import { Observable } from "rxjs/Observable";
 import { of } from "rxjs/observable/of";
+import { MmrDataStoreConfig } from "./data-model";
 
 
 /**
@@ -25,6 +26,13 @@ export interface PageConfig {
      * 页面组件配置
      */
     views: Array<ViewComponent>;
+
+    /**
+     * 数据模型配置
+     */
+    models?: {
+        [name:string]: MmrDataStoreConfig
+    }
 }
 
 /**

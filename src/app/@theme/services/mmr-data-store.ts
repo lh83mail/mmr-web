@@ -1,12 +1,8 @@
-import { MmrDataStoreConfig, MmrModel, MmrAttribute } from './data-model'
-import { Command, CommandResponse } from './interfaces'
-import { isArray, isFunction } from 'util';
-import { Subject } from 'rxjs/Subject';
+import { MmrDataStoreConfig} from './data-model'
+import { Command } from './interfaces'
+import { isArray } from 'util';
 import { EventEmitter } from '@angular/core';
 import { MmrEvent } from './mmr-event-bus';
-import { Observer } from 'rxjs/Observer';
-import { Observable } from 'rxjs/Observable';
-import {of as observableOf} from 'rxjs/observable/of'
 import { MmrDataStoreService } from './mmr-data-store.service';
 
 export interface MmrValueAccessable  {
@@ -38,10 +34,6 @@ export class MmrDataSet {
      * 数据集唯一标识
      */
     id: string;
-    /**
-     * 数据集模型
-     */
-    model: MmrModel;
 
     /**
      * 记录集合
@@ -57,13 +49,11 @@ export class MmrDataSet {
 }
 
 export class MmrRecord {
-    model: MmrModel
     data: {
         [name:string] : any
     }
 
-    constructor(_model: MmrModel, _data: any) {
-        this.model = _model;
+    constructor(_data: any) {
         this.data = _data || {}
     }
  
@@ -130,7 +120,7 @@ export class MmrDataStore {
         this._records = []
 
         const arr = isArray(record) ? record : [record]
-        arr.forEach( d => this._records.push(new MmrRecord(this._config.model, d)))
+        arr.forEach( d => this._records.push(new MmrRecord(d)))
         
         this.start = data.start || 0
         this.pageSize = data.pageSize || 20
@@ -211,9 +201,9 @@ export class MmrDataStore {
     }
 
     getCommand(name: string): Command {
-        if (this._config.commands == null) return null
-        var cmd = this._config.commands[name]
-        return cmd  
+        // if (this._config.commands == null) return null
+        // var cmd = this._config.commands[name]
+        return {}  as Command;
     }
 
     addFilters() {

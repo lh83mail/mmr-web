@@ -8,7 +8,7 @@ import {map} from 'rxjs/operators/map';
 import {startWith} from 'rxjs/operators/startWith';
 import {switchMap} from 'rxjs/operators/switchMap';
 import {MmrDataStoreService, ValueType, CommandResponse} from '../../services';
-import {MmrAttribute, MmrDataStoreConfig } from '../../services';
+import {MmrAttribute } from '../../services';
 import { viewClassName } from '@angular/compiler';
 import {MatSort, MatButton, PageEvent, MatPaginator} from '@angular/material';
 import { MatTableDataSource } from './table-data-source';
@@ -110,7 +110,8 @@ export class TableComponent extends AbstractView implements OnInit, AfterViewIni
   }
 
   private getAttribute(name: string): MmrAttribute {
-    const attr = this.ds.config.model.attributes[name];
+    const attr:MmrAttribute = null
+    // const attr = this.ds.config.model.attributes[name];
     return attr;
   }
 

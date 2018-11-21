@@ -41,7 +41,8 @@ export class MmrViewComponent {
       .toPromise()
       .then(d => {
         this.config = d;
-        this.dataStoreService.loadData()
+        // this.dataStoreService.loadData()
+        // FIXME 处理数据加载问题
         this.runInitAction()
       });
   }

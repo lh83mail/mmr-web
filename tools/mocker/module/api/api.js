@@ -8,6 +8,7 @@ router.get('/views/:viewId/config', (req, res) => {
   
     res.send({
         id: viewId,
+        title: '编辑单一对象',
         description: "this is description",
 
         data: {
@@ -18,25 +19,44 @@ router.get('/views/:viewId/config', (req, res) => {
 
         views: [
             {
-                id: 'card1',
+                id: 'form',
                 title: '${name}',
                 subTitle:'${name} 的个人数据',
-                type:'card',
+                type:'form',
                 items: [
                     {
                         type: 'input',
                         id: 'name',
-                        bindingTo: '${name}'               
+                        bindingTo: '${name}',
+                        desc:"用户姓名"            
                     }
                 ]
-            },
+            }           
+        ],
+        models: [
             {
-                id: 'card2',
-                title: '${name}',
-                subTitle:'${name} 的个人数据',
-                type:'card'
-            }            
-        ]
+              id: 'primary',
+              dsType: 'REMOTE',
+              attributes: [
+                  {id:"id", valueType: "INT", desc:"ID", primary: true },
+                  {id:"name", valueType: "STRING", desc:"姓名" },
+                  {id:"age", valueType: "INT", desc:"年龄" },
+              ]
+            }
+        ],   
+
+        
+        commands: {
+            'createNewData': {
+
+            },
+            'saveData': {
+
+            },
+            'loadData': {
+
+            }
+        }
     })    
 })
 module.exports = router

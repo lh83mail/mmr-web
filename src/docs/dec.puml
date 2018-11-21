@@ -1,0 +1,13 @@
+@startuml
+
+class PageConfig {
+    id: string
+    name: string
+}
+
+
+note "aaaaa" as N1
+
+
+
+@enduml

@@ -2,12 +2,6 @@ import { Observer } from "rxjs/Observer";
 import { Observable } from "rxjs/Observable";
 import { ReaderCongfig, Command } from "./interfaces";
 
-export interface MmrModel {
-    id: string;
-    attributes: {
-        [key: string]: MmrAttribute
-    }
-}
 
 export interface MmrAttribute {
     id: string;
@@ -41,14 +35,10 @@ export enum DataStroeType {
 export interface MmrDataStoreConfig {
     id: string;
     dsType: DataStroeType;
-    model: MmrModel;
     isSet?: boolean;
     data?: any;
     arguments?: Array<ReaderCongfig>;
     associateStores?: Array<MmrDataStoreConfig>;
-
-    commands?: {
-        [name:string]: Command
-    }
+    attributes: Array<MmrAttribute>;
 }
 

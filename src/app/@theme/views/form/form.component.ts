@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, ViewChild, ViewChildren} from '@angular/core';
 import { FormGroup } from '@angular/forms/src/model';
 import { FormBuilder } from '@angular/forms';
-import {  MmrDataStore, MmrDataStoreService } from 'app/@theme/services';
+import {  MmrDataStore, MmrDataStoreService, ViewComponent } from 'app/@theme/services';
 import 'rxjs/add/operator/toPromise';
 import { AbstractView } from '../AbstractView';
 
@@ -12,6 +12,7 @@ import { AbstractView } from '../AbstractView';
 })
 export class FormComponent extends AbstractView  {
   formGroup: FormGroup;
+  items: Array<ViewComponent>;
 
   constructor(
     private fb: FormBuilder,
@@ -24,8 +25,8 @@ export class FormComponent extends AbstractView  {
     super.ngOnInit()
 
     this.formGroup = this.fb.group({});
-    this.children.forEach(e => {
-      e.formGroup = this.formGroup;
+    this.items.forEach(e => {
+      (<any>e).formGroup = this.formGroup;
     });
 
     this.formGroup.valueChanges.subscribe(v => {

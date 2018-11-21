@@ -14,7 +14,7 @@ import { MmrAbstractPage } from '../pages/MmrAbstractPage';
 import { ArgumentReader, PageArgumentReader, ScriptArgumentReader, ValueArgumentReader, DataStoreArgumentReader } from './arguments-reader';
 import { ReaderCongfig } from './interfaces';
 import { Route } from '@angular/compiler/src/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { CommandExecutor } from './interfaces';
 import { createDataPipe } from './data-pipe';
 import { PageConfig, Expression } from './configs';
@@ -22,11 +22,20 @@ import { PageConfig, Expression } from './configs';
 
 @Injectable()
 export class MmrDataStoreService {
+  /**
+   * 数据对象的唯一标识参数是否存在
+   * @param params 
+   */
+  isDataKeyExists(params: Params): boolean {
+    throw new Error("Method not implemented.");
+  }
 
   viewId: string;
   rootView: RootView;
-  __dataStoreManager__: DataStoreManager;
-  
+
+  dataStoreManager: DataStoreManager
+    private set(value) {this.dataStoreManager = value};
+
   private pageConfig: PageConfig;
   
   /** 参数解析器 */
@@ -46,7 +55,7 @@ export class MmrDataStoreService {
     this.addReader('value', new ValueArgumentReader())
     this.addReader('datastore', new DataStoreArgumentReader(this))
 
-    this.__dataStoreManager__ = DataStoreManager.createManager(null, this)
+    this.dataStoreManager = DataStoreManager.createManager(null, this)
   }
 
   addReader(type:string, reader:ArgumentReader) {
@@ -70,13 +79,8 @@ export class MmrDataStoreService {
     return params
   }
 
-
-  setDataStoreManager(dataStoreManager: DataStoreManager): void {
-    this.__dataStoreManager__ = dataStoreManager;
-  }
-
   getDataStoreManager(): DataStoreManager {
-    return this.__dataStoreManager__;
+    return this.dataStoreManager;
   }
 
   setupViewId(viewId: string, view: RootView) {
@@ -141,12 +145,14 @@ export class MmrDataStoreService {
       return this.pageConfig
     });
   }
-  
-  setUpDataStore(storesConfigs: any): any {
-    const dataSotreManager = DataStoreManager.createManager(storesConfigs, this)
-    this.setDataStoreManager(dataSotreManager);
-  }
 
+  /**
+   * 解析页面配置信息
+   * @param config 
+   */
+  private parsePageConfig(config: PageConfig) {
+    //TODO 解析页面配置
+  }
 
   /**
    * 已绑定的数据表达式
@@ -188,9 +194,9 @@ export class MmrDataStoreService {
   }
 
   /**
-   * 加载初始数据
+   * 加载业务数据
    */
-  loadData(): any {
+  loadData(params: Params): any {
 
       //FIXME 从服务器端加载视图的初始化数据
       this.dataSet = ({
@@ -200,6 +206,24 @@ export class MmrDataStoreService {
           birthday: '2018-11-11'
       });
 
+      const dataStore = this.getDataStoreManager()
+        .lookupDataStore('primary');
+      
+      const keys = dataStore.getKeys();
+
+      // 加载指定数据
+      if (this.containAllKeys(params, keys)) {
+        this.httpClient.get(`/v1/${this.viewId}/datasets/`, {
+          params: Object.apply({},this.pickupValues(keys))
+        })._do(data => {
+            dataStore.loadData(data);
+        })
+      }
+      // 新创建的数据集合
+      else {
+        dataStore.createNewData()
+      }
+      
       this.updateBindings()
   }
 

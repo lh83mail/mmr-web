@@ -1,8 +1,25 @@
 <mat-toolbar class="content-header" color="primary" >{{viewConfig?.title}}</mat-toolbar>
 
 <div class="content-view">
-  <ng-container *ngFor="let option of viewConfig?.views"  mmrLoadView [options]="option"></ng-container>
-</div>
+  
+  <div class="panel">
+    <div class="header">
+      <div class="title">
+        用户基本信息
+      </div>
+    </div>
+    <div class="body">
+
+      <ng-container *ngFor="let option of viewConfig?.views"  mmrLoadView [options]="option"></ng-container>
+
+    </div>
+    <div class="foot">
+     
+        <button mat-raised-button color="primary" (click)="saveData()">保存</button>
+        <button  mat-button >返回</button>
+    </div>
+  </div>
+  
 
 <mat-toolbar class="content-footer" color="primary">
   <a href="https://material.angular.io" target="_blank">meterial2</a>
