@@ -35,6 +35,12 @@ export class FormComponent extends AbstractView  {
          ds.set(v, this)
       }
     })
+
+    this.dataStoreService.getDataStoreManager()
+      .recordsChanged
+      .subscribe(d => {
+        console.log('.....', d)
+      })
   }
 
   toFormGroup() {

@@ -10,13 +10,7 @@ router.get('/views/:viewId/config', (req, res) => {
         id: viewId,
         title: '编辑单一对象',
         description: "this is description",
-
-        data: {
-            "name": "李四",
-            "age": 32,
-            "valid": true
-        },
-
+        
         views: [
             {
                 id: 'form',
@@ -26,10 +20,22 @@ router.get('/views/:viewId/config', (req, res) => {
                 items: [
                     {
                         type: 'input',
+                        id: 'id',
+                        bindingTo: '${id}',
+                        desc:"ID"            
+                    },
+                    {
+                        type: 'input',
                         id: 'name',
                         bindingTo: '${name}',
                         desc:"用户姓名"            
-                    }
+                    },
+                    {
+                        type: 'input',
+                        id: 'age',
+                        bindingTo: '${age}',
+                        desc:"年龄"            
+                    }                                        
                 ]
             }           
         ],
@@ -59,4 +65,18 @@ router.get('/views/:viewId/config', (req, res) => {
         }
     })    
 })
+
+/**
+ * 执行命令
+ */
+router.get('/views/:viewId/commands/:commandId', (req, res) => {
+    res.send({
+        "id": req.query['id'],
+        "name": "李四",
+        "age": 32,
+        "valid": true
+    })
+})
+
+    
 module.exports = router

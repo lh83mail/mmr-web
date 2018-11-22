@@ -22,13 +22,6 @@ import { PageConfig, Expression } from './configs';
 
 @Injectable()
 export class MmrDataStoreService {
-  /**
-   * 数据对象的唯一标识参数是否存在
-   * @param params 
-   */
-  isDataKeyExists(params: Params): boolean {
-    throw new Error("Method not implemented.");
-  }
 
   viewId: string;
   rootView: RootView;
@@ -54,8 +47,6 @@ export class MmrDataStoreService {
     this.addReader('page', new PageArgumentReader(this.activatedRoute.snapshot))
     this.addReader('value', new ValueArgumentReader())
     this.addReader('datastore', new DataStoreArgumentReader(this))
-
-    this.dataStoreManager = DataStoreManager.createManager(null, this)
   }
 
   addReader(type:string, reader:ArgumentReader) {
@@ -139,7 +130,8 @@ export class MmrDataStoreService {
     })
     .map((response: HttpResponse<PageConfig>) => {
       if (response.body != null) {   
-        this.pageConfig = response.body;   
+        this.pageConfig = response.body;
+        this.parsePageConfig(this.pageConfig)   
         return this.pageConfig
       }
       return this.pageConfig
@@ -151,7 +143,7 @@ export class MmrDataStoreService {
    * @param config 
    */
   private parsePageConfig(config: PageConfig) {
-    //TODO 解析页面配置
+    this.dataStoreManager = DataStoreManager.createManager(config.models, this)
   }
 
   /**
@@ -197,34 +189,51 @@ export class MmrDataStoreService {
    * 加载业务数据
    */
   loadData(params: Params): any {
-
-      //FIXME 从服务器端加载视图的初始化数据
-      this.dataSet = ({
-          id: 1,
-          name: '张三',
-          age: 20,
-          birthday: '2018-11-11'
-      });
-
       const dataStore = this.getDataStoreManager()
         .lookupDataStore('primary');
       
-      const keys = dataStore.getKeys();
+      const keys = dataStore.getKeys()
+          .map(k => k.id);
 
       // 加载指定数据
       if (this.containAllKeys(params, keys)) {
-        this.httpClient.get(`/v1/${this.viewId}/datasets/`, {
-          params: Object.apply({},this.pickupValues(keys))
-        })._do(data => {
-            dataStore.loadData(data);
-        })
+        dataStore.loadRemoteData(Object.assign({},this.pickupValues(params,keys)));
       }
       // 新创建的数据集合
       else {
-        dataStore.createNewData()
+        // TODO 创建新数据集合
+        // dataStore.createNewData(Object.apply({},this.pickupValues(params,keys)));
       }
       
       this.updateBindings()
+  }
+
+
+  private containAllKeys(params: Params, keys: Array<string>): boolean {
+      let contains = false
+      for (let i = 0; i < keys.length; i++) {
+        if (params[keys[i]] == null) {
+          contains = false
+          break;
+        }
+        contains = true
+      }
+      return contains;
+  }
+
+  /**
+   * 解析指定参数
+   * @param params 
+   * @param keys 
+   */
+  private pickupValues(params: Params, keys: Array<string>): {[key:string]: any} {
+    const values = {}
+    
+    keys.forEach(k => {
+      values[k] = params[k]
+    })
+
+    return values
   }
 
   /**

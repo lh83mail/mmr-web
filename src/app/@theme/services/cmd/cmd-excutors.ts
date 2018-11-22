@@ -56,7 +56,7 @@ export class RemoteExecutor extends CommandExecutor {
     
 
     const options: any = {
-      params:  this.dataStoreService.resloveParamters(this.cmd.args.params),
+      params:  this.cmd.args.params,
       observe: 'response',
     }
 
@@ -89,7 +89,7 @@ export class RemoteExecutor extends CommandExecutor {
     // });
   }
 }
-RemoteExecutor['type'] = 'remote'
+RemoteExecutor['type'] = 'http'
 
 
 export class ViewAction extends CommandExecutor {

@@ -23,6 +23,7 @@ export class SimpleFormComponent implements OnInit {
     private dataStoreService: MmrDataStoreService,
     private mmrConfiguration: MmrConfiguration,
   ) {
+   
     this.route.paramMap.subscribe(paramMap => {
       this.viewId = paramMap.get('id')
       this.initView(this.viewId)
@@ -39,13 +40,15 @@ export class SimpleFormComponent implements OnInit {
       .then(
         cfg => {
           this.viewConfig = cfg
-          this.dataStoreService.loadData(this.route.snapshot.params)
+          this.dataStoreService.loadData(this.route.snapshot.queryParams)
         }
       )
   }
 
   saveData() {
-    
+    this.dataStoreService.getDataStoreManager()
+      .lookupDataStore('primary')
+      .commit()
   }
 
 

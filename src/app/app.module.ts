@@ -61,7 +61,7 @@ import { DialogOverviewExampleDialog } from './pages/system/object-def/componets
 
     MatListModule,  // 系统模块
 
-    RouterModule.forRoot(MMR_ROOT_ROUTE, {useHash:false}),
+    RouterModule.forRoot(MMR_ROOT_ROUTE, {useHash:true}),
     MmrHttpModule.forRoot(),
   ],
   providers: [

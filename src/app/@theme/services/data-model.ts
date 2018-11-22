@@ -10,6 +10,7 @@ export interface MmrAttribute {
     value?: any;
     desc?: string;
     valueOptions?: DateValueOptions | NumberValueType ;
+    primary?:boolean;
 }
 
 export interface DateValueOptions {

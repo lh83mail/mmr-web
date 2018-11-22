@@ -30,9 +30,7 @@ export interface PageConfig {
     /**
      * 数据模型配置
      */
-    models?: {
-        [name:string]: MmrDataStoreConfig
-    }
+    models?: Array< MmrDataStoreConfig>
 }
 
 /**

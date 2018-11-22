@@ -1,4 +1,4 @@
-import { MmrDataStoreConfig} from './data-model'
+import { MmrDataStoreConfig, MmrAttribute} from './data-model'
 import { Command } from './interfaces'
 import { isArray } from 'util';
 import { EventEmitter } from '@angular/core';
@@ -48,7 +48,30 @@ export class MmrDataSet {
     
 }
 
+/**
+ * 数据集合变化对象
+ */
+export class DataStoreChange {
+    constructor(
+        public store: MmrDataStore,
+        public oldValue?: MmrRecord,
+        public newValue?: MmrRecord) {}    
+}
+
 export class MmrRecord {
+    /**
+     * 记录在DataStore数据集合中的序号
+     */
+    index: number = -1;
+    
+    /**
+     * 脏数据
+     */
+    dirty: boolean;
+    
+    /**
+     * 记录实际数据
+     */
     data: {
         [name:string] : any
     }
@@ -56,88 +79,123 @@ export class MmrRecord {
     constructor(_data: any) {
         this.data = _data || {}
     }
- 
+    
+    /**
+     * 获取指定的数据
+     * @param attrName 
+     */
     get(attrName:string): any {
         return this.data[attrName]
     }
 
+    /**
+     * 设置数据
+     * @param attrName 
+     * @param value 
+     */
     set(attrName: string, value: any) {
         this.data[attrName] = value
     }
 }
 
-// export class Event {
-
-// }
-
-class MmrData {
-    data: any;
-    status?:number;
-    message?:string;
-    totalRecord?:number;
-    pageSize?:number;
-    start?: number;
-    page?: number;
-    totalPage?:number;
-    [name: string]: any;
-}
-
   
 export class MmrDataStore {
-    private _refs = []
+    /**
+     * 当前数据集合
+     */
     private _records: Array<MmrRecord> = []
-    private _substores:Array<MmrDataStore> = []
+    /**
+     * 记录ID
+     */
+    private _lastIndex: number = 0;
+
+    /**
+     * 已经被删除的数据集
+     */
+    private _deletedRecords: Array<MmrRecord> = []
     private dataStroeService: MmrDataStoreService
-
-    private totalRecord?:number = 0
-    private pageSize?:number = 20
-    private start?: number = 0
-
 
     recordsChanged: EventEmitter<MmrEvent> = new EventEmitter<MmrEvent>()
     
+    
+    constructor(private config: MmrDataStoreConfig, dataStroeService: MmrDataStoreService) {        
+        this.dataStroeService = dataStroeService
+        this.updateRecords(this.config.data, this)
+    }
 
     /**
-     * 记录集ID
+     * DataStore的ID
      */
-    id: string = ""
-
-    constructor(private _config: MmrDataStoreConfig, dataStroeService: MmrDataStoreService) {
-    
-        this.id = this._config.id
-        this.dataStroeService = dataStroeService
-        this.updateRecords(this._config.data, this)
-
-        if (this._config.associateStores) {
-            this._config.associateStores.forEach(cfg => {
-                this.addSubStore(new MmrDataStore(cfg, dataStroeService))
-            })
-        }
+    get id () {
+        return this.config.id
     }
 
-    private applyMmrData(data: MmrData) {
+    getKeys(): Array<MmrAttribute> {
+      return  this.config.attributes.filter(a => a.primary === true)
+    }
+
+    private applyMmrData(data: any) {
         const record = data.data || []
         this._records = []
-
         const arr = isArray(record) ? record : [record]
-        arr.forEach( d => this._records.push(new MmrRecord(d)))
-        
-        this.start = data.start || 0
-        this.pageSize = data.pageSize || 20
-        this.totalRecord = data.totalPage || arr.length        
+        arr.forEach( d => this._records.push(new MmrRecord(d)))    
     }
 
-    private updateRecords(data: any | any , source: any) {
-        data = data || new MmrData()
-        if (data instanceof MmrData || data.data != null) {
-           this.applyMmrData(data)
-        }else {
-            var r = new MmrData()
-            r.data = data
-            this.applyMmrData(r)
+    updateRecords(data: any , source: any) {
+        this.applyMmrData(data)
+        this.recordsChanged.emit({source: source, data: this._records})
+    }
+
+    /**
+     * 重置记录集
+     */
+    private reset() {
+        this._records = [];
+        this._deletedRecords = [];
+        this._lastIndex = 0
+    }
+    /**
+     * 加载数据记录
+     * @param data 要加载的数据集合
+     * @param append 是否追加到数据集
+     */
+    load(data: any, append: boolean = false) {
+        const dataset = data.data || []
+
+        if (append !== true) {
+            this.reset();
         }
 
-        this.recordsChanged.emit({source: source, data: this._records})
+        const arr = isArray(dataset) ? dataset : [dataset]
+        arr.forEach( data => {
+            var record = new MmrRecord(data)
+            record.index = this._lastIndex++
+            record.dirty = append === true
+            this._records.push(record)
+
+            this.recordsChanged.emit({
+                source: this, 
+                data: new DataStoreChange(this, null, record)
+            })
+        })
+    }
+
+    //TODO 实现其它数据集合处理方法
+
+    /**
+     * 加载远程数据
+     */
+    loadRemoteData(args: any) {        
+       this.dataStroeService.createCommandExecutor({
+            type: 'http',
+            command: 'load-remote-data',
+            args: {
+                method: 'GET',
+                params: args
+            }
+        })
+        .execute()
+        .subscribe(d => this.updateRecords(d, this))
     }
 
     /**
@@ -165,13 +223,6 @@ export class MmrDataStore {
     }
 
     /**
-     * 读取配置
-     */
-    get config(): MmrDataStoreConfig {
-        return this._config
-    }
-
-    /**
      * 
      * @param 更新数据 data 
      * @param byWho 数据更新人是谁
@@ -192,55 +243,10 @@ export class MmrDataStore {
         return this._records.length > 0 ? this._records[0] : null
     }
 
-    addSubStore(store: MmrDataStore) {
-        this._substores.push(store)
-    }
-
-    getSubstores(): Array<MmrDataStore> {
-        return this._substores
-    }
-
     getCommand(name: string): Command {
         // if (this._config.commands == null) return null
         // var cmd = this._config.commands[name]
         return {}  as Command;
-    }
-
-    addFilters() {
-
-    }
-
-    clearFilters() {
-
-    }
-
-    addSorts() {
-
-    }
-
-    clearSorts() {
-
-    }
-
-
-    setPageable() {
-
-    }
-
-
-    /**
-     * 加载数据
-     */
-    filter() {
-        const cmd = this.getCommand('filter')
-        if (cmd) {
-        //    this.dataStroeService.execute(cmd)
-        //     .subscribe(response => {
-        //         this.set(response.data, this)            
-        //     }) 
-            return           
-        }
-        throw new Error("undefined command")
     }
     
     /**
@@ -267,8 +273,8 @@ export class MmrDataStore {
  *
  */
 export class DataStoreManager {
-    private stores:  {[key: string]: MmrDataStore} = {}
-   
+    private _stores:  {[key: string]: MmrDataStore} = {}
+    
     /**
      * 根据配置创建数据仓库管理器实例
      *    配置格式： { [key:string]: DataStore }
@@ -277,32 +283,30 @@ export class DataStoreManager {
      *      value： DataStore配置
      * @param options
      */
-    static createManager(options: {[key: string]: MmrDataStoreConfig}, dataStroeService: MmrDataStoreService): DataStoreManager {
+    static createManager(options: Array<MmrDataStoreConfig>, dataStroeService: MmrDataStoreService): DataStoreManager {
         const manager = new DataStoreManager()
 
         if (options == null) {
             return manager;
         }
         
+        options.forEach(o => {
+            manager._stores[o.id] = new MmrDataStore(o, dataStroeService);            
+        })
 
-        // function createDataStore(config: DataStoreConfig, parent: DataStore): DataStore {
-        //     let s = new DataStore(config)
-        //     if (parent != null) {
-        //         parent.addSubStore(s)
-        //     }
-        //     if (config.associateStores != null) {
-        //         config.associateStores.forEach(cfg => {
-        //             createDataStore(cfg, s)
-        //         })
-        //     }
-        //     return s
-        // }
-        for (let key in options) {
-            manager.stores[key] = new MmrDataStore(options[key], dataStroeService);// createDataStore(options[key], null)
-        }
         return manager;
     }
 
+    recordsChanged: EventEmitter<MmrEvent> = new EventEmitter<MmrEvent>()
+
+    addStore(store: MmrDataStore) {
+        this._stores[store.id] = store;
+        // store.recordsChanged.pipe(recordsChanged)
+    }
+
+    onStoreRecordChanged(event: MmrEvent): any {
+        
+    }
 
 
     private constructor() {
@@ -316,25 +320,19 @@ export class DataStoreManager {
                 if (dsName == stores[i].id) {
                     return stores[i];
                 }
-                if (stores[i].getSubstores() != null) {
-                    const s = find(stores[i].getSubstores())
-                    if (s != null) {
-                        return s
-                    }
-                }
             }
             return null
         }
 
         const storeArray = []
-        for (let key in this.stores) {
-            storeArray.push(this.stores[key])
+        for (let key in this._stores) {
+            storeArray.push(this._stores[key])
         }
         return find(storeArray)
     }
 
     getDataStores(): {[key: string]: MmrDataStore} {
-        return this.stores || {};
+        return this._stores || {};
     }
 
 }

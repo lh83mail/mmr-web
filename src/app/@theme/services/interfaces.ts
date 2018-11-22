@@ -57,6 +57,7 @@ export interface CommandResponse {
   message?: string;
 }
 
+
 export abstract class CommandExecutor {
   cmd: Command;
   dataStoreService: MmrDataStoreService;
@@ -71,5 +72,13 @@ export abstract class CommandExecutor {
 
   apply(name:string, data: any) : CommandExecutor {
     return this
+  }
+}
+
+// -----------------
+
+export function SupportExpression(){
+  return  function (target: Object, propertyKey: string | Symbol):void {
+    console.log('aaaaaa', arguments)
   }
 }

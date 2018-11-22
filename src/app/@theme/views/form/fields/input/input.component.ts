@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, SimpleChanges, OnChanges, ComponentRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormControl } from '@angular/forms';
-import { MmrAttribute, ValueType, DateValueOptions, NumberValueType, MmrDataStoreService, MmrComponentRef, EditorComponent, ViewComponent } from '../../../../services';
+import { MmrAttribute, ValueType, DateValueOptions, NumberValueType, MmrDataStoreService, MmrComponentRef, EditorComponent, ViewComponent, SupportExpression } from '../../../../services';
 import { MmrViewOption } from '../../../../mmr-view.model';
+
 
 @Component({
   selector: 'app-input',
@@ -10,14 +11,20 @@ import { MmrViewOption } from '../../../../mmr-view.model';
   styleUrls: ['./input.component.css']
 })
 export class InputComponent implements OnInit, MmrAttribute, MmrViewOption, EditorComponent, OnChanges {
-  
+
+  @SupportExpression()
+  type:string = 'input'
   description?: string;
   layout: string;
   items?: ViewComponent[];
 
-  @Input() type: string;
+  @Input() xtype: string;
+
   @Input() formGroup: FormGroup;
+
+  @SupportExpression()
   @Input() value: any;
+  
   @Input() id: string;
   @Input() valueType: ValueType;
   @Input() isSet?: boolean;
@@ -43,14 +50,22 @@ export class InputComponent implements OnInit, MmrAttribute, MmrViewOption, Edit
     
     this.control.valueChanges.subscribe(v => {
       // this.dataStoreService.updateValue(this.id, this.binddingTarget, v)
-      this.dataStoreService.notifyDataChanged(this.id, 'value', v)
+      this.dataStoreService.notifyDataChanged(this.id, 'value', v)      
     })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('on-input-cccc', changes)    
+    console.log('on-input-cccc', changes)  
   }
 
+  // TODO 响应数据集合改变
+  // recordChanges(changes: RecordChanges ): void {
+  //     // this.expression.properties.each {
+  //     //   if (changes.contains(prop.name)) {
+  //     //     this[prop.name] = prop.expression.exec()
+  //     //   }
+  //     // }
+  // }
   // private _value: ValueRef;
 }
 
