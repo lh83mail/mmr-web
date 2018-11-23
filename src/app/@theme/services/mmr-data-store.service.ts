@@ -144,6 +144,9 @@ export class MmrDataStoreService {
    */
   private parsePageConfig(config: PageConfig) {
     this.dataStoreManager = DataStoreManager.createManager(config.models, this)
+    // this.dataStoreManager.recordsChanged.subscribe(evt => {
+    //   //TODO 广播改变事件
+    // })
   }
 
   /**
@@ -203,9 +206,7 @@ export class MmrDataStoreService {
       else {
         // TODO 创建新数据集合
         // dataStore.createNewData(Object.apply({},this.pickupValues(params,keys)));
-      }
-      
-      this.updateBindings()
+      }      
   }
 
 

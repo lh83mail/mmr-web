@@ -78,7 +78,12 @@ export abstract class CommandExecutor {
 // -----------------
 
 export function SupportExpression(){
-  return  function (target: Object, propertyKey: string | Symbol):void {
+  return  function (target: Object, propertyKey: string):void {
     console.log('aaaaaa', arguments)
+
+    if (target['__inner__'] == null) {
+      target['__inner__'] = {}
+    }
+    target['__inner__'][propertyKey] = null
   }
 }

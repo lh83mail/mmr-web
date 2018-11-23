@@ -66,10 +66,30 @@ export class MMRLoadViewDirective implements OnDestroy{
         componentRef.instance[p] = this.__options[p];        
         this.bindIfExpression(componentRef, p, this.__options[p]);
       }
+
+      if (componentRef.instance['buildExpression']) {
+        componentRef.instance['buildExpression'].call(
+          componentRef.instance, this.__options
+        )
+      }
+
+      this.dataStoreService.getDataStoreManager()
+      .recordsChanged.subscribe(evt => {
+        console.log('record changes from MMRLoadViewDirective')
+         if (componentRef.instance['recordChanges']) {
+          componentRef.instance['recordChanges'].call(
+            componentRef.instance, evt.data
+          )
+         }
+      })
     }
+    console.log('directive instance', componentRef.instance)
     this.dataStoreService.updateBindings();
     this.mmrComponentRef.componentRef = componentRef;
   }
+
+  
+
 
   /**
    * 绑定具有表达式属性的组件

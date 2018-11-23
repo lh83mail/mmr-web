@@ -30,10 +30,7 @@ export class FormComponent extends AbstractView  {
     });
 
     this.formGroup.valueChanges.subscribe(v => {
-      const ds = this.dataStoreService.getDataStoreManager().lookupDataStore(this.dsName);
-      if (ds != null) {
-         ds.set(v, this)
-      }
+      console.log(`Values changed[from FormComponent]`, v)
     })
 
     this.dataStoreService.getDataStoreManager()
@@ -79,7 +76,7 @@ export class FormComponent extends AbstractView  {
 
   updateValuesIfMatch(ds: MmrDataStore) {
      if (ds.id == this.dsName) {
-       ds.set(this.formGroup.value, this)
+      //  ds.set(this.formGroup.value, this)
      }
   }
 }

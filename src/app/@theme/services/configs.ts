@@ -181,7 +181,7 @@ export class ViewDataManager {
 export class Expression {
     private START = '${'
     private END = '}'
-
+    
     constructor(private str: string) { }
 
     doEval(values): any {

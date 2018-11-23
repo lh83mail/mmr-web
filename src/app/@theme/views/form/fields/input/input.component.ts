@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, SimpleChanges, OnChanges, ComponentRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormControl } from '@angular/forms';
-import { MmrAttribute, ValueType, DateValueOptions, NumberValueType, MmrDataStoreService, MmrComponentRef, EditorComponent, ViewComponent, SupportExpression } from '../../../../services';
+import { MmrAttribute, ValueType, DateValueOptions, NumberValueType, MmrDataStoreService, MmrComponentRef, EditorComponent, ViewComponent, SupportExpression, DataStoreChange, Expression } from '../../../../services';
 import { MmrViewOption } from '../../../../mmr-view.model';
 
 
@@ -12,7 +12,7 @@ import { MmrViewOption } from '../../../../mmr-view.model';
 })
 export class InputComponent implements OnInit, MmrAttribute, MmrViewOption, EditorComponent, OnChanges {
 
-  @SupportExpression()
+ 
   type:string = 'input'
   description?: string;
   layout: string;
@@ -50,7 +50,7 @@ export class InputComponent implements OnInit, MmrAttribute, MmrViewOption, Edit
     
     this.control.valueChanges.subscribe(v => {
       // this.dataStoreService.updateValue(this.id, this.binddingTarget, v)
-      this.dataStoreService.notifyDataChanged(this.id, 'value', v)      
+      // this.dataStoreService.notifyDataChanged(this.id, 'value', v)      
     })
   }
 
@@ -58,14 +58,35 @@ export class InputComponent implements OnInit, MmrAttribute, MmrViewOption, Edit
     console.log('on-input-cccc', changes)  
   }
 
+  private __inner__: {
+    [prop: string]: Expression
+  };
+
   // TODO 响应数据集合改变
-  // recordChanges(changes: RecordChanges ): void {
-  //     // this.expression.properties.each {
-  //     //   if (changes.contains(prop.name)) {
-  //     //     this[prop.name] = prop.expression.exec()
-  //     //   }
-  //     // }
-  // }
+  recordChanges(changes:  DataStoreChange): void {
+    console.log('recordChanges from InputComponent', this.__inner__)
+      if (!this.__inner__ ) return
+
+      for (let prop in this.__inner__) {
+        if (this.__inner__[prop] != null 
+            && changes.newValue != null ) {
+              this[prop] = this.__inner__[prop].doEval(changes.newValue.get('name'))    
+        }
+      }
+  }
+
+  buildExpression(config: ViewComponent) {
+    console.log('build expression')
+    
+
+    if (!this.__inner__ ) return
+    for (let prop in this.__inner__) {
+      if (config[prop]) {
+        this.__inner__[prop] = new Expression(config[prop]);   
+        console.log(`build expression ${prop} = ${config[prop]} `)   
+      }
+    }
+  }
   // private _value: ValueRef;
 }
 

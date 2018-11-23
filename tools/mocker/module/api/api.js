@@ -10,7 +10,7 @@ router.get('/views/:viewId/config', (req, res) => {
         id: viewId,
         title: '编辑单一对象',
         description: "this is description",
-        
+
         views: [
             {
                 id: 'form',
@@ -21,19 +21,19 @@ router.get('/views/:viewId/config', (req, res) => {
                     {
                         type: 'input',
                         id: 'id',
-                        bindingTo: '${id}',
+                        value: '${id}',
                         desc:"ID"            
                     },
                     {
                         type: 'input',
                         id: 'name',
-                        bindingTo: '${name}',
+                        value: '${name}',
                         desc:"用户姓名"            
                     },
                     {
                         type: 'input',
                         id: 'age',
-                        bindingTo: '${age}',
+                        value: '${age}',
                         desc:"年龄"            
                     }                                        
                 ]
